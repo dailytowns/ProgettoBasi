@@ -66,6 +66,7 @@
 \maketitle
 \newpage
 \tableofcontents
+\listoftables
 \newpage
 
 \section{Introduzione}
@@ -74,7 +75,6 @@
 	Una \textit{base di dati} \'{e} una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
 	Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello "a strati". \newline
 \end{flushleft}
-
 
 
 \begin{center}
@@ -100,9 +100,6 @@ La possibili\'{a} di progettare la base di dati a strati viene offerta da una de
 \subsection{Il Modello Entit\'{a}-Relazione}
 
 \newpage
-
-
-
 
 
 \section{Progettazione concettuale}
@@ -138,48 +135,63 @@ La possibili\'{a} di progettare la base di dati a strati viene offerta da una de
 		\end{tabular}
 	\end{table}
 
-	Una volta esaminato a fondo il documento di presentazione, viene effettuato un lavoro di rimodellazione che porta ad uniformare il testo dei requisiti, rendendoli non ambigui dal punto di vista degli sviluppatori ed ancora corrispondenti alle esigenze del committente. Il documento di presentazione viene dunque ristrutturato, suddividendo il testo in gruppi di frasi che trattano dello stesso concetto.
+	Una volta esaminato a fondo il documento di presentazione, viene effettuato un lavoro di rimodellazione che porta ad uniformare il testo dei requisiti, rendendoli non ambigui dal punto di vista degli sviluppatori ed ancora corrispondenti alle esigenze del committente. Il documento di presentazione viene dunque ristrutturato, suddividendo il testo in gruppi di frasi che trattano lo stesso concetto e riscrivendo secondo il pattern \textit{Per $<$dato$>$ rappresentiamo $<$insieme di proprietà$>$}.\newpage
 	Il risultato della rimodellazione del documento \'{e} presentato di seguito:
 	
-	\begin{flushleft}
-		\textbf{Frasi di carattere generale}\newline
-			L'Istituto Nazionale di Astrofisica insieme all'Universit\'{a} di Tor Vergata vogliono costruire una applicazione che permetta di importare in un database i dati raccolti sulle galassie da diversi satelliti (tra cui Hershel/PACS e Spitzer) al fine di poterli interrogare e gestire in modo pi\'{u} efficiente.\newline
+	\begin{framed}
+		\begin{flushleft}
+			\textbf{Frasi di carattere generale}\newline
+			L’Istituto Nazionale di Astrofisica insieme all’Università di Tor Vergata vogliono costruire una applicazione che permetta di importare in un database i dati raccolti sulle galassie da diversi satelliti (tra cui Herschel/PACS e Spitzer) al fine di poterli interrogare e gestire in modo più efficiente.
+			\newline
 			
-			In particolare si sono voluti mettere assieme gli ultimi dati che sono stati catturati dal satellite Herschel/PACS che ha misurato il flusso degli spettri del lontano infrarosso, con quelli provenienti da altri \textit{satelliti precedenti} come ad esempio il satellite Spitzer che venne utilizzato per misurare i flussi del vicino infrarosso.\newline
+			In particolare si sono voluti mettere assieme gli ultimi dati che sono stati catturati dal satellite Herschel/PACS che ha misurato il flusso degli spettri del lontano infrarosso, con quelli provenienti da altri satelliti precedenti come ad esempio il satellite Spitzer che venne utilizzato per misurare i flussi del vicino infrarosso.
+			\newline
 			
-			I dati raccolti, una volta elaborati, sono utilizzati dagli scienziati per misurare le condizioni fisiche del gas all'interno delle galassie (es. temperatura, densità, metallicità).
-			
-			L'applicazione permetterà l'accesso solamente agli utenti registrati. L'accesso avverrà tramite user-id e password.
-	\end{flushleft}
-	
-	\begin{flushleft}
-		\textbf{Frasi relative ai satelliti}\newline
-		In particolare si sono voluti mettere assieme gli ultimi dati che sono stati catturati dal satellite Herschel/PACS che ha misurato il flusso degli spettri del lontano infrarosso, con quelli provenienti da altri satelliti precedenti come ad esempio il satellite Spitzer che venne utilizzato per misurare i flussi del vicino infrarosso.
-	\end{flushleft}
-	
-	\begin{flushleft}
-		\textbf{Frasi relative alle galassie}\newline
-			In generale ogni galassia ha un proprio nome, una determinata posizione geografica spaziale e una distanza e/o redshift. Le galassie possono essere \textit{suddivise in sottogruppi} a seconda della loro classificazione spettrale. Ogni galassia può avere un valore di luminosità espressa in Watt, misurata relativamente ad uno specifico atomo ionizzato e di metallicità relativa a quella solare. Ad ogni galassia può essere associato il valore del flusso di una riga/linea spettrale. Ogni flusso è associato ad una riga della linea spettrale per un determinato atomo ionizzato ed è composto da una terna contenente il valore del flusso, il suo errore ed una flag che indica se è un upper-limit (ovvero se il valore misurato era minore della sensibilità dello strumento quindi al massimo è pari al minimo della sensibilità dello strumento).\newline
-			
-			Ogni galassia è solitamente definita dalle sue coordinate angolari (ascensione retta e declinazione), il suo redshift e in ultimo la distanza. Per la distanza è definito anche il riferimento bibliografico da cui è stata tratta.
-			
-			Ogni galassia è classificata rispetto alle sue proprietà ottiche (emissione spettrale). La classificazione spettrale prevede 6 macro-gruppi (S1, S1h, S2, LIN, Dwarf e H2).
-	\end{flushleft}
-	
-	\begin{flushleft}
-		\textbf{Frasi relative ai flussi}\newline
-			Per ogni galassia sono stati calcolati i flussi degli atomi ionizzati ossigeno (OIII, OI), azoto (NIII, NII) e carbonio (CII). Per ogni flusso, se è stato possibile calcolarlo, è riportato il suo valore e il relativo valore di errore. Nel caso il valore calcolato è inferiore alla sensibilità dello strumento, una flag è inserita e il relativo upper-limit è riportato.
-	\end{flushleft}
+			I dati raccolti, una volta elaborati, sono utilizzati dagli scienziati per misurare le condizioni fisiche del gas all’interno delle galassie (es. temperatura, densità, metallicità, etc..).
+			\newline
 
-	\begin{flushleft}
-		\textbf{Frasi relative agli utenti}\newline
-		L'applicazione supporterà due tipi di utenti: Amministratori e Utente registrato. Per entrambe le tipologie di utenti dovranno essere salvati i seguenti dati:
-		Nome
-		Cognome
-		User-id (min. 6 caratteri)
-		Password (min. 6 caratteri)
-		Email
-	\end{flushleft}
+		%	--
+			Ogni flusso è associato ad una riga della linea spettrale per un determinato atomo ionizzato [...]
+			\newline
+			
+			Ogni file contiene un header testuale che descrive le colonne della tabella in formato CSV contenuta nel file. Inoltre può contenere i riferimenti bibliografici da cui sono stati estratti i dati. I riferimenti bibliografici possono non essere inclusi nel database dell’applicazione.
+			\newline
+			
+			%--------------------------------------
+			Per ogni galassia sono stati calcolati i flussi degli atomi ionizzati ossigeno (OIII, OI), azoto (NIII, NII) e carbonio (CII).
+		\end{flushleft}
+	\end{framed}
+
+	Nel caso delle galassie, si è riscontrata una ambiguità nel documento, relativamente al fatto che il termine \textit{distanza} non fosse ulteriormente approfondito, ad esempio specificando rispetto quale punto venga calcolata.
+	Per questo si sono cercate ulteriori informazioni lungo il documento, avendone effettivamente riscontrate nel seguito.
+	
+	%Posizione geografica = coordinate angolari
+	%classificazione spettrale = emissione spettrale
+	\begin{framed}
+		\begin{flushleft}
+			\textbf{Frasi relative alle galassie}\newline
+			Per ogni galassia rappresentiamo il nome, le sue coordinate angolari (ascensione retta e declinazione), una distanza (e il suo riferimento bibliografico) e/o redshift, una luminosità espressa in Watt misurata relativamente ad uno specifico atomo ionizzato e di metallicità relativa a quella solare. 
+			Ogni galassia è classificata rispetto alle sue proprietà ottiche (emissione spettrale). La classificazione spettrale prevede 6 macro-gruppi (S1, S1h, S2, LIN, Dwarf e H2).
+			
+			Ad ogni galassia può essere associato il valore del flusso di una riga/linea spettrale.
+		\end{flushleft}
+	\end{framed}
+	
+	Il flusso è uno di quei concetti che più di altri esemplificano lo sforzo che deve essere messo in atto dagli sviluppatori per entrare in contatto con il mondo che stanno andando a modellare. Infatti lungo il documento troviamo tante informazioni insufficienti per avere una chiara idea di come il concetto di flusso si leghi al resto del sistema. Il primo passo da fare è dunque raccogliere le informazioni presenti nel documento e trovare una linea comune e, se questo non fosse possibile, sorge l'esigenza di intervistare nuovamente il committente.
+	
+	\begin{framed}
+		\begin{flushleft}
+			\textbf{Frasi relative ai flussi}\newline
+			Per ogni flusso rappresentiamo il valore del flusso, il suo errore ed una flag che indica se è un upper-limit (ovvero se il valore misurato era minore della sensibilità dello strumento quindi al massimo è pari al minimo della sensibilità dello strumento).\newline
+		\end{flushleft}
+	\end{framed}
+	
+	\begin{framed}
+		\begin{flushleft}
+			\textbf{Frasi relative agli utenti}\newline
+			Per entrambe le tipologie di utenti dovranno essere salvati il nome, il cognome, user-id (min. 6 caratteri), password (min. 6 caratteri), email
+		\end{flushleft}
+	\end{framed}
 
 	\subsection{Regole di vincolo}
 	\begin{flushleft}
@@ -200,20 +212,44 @@ La possibili\'{a} di progettare la base di dati a strati viene offerta da una de
 			\textbf{Operazione 4} Ricerca di una galassia per nome\newline
 			\textbf{Operazione 5} Ricerca di un insieme di galassie all'interno di un raggio data la posizione spaziale\newline
 			\textbf{Operazione 6} Ricerca di un insieme di galassie in base al parametro di redshift\newline
-			\textbf{Operazione 7} Ricerca di valori dei flussi ed il relativo errore di una o pi\'{u} righe spettrali di una specifica galassia\newline
+			\textbf{Operazione 7} Ricerca di valori dei flussi ed il relativo errore di una o più righe spettrali di una specifica galassia\newline
 			\textbf{Operazione 8}
 		\end{flushleft}
+\newpage
+
 
 \section{Schemi ER}
 \begin{flushleft}
 	La stesura degli schemi ER pu\'{o} essere sia realizzata su carta, sia servendoci di strumenti software dedicati. I programmi appartenti a questa categoria vengono definiti \textit{CASE software}, dove CASE sta per Computer-Aided Software Engineering. Come da aspettative, la scelta \'{e} molto ampia, sia tra i software commerciali sia tra quelli free. Dal momento che la complessit\'{a} del progetto \'{e} di gran lunga inferiore a quella di una commissione reale, \'{e} parsa la scelta migliore quella di scegliere un software commerciale, ma che allo stesso tempo si comportasse come un freeware a patto di utilizzare un sottoinsieme delle funzionalit\'{a} offerte.\newline
 	
-	Il software in questione \'{e} \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.
+	Il software in questione è \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.
 \end{flushleft}
 
 
 
 \section{Dizionario dei dati}
+
+\begin{table}[h]
+	\centering
+	\caption{Dizionario dei dati}
+	\begin{tabular}{lllll}
+		\hline
+		\rowcolor[HTML]{66CC99}Termine & Descrizione & Sinonimi & Collegamenti				  \\ \hline
+		
+		\textit{Galassia}			&	Un grande insieme di stelle					&	-	 &\\
+		&												&		 &\\
+		\textit{Linea spettrale}	&	Effetto dell'interazione tra un sistema		&  		 &\\
+		&   quantistico e singoli fotoni				&	- 	 &\\
+		&  					                     		&        &\\
+		\textit{Satellite}			& 	Oggetto orbitante intorno ad un corpo		&		 &\\
+		& 	celeste che ha dimensioni molto maggiori	&		 &\\
+		&												&		 &\\
+		\textit{Redshift} 			& 	Fenomeno secondo il quale la frequenza 		&		 &\\
+		& 	di luce osservata differisce da quella		&		 &\\
+		& 	emessa 										&		 &\\
+		\textit{Flusso spettrale}	&												&		 &\\	
+	\end{tabular}
+\end{table}
 
 \section{Business rules}
 
@@ -224,9 +260,9 @@ La possibili\'{a} di progettare la base di dati a strati viene offerta da una de
 	\subsection{Scelta dell'ambiente}
 	\begin{flushleft}
 		Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline
-		Di certo c'\'{e} che il linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilit\'{a} di creare interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
+		Di certo c'èil linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilità di c interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
 		
-		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessit\'{a}, sintetizzabili in tre punti:
+		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessitàtetizzabili in tre punti:
 	\end{flushleft}
 	\begin{enumerate}
 		\item SQL integrato nei linguaggi di programmazione
