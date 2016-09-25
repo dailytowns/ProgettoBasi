@@ -1,0 +1,547 @@
+\documentclass[12pt,a4paper,onecolumn]{article}
+
+%%%%%%Package utilizzati%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{makeidx}
+\usepackage{dirtree}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{algpseudocode}
+\usepackage{frontespizio}
+\usepackage[italian]{babel}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{listings}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{mystyle}{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve}, 
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3}
+\lstset{style=mystyle}
+\fvset{frame=single,framesep=1mm,fontfamily=courier,fontsize=\scriptsize,
+	numbers=left,framerule=.3mm,numbersep=1mm,commandchars=\\\{\}}
+\makeatletter
+\makeatother
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+%%%GRAFICA&&&&&&
+\usepackage{tikz}
+\usetikzlibrary{chains}
+\usetikzlibrary{shapes,arrows}
+\usepackage{ifthen}
+\usepackage{xstring}
+\usepackage{calc}
+\usepackage{pgfopts}
+\usepackage{tikz-uml}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%Apertura del documento%%%%%%%%%%%%%%%%%%%%%%%
+\title{Relazione al Progetto di Basi di Dati}
+\author{Federico Amici}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduzione}
+\begin{flushleft}
+	La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonch\'{e} delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta.
+	Una \textit{base di dati} \'{e} una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
+	Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello "a strati". \newline
+\end{flushleft}
+
+
+
+\begin{center}
+	\begin{tikzpicture}[node distance = 3cm, auto]
+	\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+	text width=4.5em, node distance=3cm, inner sep=0pt]
+	\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+	text width=20em, text centered, rounded corners, minimum height=4em]
+	\tikzstyle{line} = [draw, -latex']
+	% Place nodes
+	\node [block] (init) {Progettazione concettuale};
+	\node [block, below of=init] (identify) {Progettazione logica};
+	\node [block, below of=identify] (evaluate) {Progettazione fisica};
+	% Draw edges
+	\path [line] (init) -- (identify);
+	\path [line] (identify) -- (evaluate);
+	\end{tikzpicture}
+\end{center}
+
+Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline
+La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello ER.
+
+\subsection{Il Modello Entit\'{a}-Relazione}
+
+\newpage
+
+
+
+
+
+\section{Progettazione concettuale}
+
+	Una delle fasi pi\'{u} importanti nella realizzazione di un progetto, che sia prettamente software o riguardante una base di dati, \'{e} costituita dalla \textit{raccolta e analisi dei requisiti}. Ricordiamo che un \textit{requisito} rappresenta un vincolo da rispettare sia nella fase del suo sviluppo sia nella fase di funzionamento del software. Come suggerisce \cite{Arlow}, la prima causa del fallimento del progetto di un sistema software \'{e} l'insuccesso dell'ingegneria dei requisiti. In questo caso non ci si soffermerà con lo stesso dettaglio del processo UP su questa fase dello sviluppo software ma, essendo indubbiamente fondamentale, le verrà dedicato lo spazio che merita.
+	\newline
+	
+	La \textit{raccolta dei requisiti} nel caso di questo progetto è stata simulata dal documento di presentazione inviato dal Professor Galli in qualità di committente del lavoro. Il documento è scritto in linguaggio naturale, come accadrebbe nel caso di una stesura delle  specifiche del sistema da realizzare a seguito di un incontro con il committente o con i futuri utenti dell'applicazione.
+	Un aspetto importante della progettazione concettuale è l'elaborazione preliminare di tutti quei documenti utili sia agli sviluppatori del progetto che entrano in contatto con il mondo che vanno a modellare sia al committente per essere sicuro che la realizzazione del progetto sia in linea con le sue aspettative. 
+	\newline
+
+	Generalmente quando si va a sviluppare un sistema software si entra a far parte di un mondo che non si conosce a fondo in quanto estraneo al proprio. Anche in questa occasione si è acquisita maggiore dimestichezza con gli argomenti relativi al mondo che si è modellato, attingendo a fonti esterne come \textsf{\href{http://www.astronomia.com}{astronomia.com}}. Il \textit{glossario dei termini} raccoglie tutta quella terminologia, presente nella documentazione di presentazione del progetto che simula la \textit{raccolta dei requisiti}, di cui non si era a conoscenza al momento della sua stesura.
+
+	\begin{table}[h]
+		\centering
+		\caption{Glossario dei termini}
+		\begin{tabular}{lllll}
+			\hline
+			\rowcolor[HTML]{66CC99}Termine & Descrizione & Sinonimi & Collegamenti				  \\ \hline
+			
+			\textit{Galassia}			&	Un grande insieme di stelle					&	-	 &\\
+										&												&		 &\\
+			\textit{Linea spettrale}	&	Effetto dell'interazione tra un sistema		&  		 &\\
+										&   quantistico e singoli fotoni				&	- 	 &\\
+										&  					                     		&        &\\
+			\textit{Satellite}			& 	Oggetto orbitante intorno ad un corpo		&		 &\\
+										& 	celeste che ha dimensioni molto maggiori	&		 &\\
+										&												&		 &\\
+			\textit{Redshift} 			& 	Fenomeno secondo il quale la frequenza 		&		 &\\
+										& 	di luce osservata differisce da quella		&		 &\\
+										& 	emessa 										&		 &\\
+			\textit{Flusso spettrale}	&												&		 &\\	
+		\end{tabular}
+	\end{table}
+
+	Una volta esaminato a fondo il documento di presentazione, viene effettuato un lavoro di rimodellazione che porta ad uniformare il testo dei requisiti, rendendoli non ambigui dal punto di vista degli sviluppatori ed ancora corrispondenti alle esigenze del committente. Il documento di presentazione viene dunque ristrutturato, suddividendo il testo in gruppi di frasi che trattano dello stesso concetto.
+	Il risultato della rimodellazione del documento \'{e} presentato di seguito:
+	
+	\begin{flushleft}
+		\textbf{Frasi di carattere generale}\newline
+			L'Istituto Nazionale di Astrofisica insieme all'Universit\'{a} di Tor Vergata vogliono costruire una applicazione che permetta di importare in un database i dati raccolti sulle galassie da diversi satelliti (tra cui Hershel/PACS e Spitzer) al fine di poterli interrogare e gestire in modo pi\'{u} efficiente.\newline
+			
+			In particolare si sono voluti mettere assieme gli ultimi dati che sono stati catturati dal satellite Herschel/PACS che ha misurato il flusso degli spettri del lontano infrarosso, con quelli provenienti da altri \textit{satelliti precedenti} come ad esempio il satellite Spitzer che venne utilizzato per misurare i flussi del vicino infrarosso.\newline
+			
+			I dati raccolti, una volta elaborati, sono utilizzati dagli scienziati per misurare le condizioni fisiche del gas all'interno delle galassie (es. temperatura, densità, metallicità).
+			
+			L'applicazione permetterà l'accesso solamente agli utenti registrati. L'accesso avverrà tramite user-id e password.
+	\end{flushleft}
+	
+	\begin{flushleft}
+		\textbf{Frasi relative ai satelliti}\newline
+		In particolare si sono voluti mettere assieme gli ultimi dati che sono stati catturati dal satellite Herschel/PACS che ha misurato il flusso degli spettri del lontano infrarosso, con quelli provenienti da altri satelliti precedenti come ad esempio il satellite Spitzer che venne utilizzato per misurare i flussi del vicino infrarosso.
+	\end{flushleft}
+	
+	\begin{flushleft}
+		\textbf{Frasi relative alle galassie}\newline
+			In generale ogni galassia ha un proprio nome, una determinata posizione geografica spaziale e una distanza e/o redshift. Le galassie possono essere \textit{suddivise in sottogruppi} a seconda della loro classificazione spettrale. Ogni galassia può avere un valore di luminosità espressa in Watt, misurata relativamente ad uno specifico atomo ionizzato e di metallicità relativa a quella solare. Ad ogni galassia può essere associato il valore del flusso di una riga/linea spettrale. Ogni flusso è associato ad una riga della linea spettrale per un determinato atomo ionizzato ed è composto da una terna contenente il valore del flusso, il suo errore ed una flag che indica se è un upper-limit (ovvero se il valore misurato era minore della sensibilità dello strumento quindi al massimo è pari al minimo della sensibilità dello strumento).\newline
+			
+			Ogni galassia è solitamente definita dalle sue coordinate angolari (ascensione retta e declinazione), il suo redshift e in ultimo la distanza. Per la distanza è definito anche il riferimento bibliografico da cui è stata tratta.
+			
+			Ogni galassia è classificata rispetto alle sue proprietà ottiche (emissione spettrale). La classificazione spettrale prevede 6 macro-gruppi (S1, S1h, S2, LIN, Dwarf e H2).
+	\end{flushleft}
+	
+	\begin{flushleft}
+		\textbf{Frasi relative ai flussi}\newline
+			Per ogni galassia sono stati calcolati i flussi degli atomi ionizzati ossigeno (OIII, OI), azoto (NIII, NII) e carbonio (CII). Per ogni flusso, se è stato possibile calcolarlo, è riportato il suo valore e il relativo valore di errore. Nel caso il valore calcolato è inferiore alla sensibilità dello strumento, una flag è inserita e il relativo upper-limit è riportato.
+	\end{flushleft}
+
+	\begin{flushleft}
+		\textbf{Frasi relative agli utenti}\newline
+		L'applicazione supporterà due tipi di utenti: Amministratori e Utente registrato. Per entrambe le tipologie di utenti dovranno essere salvati i seguenti dati:
+		Nome
+		Cognome
+		User-id (min. 6 caratteri)
+		Password (min. 6 caratteri)
+		Email
+	\end{flushleft}
+
+	\subsection{Regole di vincolo}
+	\begin{flushleft}
+		\textbf{RV1} Lo user-id \textit{deve} avere un numero minimo di caratteri pari a 6\newline
+		\textbf{RV2} La password \textit{deve} avere un numero minimo di caratteri pari a 6
+	\end{flushleft}
+
+	\subsection{Specifica fornita}
+
+
+	\subsection{Dizionario dei dati}
+
+	\subsection{Operazioni sui dati}
+		\begin{flushleft}
+			\textbf{Operazione 1} Ricerca un utente e controlla che la password inserita corrisponda a quella salvata nel database\newline
+			\textbf{Operazione 2} Inserisci di un utente all'interno del sistema\newline
+			\textbf{Operazione 3} Importa un nuovo file dei dati scientifici o delle referenze bibliografiche, aggiornando i valori precedenti con quelli nuovi\newline
+			\textbf{Operazione 4} Ricerca di una galassia per nome\newline
+			\textbf{Operazione 5} Ricerca di un insieme di galassie all'interno di un raggio data la posizione spaziale\newline
+			\textbf{Operazione 6} Ricerca di un insieme di galassie in base al parametro di redshift\newline
+			\textbf{Operazione 7} Ricerca di valori dei flussi ed il relativo errore di una o pi\'{u} righe spettrali di una specifica galassia\newline
+			\textbf{Operazione 8}
+		\end{flushleft}
+
+\section{Schemi ER}
+\begin{flushleft}
+	La stesura degli schemi ER pu\'{o} essere sia realizzata su carta, sia servendoci di strumenti software dedicati. I programmi appartenti a questa categoria vengono definiti \textit{CASE software}, dove CASE sta per Computer-Aided Software Engineering. Come da aspettative, la scelta \'{e} molto ampia, sia tra i software commerciali sia tra quelli free. Dal momento che la complessit\'{a} del progetto \'{e} di gran lunga inferiore a quella di una commissione reale, \'{e} parsa la scelta migliore quella di scegliere un software commerciale, ma che allo stesso tempo si comportasse come un freeware a patto di utilizzare un sottoinsieme delle funzionalit\'{a} offerte.\newline
+	
+	Il software in questione \'{e} \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.
+\end{flushleft}
+
+
+
+\section{Dizionario dei dati}
+
+\section{Business rules}
+
+\section{Specifiche sulle operazioni}
+\newpage
+
+\section{Implementazione}
+	\subsection{Scelta dell'ambiente}
+	\begin{flushleft}
+		Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline
+		Di certo c'\'{e} che il linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilit\'{a} di creare interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
+		
+		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessit\'{a}, sintetizzabili in tre punti:
+	\end{flushleft}
+	\begin{enumerate}
+		\item SQL integrato nei linguaggi di programmazione
+		\item Librerie sviluppate a partire dalle istruzioni SQL
+		\item Object Relational Mapping
+	\end{enumerate}
+	\begin{flushleft}
+		Il problema principale che si \'{e} risolto al fine di  integrare le query SQL in un altro linguaggio di programmazione \'{e} stato senz'altro lo sviluppo di software che fungesse da tramite tra i due linguaggi.\newline
+		
+	\subsubsection{ECPG}
+		A titolo di esempio viene riportato il caso di \textit{ecpg}, un applicativo presente nell'installazione del DBMS Postgresql, che si occupa di tradurre un sorgente in linguaggio C il cui file ha estensione \textsf{.pgc}, fornendo in output un nuovo sorgente, stavolta con estensione \textsf{.c}, che si serve delle particolari funzioni di libreria del DBMS. Questo sorgente verr\'{a} poi compilato come un normale programma in linguaggio C. Questo processo viene riassunto nell'immagine qui di seguito:
+			
+		\begin{center}
+				\begin{tikzpicture}[scale= 0.7, every node/.style = {shape=rectangle, rounded corners,
+				draw, align=center,
+				top color=white, bottom color=blue!20}]]
+				\draw  (0,12) node(testPGC){testECPG.pgc}
+							(0,10) node(preproc){Preprocessore ECPG}
+							(0,8) node(testC){testECPG.c}
+							(0,6) node (comp){Compilatore C}
+							(-5,4) node (ecpglib){Liberia ECPG}
+							(0,4) node (testO){testECPG.o}
+							(5,4) node (alLib){Altre librerie}
+							(0,2) node (linker){Linker}
+							(0,0) node (test){testECPG};
+				\foreach \from/\to in {testPGC/preproc, preproc/testC, testC/comp, comp/testO, testO/linker, ecpglib/linker, alLib/linker, linker/test}
+				\draw [->, thick] (\from) -- (\to);
+				\end{tikzpicture}
+			\end{center}
+		
+		Al fine di avere un'idea chiara di come si procede lavorando con questi strumenti, il processo \'{e} stato ripetuto in ambiente Ubuntu con dei sorgenti di test. Si parte dunque da un sorgente \textit{testECPG.pgc}:
+			
+	\end{flushleft}
+	
+	\begin{lstlisting}[language=C, caption=testECPG.pgc]
+		#include <stdio.h>
+		#include <sys/types.h>
+		#include <libpq-fe.h>
+		#include <libpq/libpq-fs.h>
+		
+		/* 1 - Viene inclusa la libreria relativa alla gestione degli errori tramite la variabile globale sqlca (SQL communication area) */
+		EXEC SQL INCLUDE sqlca;
+		
+		int main (int argc, char **argv)
+		{
+			/* 2 - Comando che realizza la connessione al database */
+			EXEC SQL CONNECT TO testDB@localhost:5432 USER user/password;
+			
+			/*Come succede molto spesso nella gestione degli errori in linguaggio C, il valore ritornato da una funzione viene utilizzato anche come codice di errore, considerando lo 0 come esecuzione andata a buon fine */
+			if (sqlca.sqlcode != 0)	{
+				printf("Errore di connessione al DB\n");
+				printf("Errore %d\n", (int)sqlca.sqlcode);
+			}
+			
+			/* 3 - Esegui un'operazione di test */
+			EXEC SQL CREATE TABLE TableTest (number integer, ascii char(16));
+			fprintf (stdout, "Created table TestTable\n");
+			
+			/* 4 - Esegui le operazioni */
+			EXEC SQL COMMIT;
+			
+			/* 5 - Disconnessione dal database */
+			EXEC SQL DISCONNECT ALL;
+			
+			return EXIT_SUCCESS;
+		}
+	\end{lstlisting}
+
+	che viene preprocessato dal comando \textit{ecpg}:
+	
+	\begin{center}
+		\textit{username@host:./\$ ecpg ecpg\_sample.pgc}
+	\end{center}
+	
+	Il file risultante con estensione \textsf{.c} utilizza le particolari funzioni di libreria offerte dal DBMS PostgreSQL:
+	
+	\begin{lstlisting}[language=C, caption=testECPG.c]
+		/* Processed by ecpg (4.11.0) */
+		/* These include files are added by the preprocessor */
+		#include <ecpglib.h>
+		#include <ecpgerrno.h>
+		#include <sqlca.h>
+		/* End of automatic include section */
+		
+		#line 1 "ecpg_sample.pgc"
+		#include <stdio.h>
+		#include <sys/types.h>
+		#include <libpq-fe.h>
+		#include <libpq/libpq-fs.h>
+		
+		/* 1 - Viene inclusa la libreria relativa alla gestione degli errori tramite la variabile globale sqlca (SQL communication area) */
+		
+		#line 1 "/usr/include/postgresql/sqlca.h"
+		#ifndef POSTGRES_SQLCA_H
+		#define POSTGRES_SQLCA_H
+		
+		#ifndef PGDLLIMPORT
+		#if  defined(WIN32) || defined(__CYGWIN__)
+		#define PGDLLIMPORT __declspec (dllimport)
+		#else
+		#define PGDLLIMPORT
+		#endif   /* __CYGWIN__ */
+		#endif   /* PGDLLIMPORT */
+		
+		#define SQLERRMC_LEN	150
+		
+		#ifdef __cplusplus
+		extern		"C"
+		{
+		#endif
+		
+		struct sqlca_t
+		{
+			char		sqlcaid[8];
+			long		sqlabc;
+			long		sqlcode;
+			struct
+			{
+				int			sqlerrml;
+				char		sqlerrmc[SQLERRMC_LEN];
+			}			sqlerrm;
+			char		sqlerrp[8];
+			long		sqlerrd[6];
+			/* Element 0: empty						*/
+			/* 1: OID of processed tuple if applicable			*/
+			/* 2: number of rows processed				*/
+			/* after an INSERT, UPDATE or				*/
+			/* DELETE statement					*/
+			/* 3: empty						*/
+			/* 4: empty						*/
+			/* 5: empty						*/
+			char		sqlwarn[8];
+			/* Element 0: set to 'W' if at least one other is 'W'	*/
+			/* 1: if 'W' at least one character string		*/
+			/* value was truncated when it was			*/
+			/* stored into a host variable.             */
+		
+			/*
+			 * 2: if 'W' a (hopefully) non-fatal notice occurred
+			 */	/* 3: empty */
+			/* 4: empty						*/
+			/* 5: empty						*/
+			/* 6: empty						*/
+			/* 7: empty						*/
+		
+			char		sqlstate[5];
+		};
+		
+		struct sqlca_t *ECPGget_sqlca(void);
+		
+		#ifndef POSTGRES_ECPG_INTERNAL
+		#define sqlca (*ECPGget_sqlca())
+		#endif
+		
+		#ifdef __cplusplus
+		}
+		#endif
+		
+		#endif
+		
+		#line 7 "ecpg_sample.pgc"
+		
+		int main (int argc, char **argv)
+		{
+			/* 2 - Comando che realizza la connessione al database */
+			{ ECPGconnect(__LINE__, 0, "testDB@localhost:5432" , "postgres" , "portento123" , NULL, 0); }
+		#line 12 "ecpg_sample.pgc"
+			
+			/*Come succede molto spesso nella gestione degli errori in linguaggio C, il valore ritornato da una funzione viene utilizzato anche come codice di errore, considerando lo 0 come esecuzione andata a buon fine */
+			if (sqlca.sqlcode != 0)	{
+				printf("Errore di connessione al DB\n");
+				printf("Errore %d\n", (int)sqlca.sqlcode);
+			}
+			
+			/* 3 - Esegui un'operazione di test */
+			{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "create table TableTest ( number integer , ascii char ( 16 ) )", ECPGt_EOIT, ECPGt_EORT);}
+		#line 21 "ecpg_sample.pgc"
+		
+			fprintf (stdout, "Created table TestTable\n");
+			
+			/* 4 - Esegui le operazioni */
+			{ ECPGtrans(__LINE__, NULL, "commit");}
+		#line 25 "ecpg_sample.pgc"
+		
+			/* 5 - Disconnessione dal database */
+			{ ECPGdisconnect(__LINE__, "ALL");}
+		#line 28 "ecpg_sample.pgc"
+			
+			return EXIT_SUCCESS;
+		}
+	\end{lstlisting}
+	\begin{flushleft}
+		Questo file pu\'{o} essere compilato tramite GCC, avendo l'accortezza di linkare le librerie di cui il programma ha bisogno. Il procedimento va eseguito manualmente nel caso in cui esse non siano presenti nella stessa directory del sorgente o nelle directory predefinite di GCC.
+	\end{flushleft}
+	\begin{center}
+	\textit{gcc -I /usr/include/postgresql ecpg\_sample.c -o ecpg\_sample -L /usr/lib/x86\_64-linux-gnu/libecpg.a /usr/lib/x86\_64-linux-gnu/libecpg.so /usr/lib/x86\_64-linux-gnu/libecpg.so.6 /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so.3}
+	\end{center}
+	\begin{flushleft}
+	Il risultato che otterremo sar\'{a} il seguente:
+	\end{flushleft}
+	\begin{center}
+	\includegraphics[scale=0.35]{./screenshot}
+	\end{center}
+	
+	\begin{flushleft}
+	Nel procedimento riportato, l'utilizzo del linguaggio C come ospitante l'SQL non risulta efficiente in quanto, oltre alla complessit\'{a} del processo di compilazione, ad ogni modifica del codice si pone la necessit\'{a} di ripetere l'iter. Un makefile potrebbe tornare utile allo scopo, ma in ogni caso andrebbe mantenuto a seguito dell'aggiornamento del codice.\newline
+	
+	Non abbiamo significativi miglioramenti utilizzando la Call Level Interface offerta dal DBMS PostgreSQL relativamente al linguaggio C, ovvero una serie di librerie che rendono meno distaccato il codice relativo alle interrogazioni sul database rispetto al resto del codice.\newline
+	Il codice risulta pi\'{u} omogeneo, ma non abbiamo risolto il problema del constant recompiling:\newline
+	
+	\end{flushleft}
+	
+	\begin{lstlisting}[language=C, caption=testPGSQL.c]
+		#include <stdio.h>
+		#include <stdlib.h>
+		#include <libpq-fe.h>
+		
+		void do_exit(PGconn *conn) {
+		    
+		    PQfinish(conn);
+		    exit(1);
+		}
+		
+		int main() {
+		    
+		    PGconn *conn = PQconnectdb("user=user password=password dbname=testDB");
+		
+		    if (PQstatus(conn) == CONNECTION_BAD) {
+		         
+		        fprintf(stderr, "Connection to database failed: %s\n",
+		            PQerrorMessage(conn));
+		        do_exit(conn);
+		    }
+		    
+		    char *user = PQuser(conn);
+		    char *db_name = PQdb(conn);
+		    char *pswd = PQpass(conn);
+		    
+		    printf("User: %s\n", user);
+		    printf("Database name: %s\n", db_name);
+		    printf("Password: %s\n", pswd);
+		    
+		    PQfinish(conn);
+		
+		    return 0;
+		}
+	\end{lstlisting}
+
+	\begin{flushleft}
+		Un linguaggio che si propone come soluzione sia al constant recompiling sia alla difficolt\'{a} della compilazione stessa \'{e} Java.
+	\end{flushleft}
+	
+\newpage
+
+		\subsubsection{JDBC}
+		\begin{flushleft}
+				La connessione alle basi di dati \'{e} una funzionalit\'{a} che Java ha messo a disposizione gi\'{a} a partire dalla versione 1.2. Questo servizio viene offerto dalle API JDBC (Java Database Connectivity), le quali permettono la gestione dei dati indipendentemente dal DBMS utilizzato, purch\'{e} SQL-based, mantenendo intatto il paradigma Java "Write once, Run anywhere".\newline
+				
+				Un programma Java che sia stato scritto con l'intento di accedere ad un DBMS SQL-based si servir\'{a} delle API JDBC per interfacciarsi con la base di dati, essendo ora provvisto di metodi per l'interrogazione e la modifica dei dati. Esse saranno indipendenti dal DBMS impiegato, mantenendo cos\'{i} l'indipendenza del modello logico.\newline
+				Queste API dovranno interfacciarsi con un gestore dei driver, il quale si servir\'{a} anche delle API JDBC per comunicare con lo specifico DBMS.
+				Il driver viene caricato tramite la chiamata \textit{Class}.\textit{forName}() che carica la classe se l'operazione non \'{e} stata svolta precedentemente. Tutti i driver JDBC hanno un blocco statico all'interno della definizione della classe, il quale \'{e} deputato alla registrazione del driver nel \textit{DriverManager}. Questo blocco di codice, che potrebbe somigliare molto allo snippet riportato di seguito, verr\'{a} eseguito proprio in seguito alla chiamata del metodo \textit{forName}() di \textit{Class}:
+		\end{flushleft}
+				
+				\begin{Verbatim}[label={Snippet da \cite{JDBCDriver}}]
+				\textcolor{red}{static} \{ 
+				    \textcolor{red}{try} \{
+					    java.sql.DriverManager.registerDriver(new Driver());
+				    \} \textcolor{red}{catch} (SQLException e) \{
+				        throw new RuntimeException("Can't register driver!");
+				    \}
+				\}
+				\end{Verbatim}
+				
+				\begin{flushleft}
+					La classe \textit{DriverManager} dovr\'{a} quindi scorrere tutti i driver registrati e scegliere a runtime quello appropriato per svolgere la richiesta.\newline
+					
+						La Object-Relational Mapping \'{e} una tecnica di programmazione che viene adottata quando si vuole favorire l'integrazione di DBMS relazionali con linguaggi di programmazione orientati agli oggetti. Questo processo di fusione tra programma ad oggetti e database relazione viene messo in atto tramite metodi resi disponibili dal framework ORM. Alcuni dei pi\'{u} diffusi sono:
+						
+						\begin{itemize}
+							\item Hibernate
+							\item Spring DAO
+							\item Enterprise JavaBeans Entity Beans
+						\end{itemize}		
+				\end{flushleft}
+		
+		
+			\subsubsection{Hibernate}
+				\begin{flushleft}
+					Hibernate \'{e} un framework
+				\end{flushleft}
+	\newpage
+
+	\subsection{Gestione delle versioni: Git}
+		\begin{flushleft}
+			Git
+		\end{flushleft}
+
+\include{B-albero}
+
+%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\renewcommand\refname{Bibliografia}
+\begin{thebibliography} {99}
+	\bibitem{Atzeni} Atzeni, Ceri, Fraternali, Paraboschi, Torlone
+	"Basi di dati Modelli e linguaggi di interrogazione"
+	Quarta edizione, McGraw-Hill, 2013
+	\bibitem{BasiPitagora} Beneventano, Bergamaschi, Guerra, Vincini "Progetto di Basi di Dati Relazionali lezioni ed esercizi"
+	Pitagora Editrice Bologna, 2007
+	\bibitem {WikiORM} https://it.wikipedia.org/wiki/Object-relational\_mapping;
+	\bibitem{JDBCDriver} http://www.xyzws.com/javafaq/what-does-classforname-method-do/17
+	\bibitem{libpq} https://www.postgresql.org/docs/9.3/static/client-interfaces.html
+	\bibitem{astronomia}http://www.astronomia.com
+	\bibitem{spettroinfrarosso}http://docenti.unicam.it/tmp/2441.pdf
+	\bibitem{Arlow} J. Arlow, Neustadt, Uml e Unified Process
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
