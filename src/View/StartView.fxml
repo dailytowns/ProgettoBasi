@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.LoginControl" >
+<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.LoginControl">
    <children>
-      <ImageView fitHeight="454.0" fitWidth="741.0" layoutX="-78.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgBack" fitHeight="454.0" fitWidth="741.0" layoutX="-78.0" layoutY="-8.0" pickOnBounds="true">
          <image>
             <Image url="@Galaxy.jpg" />
          </image>
@@ -22,7 +22,7 @@
          </font>
       </Label>
       <TextField fx:id="txtUser" layoutX="62.0" layoutY="327.0" promptText="User" />
-      <PasswordField fx:id="passUser" layoutX="218.0" layoutY="327.0" promptText="Password" />
-      <Button fx:id="btnOk" layoutX="534.0" layoutY="327.0" mnemonicParsing="false" text="Ok" textFill="#6b4c4c"/>
+      <PasswordField fx:id="pswUser" layoutX="218.0" layoutY="327.0" promptText="Password" />
+      <Button fx:id="btnOk" layoutX="534.0" layoutY="327.0" mnemonicParsing="false" text="Ok" textFill="#6b4c4c" />
    </children>
 </AnchorPane>

@@ -4,6 +4,7 @@ package Control;
  * Created by feder on 25/09/2016.
  */
 
+import Helper.PsqlDBHelper;
 import View.AdminView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class LoginControl {
@@ -32,6 +34,7 @@ public class LoginControl {
     @FXML public void initialize() {
         btnOk.setOnAction(new EventHandler<ActionEvent>() {
              public void handle(ActionEvent event) {
+
                  if (txtUser.getText().equals("")){
                      Alert alert = new Alert(Alert.AlertType.INFORMATION);
                      alert.setTitle("Attenzione!");
@@ -39,19 +42,31 @@ public class LoginControl {
                      alert.setContentText("Inserisci il tuo nome utente");
                      alert.showAndWait();
                  } else {
-                     Parent root;
-                     try {
-                         root = FXMLLoader.load(getClass().getClassLoader().getResource("View/AdminView.fxml"));
-                         Stage stage = new Stage();
-                         stage.setTitle("My New Stage Title");
-                         stage.setScene(new Scene(root, 450, 450));
-                         stage.show();
+                     PsqlDBHelper psqlDBHelper = new PsqlDBHelper(txtUser.getText(), pswUser.getText());
+                     boolean check = psqlDBHelper.checkUser();
 
-                         //hide this current window (if this is whant you want
-                         btnOk.getScene().getWindow().hide();
+                     if(check) {
+                         Parent root;
 
-                     } catch (IOException e) {
-                         e.printStackTrace();
+                         try {
+                             root = FXMLLoader.load(getClass().getClassLoader().getResource("View/AdminView.fxml"));
+                             Stage stage = new Stage();
+                             stage.setTitle("Administration");
+                             stage.setScene(new Scene(root, 450, 450));
+                             stage.show();
+
+                             //hide this current window (if this is whant you want
+                             btnOk.getScene().getWindow().hide();
+
+                         } catch (IOException e) {
+                             e.printStackTrace();
+                         }
+                     } else {
+                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                         alert.setTitle("Attenzione!");
+                         alert.setHeaderText(null);
+                         alert.setContentText("Lo username o la password non sono corretti");
+                         alert.showAndWait();
                      }
                  }
              }
