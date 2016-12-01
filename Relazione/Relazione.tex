@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,onecolumn]{article}
+\documentclass[12pt,a4paper,onecolumn,x11names]{article}
 
 %%%%%%https://www.eso.org/public/italy/news/eso1212/ CITARE?%%%
 
@@ -52,9 +52,11 @@
 \usepackage{tikz}
 \usetikzlibrary{chains}
 \usetikzlibrary{shapes,arrows}
+\usetikzlibrary{er}
 %Pacchetto utile per i diagrammi uml
 \usepackage{tikz-uml}
-
+\usetikzlibrary{arrows, decorations.markings}
+\include{./tikzer2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%Apertura del documento%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,6 +72,7 @@
 \newpage
 
 
+
 % minimondo, universo del discorso
 % Indipendenza dal programma: Si utilizza un DBMS rispetto ai file poichè cambiare la struttura di un file
 % comporterebbe il dover cambiare tutti i programmi che vi accedono. Utilizzando un DBMS invece la struttura del
@@ -78,29 +81,34 @@
 	\begin{flushleft}
 		La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonch\'{e} delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta.
 		Una \textit{base di dati} \'{e} una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
-		Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello "a strati". \newline
+		Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello \textit{"a strati"}. \newline
 	\end{flushleft}
+	
 	\begin{center}
-		\begin{tikzpicture}[node distance = 3cm, auto]
-		\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-		text width=4.5em, node distance=3cm, inner sep=0pt]
-		\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-		text width=20em, text centered, rounded corners, minimum height=4em]
-		\tikzstyle{line} = [draw, -latex']
-		% Place nodes
-		\node [block] (init) {Progettazione concettuale};
-		\node [block, below of=init] (identify) {Progettazione logica};
-		\node [block, below of=identify] (evaluate) {Progettazione fisica};
-		% Draw edges
-		\path [line] (init) -- (identify);
-		\path [line] (identify) -- (evaluate);
-		\end{tikzpicture}
-	\end{center}
+	\resizebox{8cm}{6cm}{
+			\begin{tikzpicture}[node distance = 3cm, auto]
+			\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+			text width=4.5em, node distance=3cm, inner sep=0pt]
+			\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+			text width=20em, text centered, rounded corners, minimum height=4em]
+			\tikzstyle{line} = [draw, -latex']
+			% Place nodes
+			\node [block] (init) {Progettazione concettuale};
+			\node [block, below of=init] (identify) {Progettazione logica};
+			\node [block, below of=identify] (evaluate) {Progettazione fisica};
+			% Draw edges
+			\path [line] (init) -- (identify);
+			\path [line] (identify) -- (evaluate);
+			\end{tikzpicture}
+	}
+		\end{center}
+
 	\begin{flushleft}
-		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.
+		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.\newline
 		
 		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline
-		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello ER.\newpage
+		
+		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello Entity-Relationship.\newpage
 	\end{flushleft}
 
 \subsection{Il Modello Entit\'{a}-Relazione}
@@ -245,14 +253,7 @@
 	\begin{framed}
 		\begin{flushleft}
 			\textbf{Frasi relative ai riferimenti bibliografici}\newline
-			Per i riferimenti bibliografici rappresentiamo l’autore, l’anno, il titolo. I riferimenti sono attinenti al calcolo della luminosità, metallicità e distanza di una galassia.
-		\end{flushleft}
-	\end{framed}
-	
-	\begin{framed}
-		\begin{flushleft}
-			\textbf{Frasi che definiscono un'associazione}
-			Ad ogni galassia può essere associato il valore del flusso di una riga/linea spettrale.
+			Per i riferimenti bibliografici rappresentiamo i riferimenti bibliografici per la distanza, metallicità e luminosità di una galassia.
 		\end{flushleft}
 	\end{framed}
 	
@@ -310,6 +311,8 @@
 		Il software in questione è \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.\newline
 		
 		Nonostante la velocità di stesura offerta dal programma CASE, si è preferito stilare lo schema di progettazione concettuale su carta in prima battuta e, solo in secondo tempo, riportato in un file, in modo da avere anche una copia di backup disponibile.
+		
+		%Il programma potrebbe sempre smettere di funzionare -.-
 	\end{flushleft}
 
 	\begin{table}[h!]
@@ -359,6 +362,73 @@
 		\end{tabular}
 	\end{table}
 
+\resizebox{15cm}{!}{
+	\begin{tikzpicture}[node distance=7em]
+		\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+		\tikzset{derived attribute/.style={attribute,dashed}} 
+		\tikzset{total/.style={double distance=1.5pt}} 
+		\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+		\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+		\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+		
+		% for double arrows a la chef
+		% adapt line thickness and line width, if needed
+		\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+			1 with {\arrow[semithick]{open triangle 60}}},
+		double distance=1.4pt, shorten >= 5.5pt,
+		preaction = {decorate},
+		postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+		\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+		
+		\node[entity] (Galassia) {Galassia};
+			\node[attribute] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+			\node[attribute, above=10mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+			\node[attribute, right=10mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+		\node[relationship] (caratterizza) [below  of=Galassia] {caratterizza} edge[label={[above right](1,1)}] (Galassia); 
+			\node[entity] (CaratteristicheGalassia) [below of = caratterizza] {CaratteristicheGalassia}  edge[label={[above right](1,1)}] (caratterizza);
+				\node[attribute, left=15mm] (distanza) [above left of=CaratteristicheGalassia] {Distanza} edge (CaratteristicheGalassia); 
+				\node[attribute, left=15mm] (Metallicita) [left of=CaratteristicheGalassia] {Metallicità} edge (CaratteristicheGalassia);
+				\node[attribute, left=15mm] (Luminosita) [below left of=CaratteristicheGalassia] {Luminosità} edge (CaratteristicheGalassia);
+		\node[relationship, right=15mm] (riferisce) [right of=CaratteristicheGalassia] {riferisce} edge (CaratteristicheGalassia); 
+			\node[entity, right=15mm] (RiferimentoBibliografico) [right of = riferisce] {RiferimentoBibliografico}  edge[label={[above right](1,1)}] (riferisce);
+				\node[attribute, left=15mm] (riferimentoDistanza) [above right of=RiferimentoBibliografico] {RefDistanza} edge (RiferimentoBibliografico); 
+				\node[attribute, right=18mm] (riferimentoMetallicita) [right of=RiferimentoBibliografico] {RefMetallicità} edge (RiferimentoBibliografico);
+				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=RiferimentoBibliografico] {RefLuminosità} edge (RiferimentoBibliografico);
+		\node[relationship] (relazioneErrore) [below of=CaratteristicheGalassia] {erroreMisure} edge (CaratteristicheGalassia); 
+			\node[entity] (Errore) [below of = relazioneErrore] {Errore}  edge[label={[above right](1,1)}] (relazioneErrore);
+				\node[attribute, left=10mm] (distanzaErrore) [left of=Errore] {ErroreDistanza} edge (Errore); 
+				\node[attribute, right=15mm] (metallicitaErrore) [right of=Errore] {ErroreMetallicità} edge (Errore);
+				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=Errore] {ErroreLuminosità} edge (Errore);
+		
+		\node[relationship, right=20mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare} edge (Galassia); 
+			\node[entity, right=20mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari}  edge[label={[above right](1,1)}] (posizioneAngolare);
+				\node[attribute, right=20mm] (declinazione) [right of=CoordinateAngolari] {Declinazione} edge (CoordinateAngolari); 
+				\node[attribute, right=15mm] (ascensioneRetta) [above right of=CoordinateAngolari] {AscensioneRetta} edge (CoordinateAngolari);
+				
+		\node[relationship, left=100mm] (relazioneFlusso) [below right of=Galassia] {misuraFlusso}; \draw (relazioneFlusso) |- (Galassia);
+		
+			\node[entity, below=120mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right](1,1)}] (relazioneFlusso);
+				\node[attribute, left=10mm] (atomo) [left of=Flusso] {Atomo} edge (Flusso);
+			\node[entity, below left =20mm and 20mm of Flusso] (FlussoRighe) [below of = Flusso] {FlussoRighe};
+				\draw[vecArrow] (FlussoRighe) -| (Flusso);
+			\node[entity, below right=20mm and 25mm of Flusso] (FlussoContinuo) [below of = Flusso] {FlussoContinuo};
+				\draw[vecArrow] (FlussoContinuo) -| (Flusso);
+				\node[attribute] (ref160) [above right of=FlussoContinuo] {Riferimento160um} edge (FlussoContinuo);
+				\node[attribute, right=20mm] (aperturaContuinuo) [right of=FlussoContinuo] {Apertura} edge (FlussoContinuo);
+			\node[entity, left=25mm] (FlussoRigheHP) [below of = FlussoRighe] {FlussoRigheHP};
+				\draw[vecArrow] (FlussoRigheHP) -| (FlussoRighe);
+				\node[attribute, left=10mm] (aperture) [left of=FlussoRigheHP] {Aperture} edge (FlussoRigheHP);
+			\node[entity, right=25mm] (FlussoRigheSpitzer) [below of = FlussoRighe] {FlussoRigheSpitzer};
+				\draw[vecArrow] (FlussoRigheSpitzer) -| (FlussoRighe);
+				\node[attribute] (IRS) [below of=FlussoRigheSpitzer] {IRSMode} edge (FlussoRigheSpitzer);
+
+			\node[relationship, right=100mm] (misuraFlusso) [right of=Flusso] {misuraFlusso} edge (Flusso);
+				\node[entity, right=20mm] (valoreFlusso) [right of = misuraFlusso] {ValoreFlusso}  edge (misuraFlusso);
+					\node[attribute, right=20mm] (valore) [right of=valoreFlusso] {Valore} edge (valoreFlusso); 
+					\node[attribute] (erroreValore) [above right of=valoreFlusso] {Errore} edge (valoreFlusso);
+					\node[attribute] (riferimento) [below right of=valoreFlusso] {Riferimento} edge (valoreFlusso);
+\end{tikzpicture} 
+}
 \newpage
 
 \section{Implementazione}
