@@ -1,8 +1,13 @@
 package Helper;
 
 import Model.User;
+import com.opencsv.CSVReader;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,10 +22,10 @@ public class PsqlDBHelper {
     private String password;
     private Connection conn;
 
-    public PsqlDBHelper (String user, String password) {
+    public PsqlDBHelper () {
         //this.url = url;
-        this.user = user;
-        this.password = password;
+        //this.user = user;
+        //this.password = password;
         openConnection();
     }
 
@@ -103,7 +108,40 @@ public class PsqlDBHelper {
 
         }
         System.out.println("Records created successfully");
-
     }
 
+    public List importFileCSV() {
+
+        CSVReader reader = null;
+        List myEntries = null;
+        String[] nextLine;
+        int i = 0;
+        try {
+            reader = new CSVReader(new FileReader("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\test2.csv"), ';');
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            while ((nextLine = reader.readNext()) != null) {
+                i = 0;
+                // nextLine[] is an array of values from the line
+                while(i < nextLine.length) {
+                    System.out.print(nextLine[i] + " ");
+                    i++;
+                }
+                System.out.println("");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return myEntries;
+    }
+
+    public static void main(String[] args) {
+
+        PsqlDBHelper p = new PsqlDBHelper();
+        List entries = p.importFileCSV();
+    }
 }

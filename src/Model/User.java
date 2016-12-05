@@ -51,7 +51,7 @@ public class User {
         //passato come parametro
         User user = new User("mario", "rossi", "mail", "user", "pass");
 
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper("postgres", "portento123");
+        //PsqlDBHelper psqlDBHelper = new PsqlDBHelper("postgres", "portento123");
         //psqlDBHelper.checkUser(user);
     }
 

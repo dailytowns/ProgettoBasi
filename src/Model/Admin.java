@@ -25,8 +25,8 @@ public class Admin extends User {
     }
 
     public void register_user(User user) {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper("postgres", "portento123");
-        psqlDBHelper.registerUser(user);
+        //PsqlDBHelper psqlDBHelper = new PsqlDBHelper("postgres", "portento123");
+        //psqlDBHelper.registerUser(user);
 
     }
 

@@ -11,20 +11,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
 public class StartView extends Application {
 
+    @FXML private Label lblGalaxian;
     @FXML private Text txtUser;
     @FXML private PasswordField pswUser;
     @FXML private Button btnOk;
-    @FXML private ImageView imgBack;
-    @FXML private AnchorPane basePane;
+    @FXML private BorderPane basePane;
 
     public static void main(String[] args) {
         launch(args);
@@ -33,12 +34,9 @@ public class StartView extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("StartViewCSS2.fxml"));
         Scene scene = new Scene(root, 600, 400);
-
-        primaryStage.setTitle("Galaxian");
         primaryStage.setScene(scene);
-
         primaryStage.show();
     }
 }

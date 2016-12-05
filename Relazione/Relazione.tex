@@ -69,8 +69,8 @@
 \newpage
 \tableofcontents
 \listoftables
+\listoffigures
 \newpage
-
 
 
 % minimondo, universo del discorso
@@ -85,30 +85,65 @@
 	\end{flushleft}
 	
 	\begin{center}
-	\resizebox{8cm}{6cm}{
-			\begin{tikzpicture}[node distance = 3cm, auto]
-			\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-			text width=4.5em, node distance=3cm, inner sep=0pt]
-			\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-			text width=20em, text centered, rounded corners, minimum height=4em]
-			\tikzstyle{line} = [draw, -latex']
-			% Place nodes
-			\node [block] (init) {Progettazione concettuale};
-			\node [block, below of=init] (identify) {Progettazione logica};
-			\node [block, below of=identify] (evaluate) {Progettazione fisica};
-			% Draw edges
-			\path [line] (init) -- (identify);
-			\path [line] (identify) -- (evaluate);
-			\end{tikzpicture}
-	}
-		\end{center}
+		\begin{figure}[h]
+			\centering\resizebox{9cm}{8cm}{
+				\begin{tikzpicture}[node distance = 3cm, auto]
+				\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+				text width=4.5em, node distance=3cm, inner sep=0pt]
+				\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+				text width=20em, text centered, rounded corners, minimum height=4em]
+				\tikzstyle{line} = [draw, -latex']
+				% Place nodes
+				\node [block] (init) {Progettazione concettuale};
+				\node [block, below of=init] (identify) {Progettazione logica};
+				\node [block, below of=identify] (evaluate) {Progettazione fisica};
+				% Draw edges
+				\path [line] (init) -- (identify);
+				\path [line] (identify) -- (evaluate);
+				\end{tikzpicture}
+			}
+		\caption{Primo approccio di sviluppo}
+		\end{figure}
+	\end{center}
 
 	\begin{flushleft}
 		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.\newline
 		
 		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline
 		
-		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello Entity-Relationship.\newpage
+		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello Entity-Relationship.\newline
+		
+		Altro approccio che è risultato vincente nel corso del tempo è quello dei processi di sviluppo di tipo iterativo che, a differenza dei genitori "a cascata", permettono di tornare ciclicamente all'inizio del processo di sviluppo per correggere il tiro a partire dalla fase di analisi dei requisiti in poi. Nel caso dello sviluppo di questo progetto non ci si avvale completamente delle tecniche dell'ingegneria del software, tuttavia per quanto possibile si adotterà il modello di sviluppo iterativo.
+		
+		Lo schema di sviluppo deve dunque essere aggiornato al seguente:
+		
+			\begin{center}
+			\begin{figure}[h]
+				\centering\resizebox{9cm}{8cm}{
+					\begin{tikzpicture}[node distance = 3cm, auto]
+					\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+					text width=4.5em, node distance=3cm, inner sep=0pt]
+					\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+					text width=20em, text centered, rounded corners, minimum height=4em]
+					\tikzstyle{line} = [draw, -latex']
+					% Place nodes
+					\node [block] (init) {Progettazione concettuale};
+					\node [block, below of=init] (identify) {Progettazione logica};
+					\node [block, below of=identify] (evaluate) {Progettazione fisica};
+					% Draw edges
+					\path [line] (init) -- (identify);
+					\path [line] (identify) -- (evaluate);
+					
+					\draw[->>] (evaluate) to [bend left=45] (identify);
+					\draw[->>] (identify) to [bend left=45] (init);
+					\end{tikzpicture}
+				}
+				\caption{Approccio iterativo}
+			\end{figure}
+		\end{center}
+		
+		
+		\newpage
 	\end{flushleft}
 
 \subsection{Il Modello Entit\'{a}-Relazione}
@@ -324,8 +359,8 @@
 			
 			\textit{Galassia}	&Un grande insieme di stelle					&Classificazione spettrale, & Nome Galassia\\
 								&												&Redshift, \\
-								&												&Nome alternativo	 &\\
-								&												&Nome Galassia		 &\\
+								&												&NomeAlternativo	 &\\
+								&												&NomeGalassia		 &\\
 								&												&					 &\\
 			\textit{Coordinate}	& Dati utili alla localizzazione & AscensioneRetta\_ore,	& NomeGalassia \\
 			\textit{angolari} & della galassia	& ascensioneretta\_min, & \textit{(esterno)} \\
@@ -349,95 +384,134 @@
 %	\begin{table}
 %		\centering
 %		\begin{tabular}{lllll}
-			\textit{Riferimento bibliografico}	& Insieme di dati utili & Autore,		&	Codice				\\
-				& alla collocazione del & titolo,		&					\\
-			& riferimento bibliografico & anno		&					\\
+			\textit{Riferimento bibliografico}	& Insieme di riferimenti  & Autore,		&	Codice				\\
+				& bibliografici delle misure  & titolo,		&					\\
+			&effettuate su una galassia & anno		&					\\
 			&						&				&					\\
 			\textit{Flusso}			& Informazione sulle sostanze & Errore, 		& NomeGalassia \\
 			& presenti nella galassia	&	valore,		& \textit{(esterno)}\\
 			&							& atomo,		&					\\
 			&							& satellite	&						\\
 			&							&			&						\\
-			
+		\end{tabular}
+	\end{table}
+		
+	\begin{table}
+	\centering
+		\begin{tabular}{lllll}
+		\textit{Riga Flusso}	& Insieme di dati relativi alla  & Errore, & NomeGalassia (esterno),\\
+		& misura di una riga spettrale & Valore,		&		Atomo (esterno)	\\
+		&  & Riferimento		&				\\ 
 		\end{tabular}
 	\end{table}
 
-\resizebox{15cm}{!}{
-	\begin{tikzpicture}[node distance=7em]
-		\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
-		\tikzset{derived attribute/.style={attribute,dashed}} 
-		\tikzset{total/.style={double distance=1.5pt}} 
-		\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
-		\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
-		\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
-		
-		% for double arrows a la chef
-		% adapt line thickness and line width, if needed
-		\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-			1 with {\arrow[semithick]{open triangle 60}}},
-		double distance=1.4pt, shorten >= 5.5pt,
-		preaction = {decorate},
-		postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
-		\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
-		
-		\node[entity] (Galassia) {Galassia};
-			\node[attribute] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
-			\node[attribute, above=10mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
-			\node[attribute, right=10mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
-		\node[relationship] (caratterizza) [below  of=Galassia] {caratterizza} edge[label={[above right](1,1)}] (Galassia); 
+	\begin{flushleft}
+		Di seguito viene riportato la prima stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.
+	\end{flushleft}
+
+	\begin{figure}[h]
+		\resizebox{16cm}{!}{
+			\begin{tikzpicture}[node distance=7em]
+			\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+			\tikzset{derived attribute/.style={attribute,dashed}} 
+			\tikzset{total/.style={double distance=1.5pt}} 
+			\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+			\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+			\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+			
+			% for double arrows a la chef
+			% adapt line thickness and line width, if needed
+			\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+				1 with {\arrow[semithick]{open triangle 60}}},
+			double distance=1.4pt, shorten >= 5.5pt,
+			preaction = {decorate},
+			postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+			
+			\node[entity] (Galassia) {Galassia};
+				\node[attribute] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+				\node[attribute, above=10mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+				\node[attribute, right=10mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+				
+			\node[relationship] (caratterizza) [below  of=Galassia] {caratterizza} edge[label={[above right](1,1)}] (Galassia); 
+			
 			\node[entity] (CaratteristicheGalassia) [below of = caratterizza] {CaratteristicheGalassia}  edge[label={[above right](1,1)}] (caratterizza);
 				\node[attribute, left=15mm] (distanza) [above left of=CaratteristicheGalassia] {Distanza} edge (CaratteristicheGalassia); 
 				\node[attribute, left=15mm] (Metallicita) [left of=CaratteristicheGalassia] {Metallicità} edge (CaratteristicheGalassia);
 				\node[attribute, left=15mm] (Luminosita) [below left of=CaratteristicheGalassia] {Luminosità} edge (CaratteristicheGalassia);
-		\node[relationship, right=15mm] (riferisce) [right of=CaratteristicheGalassia] {riferisce} edge (CaratteristicheGalassia); 
+				\node[attribute, right=15mm] (ClasseSpettrale) [above right of = CaratteristicheGalassia] {ClasseSpettrale} edge (CaratteristicheGalassia);
+				
+			\node[relationship, right=25mm] (riferisce) [right of=CaratteristicheGalassia] {riferisce} edge (CaratteristicheGalassia);
+			
 			\node[entity, right=15mm] (RiferimentoBibliografico) [right of = riferisce] {RiferimentoBibliografico}  edge[label={[above right](1,1)}] (riferisce);
 				\node[attribute, left=15mm] (riferimentoDistanza) [above right of=RiferimentoBibliografico] {RefDistanza} edge (RiferimentoBibliografico); 
 				\node[attribute, right=18mm] (riferimentoMetallicita) [right of=RiferimentoBibliografico] {RefMetallicità} edge (RiferimentoBibliografico);
 				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=RiferimentoBibliografico] {RefLuminosità} edge (RiferimentoBibliografico);
-		\node[relationship] (relazioneErrore) [below of=CaratteristicheGalassia] {erroreMisure} edge (CaratteristicheGalassia); 
+				
+			\node[relationship] (relazioneErrore) [below of=CaratteristicheGalassia] {erroreMisure} edge (CaratteristicheGalassia); 
+			
 			\node[entity] (Errore) [below of = relazioneErrore] {Errore}  edge[label={[above right](1,1)}] (relazioneErrore);
 				\node[attribute, left=10mm] (distanzaErrore) [left of=Errore] {ErroreDistanza} edge (Errore); 
 				\node[attribute, right=15mm] (metallicitaErrore) [right of=Errore] {ErroreMetallicità} edge (Errore);
 				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=Errore] {ErroreLuminosità} edge (Errore);
-		
-		\node[relationship, right=20mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare} edge (Galassia); 
+				
+			\node[relationship, right=20mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare} edge (Galassia); 
+			
 			\node[entity, right=20mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari}  edge[label={[above right](1,1)}] (posizioneAngolare);
 				\node[attribute, right=20mm] (declinazione) [right of=CoordinateAngolari] {Declinazione} edge (CoordinateAngolari); 
 				\node[attribute, right=15mm] (ascensioneRetta) [above right of=CoordinateAngolari] {AscensioneRetta} edge (CoordinateAngolari);
-				
-		\node[relationship, left=100mm] (relazioneFlusso) [below right of=Galassia] {misuraFlusso}; \draw (relazioneFlusso) |- (Galassia);
-		
+			
+			\node[relationship, left=100mm] (relazioneFlusso) [below right of=Galassia] {misuraFlusso}; \draw (relazioneFlusso) |- (Galassia);
+			
 			\node[entity, below=120mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right](1,1)}] (relazioneFlusso);
 				\node[attribute, left=10mm] (atomo) [left of=Flusso] {Atomo} edge (Flusso);
-			\node[entity, below left =20mm and 20mm of Flusso] (FlussoRighe) [below of = Flusso] {FlussoRighe};
+				\node[entity, below left =20mm and 20mm of Flusso] (FlussoRighe) [below of = Flusso] {FlussoRighe};
 				\draw[vecArrow] (FlussoRighe) -| (Flusso);
-			\node[entity, below right=20mm and 25mm of Flusso] (FlussoContinuo) [below of = Flusso] {FlussoContinuo};
+				\node[entity, below right=20mm and 25mm of Flusso] (FlussoContinuo) [below of = Flusso] {FlussoContinuo};
 				\draw[vecArrow] (FlussoContinuo) -| (Flusso);
 				\node[attribute] (ref160) [above right of=FlussoContinuo] {Riferimento160um} edge (FlussoContinuo);
 				\node[attribute, right=20mm] (aperturaContuinuo) [right of=FlussoContinuo] {Apertura} edge (FlussoContinuo);
+				
 			\node[entity, left=25mm] (FlussoRigheHP) [below of = FlussoRighe] {FlussoRigheHP};
 				\draw[vecArrow] (FlussoRigheHP) -| (FlussoRighe);
 				\node[attribute, left=10mm] (aperture) [left of=FlussoRigheHP] {Aperture} edge (FlussoRigheHP);
-			\node[entity, right=25mm] (FlussoRigheSpitzer) [below of = FlussoRighe] {FlussoRigheSpitzer};
+				\node[entity, right=25mm] (FlussoRigheSpitzer) [below of = FlussoRighe] {FlussoRigheSpitzer};
 				\draw[vecArrow] (FlussoRigheSpitzer) -| (FlussoRighe);
 				\node[attribute] (IRS) [below of=FlussoRigheSpitzer] {IRSMode} edge (FlussoRigheSpitzer);
+				
+			\node[relationship, right=80mm] (misuraFlusso) [right of=Flusso] {misuraFlusso} edge (Flusso);
+				\node[entity, right=40mm] (Misura) [right of = misuraFlusso] {Misura};
+					\node[attribute, right=20mm] (valore) [right of=
+					Misura] {Valore} edge (Misura); 
+					\node[attribute] (erroreValore) [above right of=Misura] {Errore} edge (Misura);
+					\node[attribute] (riferimento) [below right of=Misura] {Riferimento} edge (Misura);
+					
+				\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura] {MisuraFlusso};
+					\draw (MisuraFlusso) -| (misuraFlusso);
+					\draw[vecArrow] (MisuraFlusso) -| (Misura);
+				\node[entity, below right = 50mm and 20mm] (MisuraLuminosita) [below right of = Misura] {MisuraLuminosità};
+					\draw[vecArrow] (MisuraLuminosita) -| (Misura);
+			\end{tikzpicture}
+		}
+	\caption{Primo schema ER}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione esterna
+	\end{itemize}
+		
+		\newpage
 
-			\node[relationship, right=100mm] (misuraFlusso) [right of=Flusso] {misuraFlusso} edge (Flusso);
-				\node[entity, right=20mm] (valoreFlusso) [right of = misuraFlusso] {ValoreFlusso}  edge (misuraFlusso);
-					\node[attribute, right=20mm] (valore) [right of=valoreFlusso] {Valore} edge (valoreFlusso); 
-					\node[attribute] (erroreValore) [above right of=valoreFlusso] {Errore} edge (valoreFlusso);
-					\node[attribute] (riferimento) [below right of=valoreFlusso] {Riferimento} edge (valoreFlusso);
-\end{tikzpicture} 
-}
-\newpage
+\section{Progettazione logica}
+
 
 \section{Implementazione}
 	\subsection{Scelta dell'ambiente}
 	\begin{flushleft}
 		Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline
-		Di certo c'èil linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilità di c interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
+		Di certo c'è il linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilità di c interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
 		
-		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessitàtetizzabili in tre punti:
+		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessità sintetizzabili in tre punti:
 	\end{flushleft}
 	\begin{enumerate}
 		\item SQL integrato nei linguaggi di programmazione
@@ -730,9 +804,22 @@
 				\end{flushleft}
 	\newpage
 
-	\subsection{Gestione delle versioni: Git}
+	\subsection{Gestione delle versioni: Git \& Github}
 		\begin{flushleft}
-			Git
+			In materia di controllo delle versioni del software, Git risulta essere uno tra i più diffusi al mondo. Linus Thorvalds cominciò lo sviluppo di questo applicativo per sostenere la crescita di contributi al suo primo grande progetto, Linux, come viene spiegato in un passo di questa intervista rilasciata presso il canale TED (\textsf{\href{http://www.ted.com/talks/linus_torvalds_the_mind_behind_linux}{link}}).\newline
+			Git consente principalmente di sviluppare un codice non necessariamente monolitico, dando la possibilità di creare delle diramazioni (\textit{branch}) al flusso principale. Una volta che le diramazioni sono abbastanza mature, c'è la possibilità di unire (\textit{merge}) il codice sviluppato indipendemente dal \textit{master branch}. 
+			Queste due caratteristiche sono particolarmente importanti in un progetto distribuito, sviluppato da più persone. 
+		\end{flushleft}
+	\begin{center}
+		\begin{figure}[h]
+			\includegraphics[scale=0.6]{Linux.PNG}
+			\caption{Pagina web su Github relativa al progetto Linux - Dicembre 2016}
+		\end{figure}
+	\end{center}
+		\begin{flushleft}
+			In questo caso il progetto risulta decisamente poco distribuito ma lo strumento si rivela ugualmente utile ogni volta che si ha intenzione di tornare ad una versione (funzionante) precedente a quella che si ha fra le mani.\newline
+			Git è un sistema di controllo delle versioni distribuito ed in quanto tale necessita di spazio in rete per caricare il codice sviluppato, affinchè possa essere utilizzato da più persone o anche come backup personale nel caso di un progetto in solitaria. Se non si dispone di uno spazio in rete, ecco che entra in gioco la piattaforma \textsf{\href{https://github.com/}{Github}}, servizio di hosting di rete che si propone anche come intermediario tra l'utente e Git tramite i software standalone. Sul sito di Github è possibile inoltre visionare i repository pubblici e, se presente, leggere la wiki a corredo del codice.\newline\newline
+			L'indirizzo del repository relativo a questo progetto è \textsf{\href{https://github.com/dailytowns/ProgettoBasi}{repo}}
 		\end{flushleft}
 
 \include{B-albero}

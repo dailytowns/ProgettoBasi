@@ -4,19 +4,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.LoginControl">
+<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.LoginControl">
    <children>
-      <ImageView fx:id="imgBack" fitHeight="454.0" fitWidth="741.0" layoutX="-78.0" layoutY="-8.0" pickOnBounds="true">
-         <image>
-            <Image url="@Galaxy.jpg" />
-         </image>
-      </ImageView>
-      <Label layoutX="136.0" layoutY="39.0" text="Galaxian" textFill="#ddb0b0">
+      <Label fx:id="lblGalaxian" contentDisplay="CENTER" layoutX="136.0" layoutY="39.0" text="Galaxian" textAlignment="CENTER" textFill="#ddb0b0">
          <font>
             <Font name="Britannic Bold" size="86.0" />
          </font>
