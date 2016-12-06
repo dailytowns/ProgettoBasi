@@ -46,12 +46,12 @@ public class PsqlDBHelper {
 
     }
 
-    public boolean checkUser() {
+    public boolean checkUser(String user, String password) {
         boolean authenticated = false;
         try {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM registereduser WHERE userid ='" + this.user + "' AND " +
-                                                                                    "password = '" + this.password + "'");
+            ResultSet rs = st.executeQuery("SELECT * FROM registereduser WHERE userid ='" + user + "' AND " +
+                                                                                    "password = '" + password + "'");
             int count = 0;
 
             while (rs.next())
@@ -64,6 +64,7 @@ public class PsqlDBHelper {
 
             rs.close();
             st.close();
+            conn.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,38 +111,86 @@ public class PsqlDBHelper {
         System.out.println("Records created successfully");
     }
 
-    public List importFileCSV() {
-
+    /**
+     * Importa il file delle galassie.
+     * @param path È il percorso del file da importare
+     */
+    public void importCSVGalaxies(String path) {
         CSVReader reader = null;
-        List myEntries = null;
         String[] nextLine;
+        String[] headerLine;
+
         int i = 0;
         try {
-            reader = new CSVReader(new FileReader("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\test2.csv"), ';');
+            reader = new CSVReader(new FileReader(path), '\t', '\'', 64);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        /*Il ciclo while permette di saltare l'eventuale header
+        try {
+            while ((headerLine = reader.readNext()) != null) {
+                i = 0;
+                // nextLine[] is an array of values from the line
+                System.out.println("headerLine " + headerLine[0]);
+                if (headerLine.length > 1) {
+                    System.out.println(headerLine.length);
+                    System.out.println("Prima di sql");
+                    insertRecords("INSERT INTO Galassia VALUES (" + headerLine[0] + ", " + headerLine[25] + ", " + headerLine[8] + ");");
+                    System.out.println("Dopo sql");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
         try {
             while ((nextLine = reader.readNext()) != null) {
                 i = 0;
+                System.out.println("length " + nextLine.length);
                 // nextLine[] is an array of values from the line
-                while(i < nextLine.length) {
-                    System.out.print(nextLine[i] + " ");
-                    i++;
-                }
-                System.out.println("");
+                /*if (nextLine.length > 1) {
+                    while (i < nextLine.length) {
+                        System.out.print(nextLine[i] + " ");
+                        i++;
+                    }
+                }*/
+                insertRecords("INSERT INTO \"Galassia\" (\"Nome\", \"NomeAlternativo\", \"Redshift\") VALUES ('" + nextLine[0] + "', '" + nextLine[25] + "', " + Double.valueOf(nextLine[8]) + ");");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        return myEntries;
+    private void insertRecords(String sql) {
+        Connection conn = null;
+        Statement st = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "portento123");
+            conn.setAutoCommit(false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            st = conn.createStatement();
+            st.executeUpdate(sql);
+            st.close();
+            conn.commit();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
 
-        PsqlDBHelper p = new PsqlDBHelper();
-        List entries = p.importFileCSV();
+
     }
 }

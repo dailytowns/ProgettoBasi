@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.io.IOException;
 
 public class LoginControl {
+
     @FXML
     private TextField txtUser;
     @FXML
@@ -34,47 +35,44 @@ public class LoginControl {
     @FXML
     private Button btnOk;
 
+
     @FXML
     public void initialize() {
+        btnOk.setDefaultButton(true);
+
         btnOk.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
-                /*Nessun input presente*/
-                if (txtUser.getText().equals("")) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Attenzione!");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Inserisci il tuo nome utente");
-                    alert.showAndWait();
-                } else {    /*Cerca nel database il matching tra username e password*/
-                    //PsqlDBHelper psqlDBHelper = new PsqlDBHelper(txtUser.getText(), pswUser.getText());
-                    /*boolean check = psqlDBHelper.checkUser();
-
-                    if (check) {
-                        Parent root;
-
-                        try {
-                            root = FXMLLoader.load(getClass().getClassLoader().getResource("View/AdminView.fxml"));
-                            Stage stage = new Stage();
-                            stage.setTitle("Amministrazione");
-                            stage.setScene(new Scene(root, 450, 450));
-                            stage.show();
-
-                            //hide this current window (if this is whant you want
-                            btnOk.getScene().getWindow().hide();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Attenzione!");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Lo username o la password non sono corretti");
-                        alert.showAndWait();
-                    }*/
-                }
+                LoginControl.this.handle(event);
             }
         });
+    }
+
+    private void handle(ActionEvent e) {
+
+                /*Nessun input presente*/
+        if (txtUser.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Attenzione!");
+            alert.setHeaderText(null);
+            alert.setContentText("Inserisci il tuo nome utente");
+            alert.showAndWait();
+        } else {    /*Cerca nel database il matching tra username e password*/
+            PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+            boolean check = psqlDBHelper.checkUser(txtUser.getText(), pswUser.getText());
+
+            if (check) {
+
+                AdminView adminView = new AdminView();
+
+                //hide this current window (if this is whant you want
+                btnOk.getScene().getWindow().hide();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Attenzione!");
+                alert.setHeaderText(null);
+                alert.setContentText("Lo username o la password non sono corretti");
+                alert.showAndWait();
+            }
+        }
     }
 }

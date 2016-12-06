@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.AdminControl">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar fx:id="menuMain" VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="Utenti">
+        <Menu fx:id="menuUtenti" mnemonicParsing="false" text="Utenti">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Registra utente..." />
+                  <MenuItem fx:id="menuRegistra" mnemonicParsing="false" text="Registra utente..." />
                </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Importa">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Importa file CSV..." />
+                  <MenuItem fx:id="menuImporta" mnemonicParsing="false" text="Importa file CSV..." />
                </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">

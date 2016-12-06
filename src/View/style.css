@@ -2,3 +2,31 @@
     -fx-background-image: url("./Galaxy.png");
     -fx-background-size: cover;
 }
+
+.background_insert {
+    -fx-background-color: aquamarine;
+}
+
+.button {
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-family: "Kristen ITC";
+    -fx-font-size: 46;
+}
+
+.text-field {
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+}
+
+.label {
+    -fx-font-family: "Kristen ITC";
+}
