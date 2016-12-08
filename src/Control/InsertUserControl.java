@@ -29,8 +29,6 @@ public class InsertUserControl {
     private Button btnConferma;
     @FXML
     private Button btnReset;
-    @FXML
-    private ListView<String> listGalaxies;
 
     @FXML
     public void initialize() {

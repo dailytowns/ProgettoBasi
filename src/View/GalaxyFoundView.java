@@ -25,7 +25,7 @@ public class GalaxyFoundView {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        GalaxyFoundControl controller = fxmlLoader.<GalaxyFoundControl>getController();
+        GalaxyFoundControl controller = fxmlLoader.getController();
         controller.setGalaxyName(name);
         controller.setGalaxyAltName(altName);
         controller.setRedshift(redshift);
@@ -34,7 +34,5 @@ public class GalaxyFoundView {
         newStage.setScene(newScene);
         newStage.show();
     }
-
-
 
 }

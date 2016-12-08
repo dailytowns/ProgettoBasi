@@ -49,6 +49,11 @@ public class AdminControl {
 
     @FXML
     public void initialize() {
+        ObservableList<Galaxy> list = retrieveGalaxies();
+
+        listGalaxies.setItems(list);
+        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+
         menuRegistra.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -66,14 +71,19 @@ public class AdminControl {
 
                 boolean chosen = false;
 
-                while (!chosen) {
-                    List<File> list =
-                            fileChooser.showOpenMultipleDialog(stage);
-                    if (list.size() == 1) {
+                List<File> listOfFile = fileChooser.showOpenMultipleDialog(stage);
+                    //if (listOfFile.size() == 1) {
+                    if(listOfFile != null) {
                         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-                        for (File file : list) {
+                        for (File file : listOfFile) {
                             if (file.getName().equals("MRTable3_sample.csv")) {
+                            //if (file.getName().equals("MRTable3_sample.csv")) {
                                 psqlDBHelper.importCSVGalaxies(file.getAbsolutePath());
+
+                                ObservableList<Galaxy> list = retrieveGalaxies();
+
+                                listGalaxies.setItems(list);
+                                listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
                                 chosen = true;
                             }
                             else {
@@ -88,8 +98,8 @@ public class AdminControl {
                     /*L'utente ha cliccato su Annulla*/
                         System.out.println("Lista vuota");
                         }
-                    }
                 }
+
         });
 
         menuRicercaGalassiaPerNome.setOnAction(new EventHandler<ActionEvent>() {
@@ -102,11 +112,11 @@ public class AdminControl {
         scrollGalaxies.setFitToHeight(true);
         scrollGalaxies.setFitToWidth(true);
 
-        ObservableList<Galaxy> list = FXCollections.observableArrayList();
+        /*ObservableList<Galaxy> list = FXCollections.observableArrayList();
         list = retrieveGalaxies();
 
         listGalaxies.setItems(list);
-        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());*/
     }
 
     private ObservableList<Galaxy> retrieveGalaxies() {
