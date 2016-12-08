@@ -2,17 +2,19 @@ package Control;
 
 
 import Helper.PsqlDBHelper;
+import Model.Galaxy;
+import View.GalaxyCell;
 import View.InsertUserView;
+import View.SearchGalaxyForNameView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -20,6 +22,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Observable;
+import java.util.StringJoiner;
 
 /**
  * Created by feder on 05/12/2016.
@@ -35,7 +39,13 @@ public class AdminControl {
     @FXML
     private MenuItem menuRegistra;
     @FXML
+    private MenuItem menuRicercaGalassiaPerNome;
+    @FXML
     private Menu menuUtenti;
+    @FXML
+    private ListView listGalaxies;
+    @FXML
+    private ScrollPane scrollGalaxies;
 
     @FXML
     public void initialize() {
@@ -81,6 +91,28 @@ public class AdminControl {
                     }
                 }
         });
+
+        menuRicercaGalassiaPerNome.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchGalaxyForNameView searchGalaxyForNameView = new SearchGalaxyForNameView();
+            }
+        });
+
+        scrollGalaxies.setFitToHeight(true);
+        scrollGalaxies.setFitToWidth(true);
+
+        ObservableList<Galaxy> list = FXCollections.observableArrayList();
+        list = retrieveGalaxies();
+
+        listGalaxies.setItems(list);
+        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+    }
+
+    private ObservableList<Galaxy> retrieveGalaxies() {
+        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+        ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB();
+        return obs;
     }
 
 }

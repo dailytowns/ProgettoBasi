@@ -20,7 +20,7 @@ public class InsertUserView {
     public InsertUserView() {
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("View/InsertUserView.fxml"));
+            root = FXMLLoader.load(getClass().getResource("resources/fxml/InsertUserView.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

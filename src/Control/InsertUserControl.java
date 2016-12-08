@@ -1,5 +1,9 @@
 package Control;
 
+import Helper.PsqlDBHelper;
+import Model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,7 +29,8 @@ public class InsertUserControl {
     private Button btnConferma;
     @FXML
     private Button btnReset;
-
+    @FXML
+    private ListView<String> listGalaxies;
 
     @FXML
     public void initialize() {
@@ -40,7 +45,23 @@ public class InsertUserControl {
                     alert.setHeaderText(null);
                     alert.setContentText("Il nome utente o la password non rispettano i vincoli predefiniti");
                     alert.showAndWait();
+                } else {
+                    User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
+                    PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+                    psqlDBHelper.insertUser(user);
+                    btnConferma.getScene().getWindow().hide();
                 }
+            }
+        });
+
+        btnReset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                txtPassword.setText("");
+                txtUsername.setText("");
+                txtCognome.setText("");
+                txtNome.setText("");
+                txtEmail.setText("");
             }
         });
     }
@@ -55,7 +76,6 @@ public class InsertUserControl {
                 numbers++;
             i++;
         }
-
         if(numbers < 2)
             return false;
 

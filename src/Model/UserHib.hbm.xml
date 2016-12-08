@@ -1,0 +1,14 @@
+
+
+<hibernate-mapping>
+    <class name="Model.UserHib" table="registereduser">
+        <id name="userid" type="string" column="userid">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name" type="string"/>
+        <property name="surname" column="surname" type="string"/>
+        <property name="password" column="password" type="string"/>
+        <property name="email" column="email" type="string"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,5 +1,5 @@
 .background {
-    -fx-background-image: url("./Galaxy.png");
+    -fx-background-image: url("../resources/Galaxy.jpg");
     -fx-background-size: cover;
 }
 
@@ -27,6 +27,6 @@
     -fx-border-color: dimgrey;
 }
 
-.label {
+.labelButton {
     -fx-font-family: "Kristen ITC";
 }

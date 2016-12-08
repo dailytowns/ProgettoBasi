@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -33,10 +32,9 @@ public class StartView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("StartViewCSS2.fxml"));
-        Scene scene = new Scene(root, 600, 400);
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/StartViewCSS2.fxml"));
+        Scene scene = new Scene(root, 640, 480);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 }

@@ -18,6 +18,14 @@ public class User {
     private String userId;
     private String password;
 
+    public User(String name, String surname, String email, String userId, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.userId = userId;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,23 +44,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public User(String name, String surname, String email, String userId, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.userId = userId;
-        this.password = password;
-    }
-
-    public void checkUser (String userId) {
-
-        //passato come parametro
-        User user = new User("mario", "rossi", "mail", "user", "pass");
-
-        //PsqlDBHelper psqlDBHelper = new PsqlDBHelper("postgres", "portento123");
-        //psqlDBHelper.checkUser(user);
     }
 
     public void searchGalaxyForName() {

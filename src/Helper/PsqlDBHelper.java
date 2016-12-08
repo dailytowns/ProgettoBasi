@@ -1,16 +1,26 @@
 package Helper;
 
+import Model.Galaxy;
 import Model.User;
+import Model.UserHib;
 import com.opencsv.CSVReader;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
+import javax.enterprise.event.Event;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
  * Created by feder on 29/09/2016.
@@ -118,7 +128,7 @@ public class PsqlDBHelper {
     public void importCSVGalaxies(String path) {
         CSVReader reader = null;
         String[] nextLine;
-        String[] headerLine;
+        //String[] headerLine;
 
         int i = 0;
         try {
@@ -156,7 +166,8 @@ public class PsqlDBHelper {
                         i++;
                     }
                 }*/
-                insertRecords("INSERT INTO \"Galassia\" (\"Nome\", \"NomeAlternativo\", \"Redshift\") VALUES ('" + nextLine[0] + "', '" + nextLine[25] + "', " + Double.valueOf(nextLine[8]) + ");");
+                insertRecords("INSERT INTO galassia(nome, nomealternativo, redshift) VALUES ('" +
+                        nextLine[0] + "', '" + nextLine[25] + "', " + Double.valueOf(nextLine[8]) + ");");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,14 +194,149 @@ public class PsqlDBHelper {
             st.close();
             conn.commit();
             conn.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    private void insertRecordsHibernate(UserHib user) {
+        // A SessionFactory is set up once for an application!
+        SessionFactory sessionFactory;
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure("/resources/hibernate.cfg.xml") // configures settings from hibernate.cfg.xml
+                .build();
+        try {
+            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+            session.close();
+        }
+        catch (Exception e) {
+            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+            // so destroy it manually.
+            StandardServiceRegistryBuilder.destroy( registry );
+        }
+
+    }
+
+    public ObservableList<Galaxy> retrieveGalaxiesDB() {
+
+        ObservableList<Galaxy> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia;" );
+            while ( rs.next() ) {
+                String nome = rs.getString("Nome");
+                String nomeAlternativo = rs.getString("NomeAlternativo");
+                double redshift  = rs.getDouble("Redshift");
+                System.out.println( "NOME = " + nome );
+                System.out.println( "NOMEALTERNATIVO = " + nomeAlternativo );
+                System.out.println( "REDSHIFT = " + redshift );
+
+                Galaxy galaxy = new Galaxy(nome, nomeAlternativo, redshift);
+                obs.add(galaxy);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
+    public void insertUser(User user) {
+        String sql = "INSERT INTO \"registereduser\" (\"name\", \"surname\", \"email\", \"userid\", \"password\") VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" +
+                            user.getEmail() + "', '" + user.getUserId() + "', '" + user.getPassword() +"');";
+        //insertRecords(sql);
+        UserHib userHib = new UserHib(user.getUserId(), user.getPassword(), user.getName(), user.getSurname(), user.getEmail());
+        insertRecordsHibernate(userHib);
+    }
+
+    public Galaxy searchGalaxyForName(String nameGalaxy) {
+        Statement stmt = null;
+        Galaxy galaxy = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia WHERE nome LIKE '"+nameGalaxy+"%';" );
+            while ( rs.next() ) {
+                String nome = rs.getString("nome");
+                String nomeAlternativo = rs.getString("nomealternativo");
+                double redshift  = rs.getDouble("redshift");
+                //System.out.println( "NOME = " + nome );
+                //System.out.println( "NOMEALTERNATIVO = " + nomeAlternativo );
+                //System.out.println( "REDSHIFT = " + redshift );
+
+                galaxy = new Galaxy(nome, nomeAlternativo, redshift);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println(galaxy.getName());
+        return galaxy;
+    }
+
+    public void resetGalassia() {
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "DROP TABLE galassia;";
+            stmt.executeUpdate(sql);
+            conn.commit();
+
+            stmt = conn.createStatement();
+            sql = "CREATE TABLE public.galassia\n" +
+                    "(\n" +
+                    "  nome CHARACTER VARYING NOT NULL,\n" +
+                    "  nomealternativo CHARACTER VARYING,\n" +
+                    "  redshift DOUBLE PRECISION,\n" +
+                    "  CONSTRAINT galassia_pkey PRIMARY KEY (nome)\n" +
+                    ")\n" +
+                    "WITH (\n" +
+                    "  OIDS=FALSE\n" +
+                    ");\n" +
+                    "ALTER TABLE public.galassia\n" +
+                    "  OWNER TO postgres;\n";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
     public static void main(String[] args) {
-
-
+        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+        psqlDBHelper.searchGalaxyForName("M95");
+        //psqlDBHelper.resetGalassia();
+        //psqlDBHelper.importCSVGalaxies("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\MRTable3_sample.csv");
     }
 }

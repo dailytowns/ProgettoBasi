@@ -19,13 +19,13 @@ public class AdminView {
     public AdminView () {
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("View/AdminView.fxml"));
+            root = FXMLLoader.load(getClass().getClassLoader().getResource("resources/fxml/AdminView.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = new Stage();
         stage.setTitle("Amministrazione");
-        stage.setScene(new Scene(root, 450, 450));
+        stage.setScene(new Scene(root, 640, 480));
         stage.show();
 
     }

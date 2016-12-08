@@ -145,14 +145,14 @@
 		
 		\newpage
 	\end{flushleft}
-
 \subsection{Il Modello Entit\'{a}-Relazione}
 	\begin{flushleft}
 		Anno modello relazionale, anno modello er, perchè er?
 	\end{flushleft}
 
-
+\subsection{Manuale d'uso}
 \newpage
+
 
 \section{Progettazione concettuale}
 
@@ -435,7 +435,7 @@
 				
 			\node[relationship] (caratterizza) [below  of=Galassia] {caratterizza} edge[label={[above right](1,1)}] (Galassia); 
 			
-			\node[entity] (CaratteristicheGalassia) [below of = caratterizza] {CaratteristicheGalassia}  edge[label={[above right](1,1)}] (caratterizza);
+			\node[entity] (CaratteristicheGalassia) [below of = caratterizza] {CaratteristicheGalassia}  edge[label={[above right](1,1)}, color=red] (caratterizza);
 				\node[attribute, left=15mm] (distanza) [above left of=CaratteristicheGalassia] {Distanza} edge (CaratteristicheGalassia); 
 				\node[attribute, left=15mm] (Metallicita) [left of=CaratteristicheGalassia] {Metallicità} edge (CaratteristicheGalassia);
 				\node[attribute, left=15mm] (Luminosita) [below left of=CaratteristicheGalassia] {Luminosità} edge (CaratteristicheGalassia);
@@ -450,21 +450,22 @@
 				
 			\node[relationship] (relazioneErrore) [below of=CaratteristicheGalassia] {erroreMisure} edge (CaratteristicheGalassia); 
 			
-			\node[entity] (Errore) [below of = relazioneErrore] {Errore}  edge[label={[above right](1,1)}] (relazioneErrore);
+			\node[entity] (Errore) [below of = relazioneErrore] {Errore}  edge[label={[above right](1,1)}, color=red] (relazioneErrore);
 				\node[attribute, left=10mm] (distanzaErrore) [left of=Errore] {ErroreDistanza} edge (Errore); 
 				\node[attribute, right=15mm] (metallicitaErrore) [right of=Errore] {ErroreMetallicità} edge (Errore);
 				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=Errore] {ErroreLuminosità} edge (Errore);
 				
 			\node[relationship, right=20mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare} edge (Galassia); 
 			
-			\node[entity, right=20mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari}  edge[label={[above right](1,1)}] (posizioneAngolare);
+			\node[entity, right=50mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari}  edge[label={[below left
+				](1,1)}, color=red] (posizioneAngolare);
 				\node[attribute, right=20mm] (declinazione) [right of=CoordinateAngolari] {Declinazione} edge (CoordinateAngolari); 
 				\node[attribute, right=15mm] (ascensioneRetta) [above right of=CoordinateAngolari] {AscensioneRetta} edge (CoordinateAngolari);
 			
 			\node[relationship, left=100mm] (relazioneFlusso) [below right of=Galassia] {misuraFlusso}; \draw (relazioneFlusso) |- (Galassia);
 			
-			\node[entity, below=120mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right](1,1)}] (relazioneFlusso);
-				\node[attribute, left=10mm] (atomo) [left of=Flusso] {Atomo} edge (Flusso);
+			\node[entity, below=120mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right](1,1)}, color=red] (relazioneFlusso);
+				\node[attribute, left=10mm] (atomo) [left of=Flusso] {Atomo} edge[color=red] (Flusso);
 				\node[entity, below left =20mm and 20mm of Flusso] (FlussoRighe) [below of = Flusso] {FlussoRighe};
 				\draw[vecArrow] (FlussoRighe) -| (Flusso);
 				\node[entity, below right=20mm and 25mm of Flusso] (FlussoContinuo) [below of = Flusso] {FlussoContinuo};
@@ -487,7 +488,7 @@
 					\node[attribute] (riferimento) [below right of=Misura] {Riferimento} edge (Misura);
 					
 				\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura] {MisuraFlusso};
-					\draw (MisuraFlusso) -| (misuraFlusso);
+					\draw[color=red] (MisuraFlusso) -| (misuraFlusso);
 					\draw[vecArrow] (MisuraFlusso) -| (Misura);
 				\node[entity, below right = 50mm and 20mm] (MisuraLuminosita) [below right of = Misura] {MisuraLuminosità};
 					\draw[vecArrow] (MisuraLuminosita) -| (Misura);
@@ -497,7 +498,7 @@
 	\end{figure}
 	
 	\begin{itemize}
-		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione esterna
+		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione. Se collegano un'entità con una relazione definiscono identificazione esterna.
 	\end{itemize}
 		
 		\newpage
@@ -528,8 +529,23 @@
 				\begin{tikzpicture}[scale= 0.7, every node/.style = {shape=rectangle, rounded corners,
 				draw, align=center,
 				top color=white, bottom color=blue!20}]]
-				\draw  (0,12) node(testPGC){testECPG.pgc}
-							(0,10) node(preproc){Preprocessore ECPG}
+			
+				% #1 number of teeths
+				% #2 radius intern
+				% #3 radius extern
+				% #4 angle from start to end of the first arc
+				% #5 angle to decale the second arc from the first 
+				
+				\newcommand{\gear}[5]{%
+					\foreach \i in {1,...,#1} {%
+						[rotate=(\i-1)*360/#1]  (0:#2)  arc (0:#4:#2) {[rounded corners=1.5pt]
+							-- (#4+#5:#3)  arc (#4+#5:360/#1-#5:#3)} --  (360/#1:#2)
+					
+				}}  
+			
+
+				\draw  (0,12) node(testPGC){testECPG.pgc}				
+						(0,10) node(preproc) {aosdifh} \gear{18}{2}{2.4}{10}{2}
 							(0,8) node(testC){testECPG.c}
 							(0,6) node (comp){Compilatore C}
 							(-5,4) node (ecpglib){Liberia ECPG}
@@ -762,6 +778,7 @@
 
 	\begin{flushleft}
 		Un linguaggio che si propone come soluzione sia al constant recompiling sia alla difficolt\'{a} della compilazione stessa \'{e} Java.
+	
 	\end{flushleft}
 	
 \newpage
