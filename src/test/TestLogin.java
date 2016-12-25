@@ -14,14 +14,18 @@ public class TestLogin {
         /*true*/
         boolean result = psqlDBHelper.checkUser("usermario", "passmario");
         Assert.assertEquals(result, true);
+
+        psqlDBHelper = new PsqlDBHelper();
         /*false*/
         result = psqlDBHelper.checkUser("oiopo", "passmape");
         Assert.assertEquals(result, false);
     }
 
+    /*Eccezione se il dbms è chiuso*/
     public static void main(String[] args) {
         TestLogin testLogin = new TestLogin();
         testLogin.testLogin();
+        System.err.println("INFO: Il test non ha individuato errori");
     }
 
 }

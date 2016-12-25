@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Created by feder on 25/09/2016.
+ * Classe adibita al caricamento dell'interfaccia grafica per un utente amministratore.
  */
 public class AdminView {
 

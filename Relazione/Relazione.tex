@@ -2,7 +2,6 @@
 
 %%%%%%https://www.eso.org/public/italy/news/eso1212/ CITARE?%%%
 
-
 %%%%%%Package utilizzati%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -11,7 +10,9 @@
 \usepackage{makeidx}
 \usepackage{dirtree}
 \usepackage{graphicx}
+\usepackage{caption}
 \usepackage{lmodern}
+\usepackage{picins}
 \usepackage{algpseudocode}
 \usepackage{frontespizio}
 \usepackage[italian]{babel}
@@ -21,6 +22,18 @@
 \usepackage[usenames,dvipsnames,table]{xcolor}
 \usepackage{hyperref}
 \usepackage{framed}
+\usepackage{wrapfig}
+
+%Intestazione 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%%%Timeline%%%
+%\usepackage{chronosys}
+
+%Per impaginare due tabelle sulla stessa riga
+\def \hfillx {\hspace*{-\textwidth} \hfill}
+
 \usepackage{listings}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -54,8 +67,9 @@
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{er}
 %Pacchetto utile per i diagrammi uml
-\usepackage{tikz-uml}
+%\usepackage{tikz-uml}
 \usetikzlibrary{arrows, decorations.markings}
+\usetikzlibrary{positioning,calc}
 \include{./tikzer2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -64,29 +78,33 @@
 \author{Federico Amici}
 
 \begin{document}
-
+	
+\begin{titlepage}
 \maketitle
+
+	\vspace{3cm}
+	\begin{center}
+		\begin{figure}[h]
+			\includegraphics{relmod.jpg}
+			\caption{Lucido del seminario "An Introduction to Relational Data Base" tenuto nel 1976 da C. J. Date}
+		\end{figure}
+	\end{center}
+		
 \newpage
+\end{titlepage}
+
 \tableofcontents
 \listoftables
 \listoffigures
 \newpage
-
 
 % minimondo, universo del discorso
 % Indipendenza dal programma: Si utilizza un DBMS rispetto ai file poichè cambiare la struttura di un file
 % comporterebbe il dover cambiare tutti i programmi che vi accedono. Utilizzando un DBMS invece la struttura del
 % file è salvata nel catalogo del DBMS stesso e viene gestita autonomamente. Questa proprietà viene chiamata indipendenza dai dati del programma (a livello fisico?)
 \section{Introduzione}
-	\begin{flushleft}
-		La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonch\'{e} delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta.
-		Una \textit{base di dati} \'{e} una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
-		Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello \textit{"a strati"}. \newline
-	\end{flushleft}
-	
-	\begin{center}
-		\begin{figure}[h]
-			\centering\resizebox{9cm}{8cm}{
+		\begin{wrapfigure}[20]{r}{9cm}
+			\begin{flushright}
 				\begin{tikzpicture}[node distance = 3cm, auto]
 				\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
 				text width=4.5em, node distance=3cm, inner sep=0pt]
@@ -101,72 +119,60 @@
 				\path [line] (init) -- (identify);
 				\path [line] (identify) -- (evaluate);
 				\end{tikzpicture}
-			}
-		\caption{Primo approccio di sviluppo}
-		\end{figure}
-	\end{center}
-
-	\begin{flushleft}
-		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.\newline
-		
-		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline
-		
-		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello Entity-Relationship.\newline
-		
+				\caption{Primo approccio di sviluppo}
+			\end{flushright}
+		\end{wrapfigure}
+		La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonchè delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta. È stata aggiunta inoltre una presentazione utile per una eventuale esposizione orale del progetto stesso.\newline		
+		Una \textit{base di dati} è una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
+		Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello \textit{"a strati"}. \newline
+		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.\newline		
+		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline	
+		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello \textit{Entity-Relationship}.\newline		
 		Altro approccio che è risultato vincente nel corso del tempo è quello dei processi di sviluppo di tipo iterativo che, a differenza dei genitori "a cascata", permettono di tornare ciclicamente all'inizio del processo di sviluppo per correggere il tiro a partire dalla fase di analisi dei requisiti in poi. Nel caso dello sviluppo di questo progetto non ci si avvale completamente delle tecniche dell'ingegneria del software, tuttavia per quanto possibile si adotterà il modello di sviluppo iterativo.
 		
-		Lo schema di sviluppo deve dunque essere aggiornato al seguente:
-		
-			\begin{center}
-			\begin{figure}[h]
-				\centering\resizebox{9cm}{8cm}{
-					\begin{tikzpicture}[node distance = 3cm, auto]
-					\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-					text width=4.5em, node distance=3cm, inner sep=0pt]
-					\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-					text width=20em, text centered, rounded corners, minimum height=4em]
-					\tikzstyle{line} = [draw, -latex']
-					% Place nodes
-					\node [block] (init) {Progettazione concettuale};
-					\node [block, below of=init] (identify) {Progettazione logica};
-					\node [block, below of=identify] (evaluate) {Progettazione fisica};
-					% Draw edges
-					\path [line] (init) -- (identify);
-					\path [line] (identify) -- (evaluate);
-					
-					\draw[->>] (evaluate) to [bend left=45] (identify);
-					\draw[->>] (identify) to [bend left=45] (init);
-					\end{tikzpicture}
-				}
-				\caption{Approccio iterativo}
-			\end{figure}
-		\end{center}
-		
-		
-		\newpage
-	\end{flushleft}
+		\begin{wrapfigure}[20]{l}{10cm}
+			\begin{tikzpicture}[node distance = 3cm, auto]
+			\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+			text width=4.5em, node distance=3cm, inner sep=0pt]
+			\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+			text width=20em, text centered, rounded corners, minimum height=4em]
+			\tikzstyle{line} = [draw, -latex']
+			% Place nodes
+			\node [block] (init) {Progettazione concettuale};
+			\node [block, below of=init] (identify) {Progettazione logica};
+			\node [block, below of=identify] (evaluate) {Progettazione fisica};
+			% Draw edges
+			\path [line] (init) -- (identify);
+			\path [line] (identify) -- (evaluate);
+			
+			\draw[->>] (evaluate) to [bend left=45] (identify);
+			\draw[->>] (identify) to [bend left=45] (init);
+			\end{tikzpicture}
+			\caption{Approccio iterativo}
+		\end{wrapfigure}
+		Lo schema di sviluppo deve dunque essere aggiornato a quello riportato a lato.	
+\clearpage
+%da integrare nell'introduzione
 \subsection{Il Modello Entit\'{a}-Relazione}
 	\begin{flushleft}
 		Anno modello relazionale, anno modello er, perchè er?
 	\end{flushleft}
 
 \subsection{Manuale d'uso}
-\newpage
-
+\clearpage
 
 \section{Progettazione concettuale}
 
-	Una delle fasi pi\'{u} importanti nella realizzazione di un progetto, che sia prettamente software o riguardante una base di dati, \'{e} costituita dalla \textit{raccolta e analisi dei requisiti}. Ricordiamo che un \textit{requisito} rappresenta un vincolo da rispettare sia nella fase del suo sviluppo sia nella fase di funzionamento del software. Come suggerisce \cite{Arlow}, la prima causa del fallimento del progetto di un sistema software \'{e} l'insuccesso dell'ingegneria dei requisiti. In questo caso non ci si soffermerà con lo stesso dettaglio del processo UP su questa fase dello sviluppo software ma, essendo indubbiamente fondamentale, le verrà dedicato lo spazio che merita.
-	\newline
+	\begin{flushleft}
+		Una delle fasi pi\'{u} importanti nella realizzazione di un progetto, che sia prettamente software o riguardante una base di dati, \'{e} costituita dalla \textit{raccolta e analisi dei requisiti}. Ricordiamo che un \textit{requisito} rappresenta un vincolo da rispettare sia nella fase del suo sviluppo sia nella fase di funzionamento del software. Come suggerisce \cite{Arlow}, la prima causa del fallimento del progetto di un sistema software \'{e} l'insuccesso dell'ingegneria dei requisiti. In questo caso non ci si soffermerà con lo stesso dettaglio del processo UP su questa fase dello sviluppo software ma, essendo indubbiamente fondamentale, le verrà dedicato lo spazio che merita.
+		\newline\newline
+		La \textit{raccolta dei requisiti} nel caso di questo progetto è stata simulata dal documento di presentazione inviato dal Professor Galli in qualità di committente del lavoro. Il documento è scritto in linguaggio naturale, come accadrebbe nel caso di una stesura delle  specifiche del sistema da realizzare a seguito di un incontro con il committente o con i futuri utenti dell'applicazione.
+		Un aspetto importante della progettazione concettuale è l'elaborazione preliminare di tutti quei documenti utili sia agli sviluppatori del progetto che entrano in contatto con il mondo che vanno a modellare sia al committente per essere sicuro che la realizzazione del progetto sia in linea con le sue aspettative. 
+		\newline\newline
+		Generalmente quando si va a sviluppare un sistema software si entra a far parte di un mondo che non si conosce a fondo in quanto estraneo al proprio. Anche in questa occasione si è acquisita maggiore dimestichezza con gli argomenti relativi al mondo che si è modellato, attingendo a fonti esterne come \textsf{\href{http://www.astronomia.com}{astronomia.com}}. Il \textit{glossario dei termini} raccoglie tutta quella terminologia, presente nella documentazione di presentazione del progetto che simula la \textit{raccolta dei requisiti}, di cui non si era a conoscenza al momento della sua stesura.\newline\newline		
+		Il documento è stato ristrutturato suddividendo le frasi presenti al suo interno secondo il concetto cui si legano, rimodellando talvolta la frase laddove non fosse più necessario collegarla al resto del documento.
+	\end{flushleft}
 	
-	La \textit{raccolta dei requisiti} nel caso di questo progetto è stata simulata dal documento di presentazione inviato dal Professor Galli in qualità di committente del lavoro. Il documento è scritto in linguaggio naturale, come accadrebbe nel caso di una stesura delle  specifiche del sistema da realizzare a seguito di un incontro con il committente o con i futuri utenti dell'applicazione.
-	Un aspetto importante della progettazione concettuale è l'elaborazione preliminare di tutti quei documenti utili sia agli sviluppatori del progetto che entrano in contatto con il mondo che vanno a modellare sia al committente per essere sicuro che la realizzazione del progetto sia in linea con le sue aspettative. 
-	\newline
-
-	Generalmente quando si va a sviluppare un sistema software si entra a far parte di un mondo che non si conosce a fondo in quanto estraneo al proprio. Anche in questa occasione si è acquisita maggiore dimestichezza con gli argomenti relativi al mondo che si è modellato, attingendo a fonti esterne come \textsf{\href{http://www.astronomia.com}{astronomia.com}}. Il \textit{glossario dei termini} raccoglie tutta quella terminologia, presente nella documentazione di presentazione del progetto che simula la \textit{raccolta dei requisiti}, di cui non si era a conoscenza al momento della sua stesura.\newline
-	
-	Il documento è stato ristrutturato suddividendo le frasi presenti al suo interno secondo il concetto cui si legano, rimodellando talvolta la frase laddove non fosse più necessario collegarla al resto del documento.
-
 	\subsection{Specifica fornita}
 	\begin{flushleft}
 		\textbf{Introduzione al progetto}\newline
@@ -294,14 +300,13 @@
 	
 	\subsection{Operazioni sui dati}
 		\begin{flushleft}
-			\textbf{Operazione 1} Ricerca un utente e controlla che la password inserita corrisponda a quella salvata nel database\newline\newline
-			\textbf{Operazione 2} Inserisci di un utente all'interno del sistema\newline\newline
-			\textbf{Operazione 3} Importa un nuovo file dei dati scientifici o delle referenze bibliografiche, aggiornando i valori precedenti con quelli nuovi\newline\newline
-			\textbf{Operazione 4} Ricerca di una galassia per nome\newline\newline
-			\textbf{Operazione 5} Ricerca di un insieme di galassie all'interno di un raggio data la posizione spaziale\newline\newline
-			\textbf{Operazione 6} Ricerca di un insieme di galassie in base al parametro di redshift\newline\newline
-			\textbf{Operazione 7} Ricerca di valori dei flussi ed il relativo errore di una o più righe spettrali di una specifica galassia\newline\newline
-			\textbf{Operazione 8}
+			\textbf{Operazione 1:} Trova un utente registrato e controlla che la password inserita corrisponda a quella salvata nel database\newline\newline
+			\textbf{Operazione 2:} Inserisci di un utente all'interno del sistema\newline\newline
+			\textbf{Operazione 3:} Importa un nuovo file dei dati scientifici, aggiornando i valori precedenti con quelli nuovi\newline\newline
+			\textbf{Operazione 4:} Ricerca di una galassia per nome\newline\newline
+			\textbf{Operazione 5:} Ricerca di un insieme di galassie all'interno di un raggio data la posizione spaziale\newline\newline
+			\textbf{Operazione 6:} Ricerca di un insieme di galassie in base al parametro di redshift\newline\newline
+			\textbf{Operazione 7:} Ricerca di valori dei flussi ed il relativo errore di una o più righe spettrali di una specifica galassia
 		\end{flushleft}
 	
 	\subsection{Regole di vincolo}
@@ -312,6 +317,7 @@
 			\textbf{RV2} La password di un utente amministratore \textit{deve} avere un numero minimo di caratteri pari a 9 e \textit{deve} contenere almeno un numero\newline
 			%lower-limit
 			\textbf{RV3} L'upper-limit viene settato se il valore misurato era minore della sensibilità dello strumento, quindi al massimo è pari al minimo della sensibilità dello strumento
+			\textbf{RV4} Il file contenente dati sulle galassie dovrà essere salvato con il nome \textit{MR3Table\_Sample.csv}
 		\end{flushleft}
 
 %	\begin{table}[h]
@@ -340,74 +346,75 @@
 
 
 	\subsection{Schemi ER}
-	\begin{flushleft}
-		La stesura degli schemi ER può essere sia realizzata su carta, sia servendoci di strumenti software dedicati. I programmi appartenti a questa categoria vengono definiti \textit{CASE software}, dove CASE sta per Computer-Aided Software Engineering. Come da aspettative, la scelta \'{e} molto ampia, sia tra i software commerciali sia tra quelli free. Dal momento che la complessità del progetto è di gran lunga inferiore a quella di una commissione reale, è parsa la scelta migliore quella di scegliere un software commerciale, ma che allo stesso tempo si comportasse come un freeware a patto di utilizzare un sottoinsieme delle funzionalità offerte.\newline
-		
-		Il software in questione è \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.\newline
-		
-		Nonostante la velocità di stesura offerta dal programma CASE, si è preferito stilare lo schema di progettazione concettuale su carta in prima battuta e, solo in secondo tempo, riportato in un file, in modo da avere anche una copia di backup disponibile.
-		
-		%Il programma potrebbe sempre smettere di funzionare -.-
-	\end{flushleft}
-
-	\begin{table}[h!]
-		\centering
-		\caption{Dizionario dei dati}
-		\begin{tabular}{lllll}
-			\hline
-			\rowcolor[HTML]{66CC99}Termine & Descrizione & Attributi & Identificatore				  \\ \hline
+		\begin{flushleft}
+			La stesura degli schemi ER può essere sia realizzata su carta, sia servendoci di strumenti software dedicati. I programmi appartenti a questa categoria vengono definiti \textit{CASE software}, dove CASE sta per Computer-Aided Software Engineering. Come da aspettative, la scelta \'{e} molto ampia, sia tra i software commerciali sia tra quelli free. Dal momento che la complessità del progetto è di gran lunga inferiore a quella di una commissione reale, è parsa la scelta migliore quella di scegliere un software commerciale, ma che allo stesso tempo si comportasse come un freeware a patto di utilizzare un sottoinsieme delle funzionalità offerte.\newline
 			
-			\textit{Galassia}	&Un grande insieme di stelle					&Classificazione spettrale, & Nome Galassia\\
-								&												&Redshift, \\
-								&												&NomeAlternativo	 &\\
-								&												&NomeGalassia		 &\\
-								&												&					 &\\
-			\textit{Coordinate}	& Dati utili alla localizzazione & AscensioneRetta\_ore,	& NomeGalassia \\
-			\textit{angolari} & della galassia	& ascensioneretta\_min, & \textit{(esterno)} \\
-								&				& ascensioneretta\_sec, &			\\
-								&				& declinazione\_sign, &				\\
-								&				& declinazione\_ore, &				\\
-								&				& declinazione\_min, &				\\
-								&				& declinazione\_sec &				\\
-			\textit{Caratteristiche} &	Caratteristiche proprie & Distanza, & NomeGalassia \\
-			\textit{Galassia}		&	della galassia			& luminosità, & \textit{(esterno)}\\
-									&							& metallicità &					  \\
-									&							&			  &					  \\
-			\textit{Errore}			& Insieme degli errori &	ErroreDistanza, &	NomeGalassia  \\
-									& commessi sulle misure &	ErroreMetallicità, & \textit{(esterno)} \\
-									& relative alla galassia &  FlagLuminosità &				\\
-									&						&				&					\\
-				
-%		\end{tabular}
-%	\end{table}
-%
-%	\begin{table}
-%		\centering
-%		\begin{tabular}{lllll}
-			\textit{Riferimento bibliografico}	& Insieme di riferimenti  & Autore,		&	Codice				\\
-				& bibliografici delle misure  & titolo,		&					\\
-			&effettuate su una galassia & anno		&					\\
-			&						&				&					\\
-			\textit{Flusso}			& Informazione sulle sostanze & Errore, 		& NomeGalassia \\
-			& presenti nella galassia	&	valore,		& \textit{(esterno)}\\
-			&							& atomo,		&					\\
-			&							& satellite	&						\\
-			&							&			&						\\
-		\end{tabular}
-	\end{table}
-		
-	\begin{table}
-	\centering
-		\begin{tabular}{lllll}
-		\textit{Riga Flusso}	& Insieme di dati relativi alla  & Errore, & NomeGalassia (esterno),\\
-		& misura di una riga spettrale & Valore,		&		Atomo (esterno)	\\
-		&  & Riferimento		&				\\ 
-		\end{tabular}
-	\end{table}
+			Il software in questione è \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.\newline
+			
+			Nonostante la velocità di stesura offerta dal programma CASE, si è preferito stilare lo schema di progettazione concettuale su carta in prima battuta e, solo in secondo tempo, riportato in un file, in modo da avere anche una copia di backup disponibile.
+			
+			%Il programma potrebbe sempre smettere di funzionare -.-
+		\end{flushleft}
 
-	\begin{flushleft}
-		Di seguito viene riportato la prima stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.
-	\end{flushleft}
+		\begin{table}[h!]
+			\centering
+			\caption{Dizionario dei dati}
+			\begin{tabular}{lllll}
+				\hline
+				\rowcolor[HTML]{66CC99}Termine & Descrizione & Attributi & Identificatore				  \\ \hline
+				
+				\textit{Galassia}	&Un grande insieme di stelle					&Classificazione spettrale, & Nome Galassia\\
+									&												&Redshift, \\
+									&												&NomeAlternativo	 &\\
+									&												&NomeGalassia		 &\\
+									&												&					 &\\
+				\textit{Coordinate}	& Dati utili alla localizzazione & AscensioneRetta\_ore,	& NomeGalassia \\
+				\textit{angolari} & della galassia	& ascensioneretta\_min, & \textit{(esterno)} \\
+									&				& ascensioneretta\_sec, &			\\
+									&				& declinazione\_sign, &				\\
+									&				& declinazione\_ore, &				\\
+									&				& declinazione\_min, &				\\
+									&				& declinazione\_sec &				\\
+				\textit{Caratteristiche} &	Caratteristiche proprie & Distanza, & NomeGalassia \\
+				\textit{Galassia}		&	della galassia			& luminosità, & \textit{(esterno)}\\
+										&							& metallicità &					  \\
+										&							&			  &					  \\
+				\textit{Errore}			& Insieme degli errori &	ErroreDistanza, &	NomeGalassia  \\
+										& commessi sulle misure &	ErroreMetallicità, & \textit{(esterno)} \\
+										& relative alla galassia &  FlagLuminosità &				\\
+										&						&				&					\\
+					
+	%		\end{tabular}
+	%	\end{table}
+	%
+	%	\begin{table}
+	%		\centering
+	%		\begin{tabular}{lllll}
+				\textit{Riferimento bibliografico}	& Insieme di riferimenti  & Autore,		&	Codice				\\
+					& bibliografici delle misure  & titolo,		&					\\
+				&effettuate su una galassia & anno		&					\\
+				&						&				&					\\
+				\textit{Flusso}			& Informazione sulle sostanze & Errore, 		& NomeGalassia \\
+				& presenti nella galassia	&	valore,		& \textit{(esterno)}\\
+				&							& atomo,		&					\\
+				&							& satellite	&						\\
+				&							&			&						\\
+			\end{tabular}
+		\end{table}
+			
+		\begin{table}
+		\centering
+			\begin{tabular}{lllll}
+			\textit{Riga Flusso}	& Insieme di dati relativi alla  & Errore, & NomeGalassia (esterno),\\
+			& misura di una riga spettrale & Valore,		&		Atomo (esterno)	\\
+			&  & Riferimento		&				\\ 
+			\end{tabular}
+		\end{table}
+	
+		\begin{flushleft}
+			Di seguito viene riportato la stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.\newline
+			Un esempio di correzione che è stata apportata allo schema ER è l'elliminazione delle generalizzazioni relative all'entità \textit{Flusso} poichè nelle operazioni richieste dai requisiti non figura una distinzione tra le tipologie di flusso.
+		\end{flushleft}
 
 	\begin{figure}[h]
 		\resizebox{16cm}{!}{
@@ -429,81 +436,367 @@
 			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
 			
 			\node[entity] (Galassia) {Galassia};
-				\node[attribute] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
-				\node[attribute, above=10mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
-				\node[attribute, right=10mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+				\node[attribute, above=20mm] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+				\node[attribute, above=30mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+				\node[attribute, right=15mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+				\node[attribute, right=40mm] (CS) [above of = Galassia] {ClasseSpettrale} edge (Galassia);
 				
-			\node[relationship] (caratterizza) [below  of=Galassia] {caratterizza} edge[label={[above right](1,1)}] (Galassia); 
+			\node[relationship, right=50mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare}; 
+			\path (posizioneAngolare.west) edge node[above, at start, anchor=south west, xshift=-40mm] {\textcolor{black}{(1,1)}} (Galassia);
 			
-			\node[entity] (CaratteristicheGalassia) [below of = caratterizza] {CaratteristicheGalassia}  edge[label={[above right](1,1)}, color=red] (caratterizza);
-				\node[attribute, left=15mm] (distanza) [above left of=CaratteristicheGalassia] {Distanza} edge (CaratteristicheGalassia); 
-				\node[attribute, left=15mm] (Metallicita) [left of=CaratteristicheGalassia] {Metallicità} edge (CaratteristicheGalassia);
-				\node[attribute, left=15mm] (Luminosita) [below left of=CaratteristicheGalassia] {Luminosità} edge (CaratteristicheGalassia);
-				\node[attribute, right=15mm] (ClasseSpettrale) [above right of = CaratteristicheGalassia] {ClasseSpettrale} edge (CaratteristicheGalassia);
+			\node[entity, right=50mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari};
+			\path (CoordinateAngolari.west) edge node[above, at start, anchor=south west, xshift=-15mm] {\textcolor{black}{(1,1)}} (posizioneAngolare);
+				\node[multi attribute, right=20mm] (declinazione) [right of=CoordinateAngolari] {Declinazione} edge[color=red] (CoordinateAngolari);
+				\node[attribute](DecSig) [below of=declinazione] {DecSig} edge (declinazione);
+				\node[attribute](DecH) [below right of=declinazione] {Dech} edge (declinazione);
+				\node[attribute, right=10mm](DecM) [right of=declinazione] {Decm} edge (declinazione);
+				\node[attribute](DecS) [above right of=declinazione] {Decs} edge (declinazione);
+				\node[multi attribute] (ascensioneRetta) [above of=CoordinateAngolari] {AscensioneRetta} edge[color=red] (CoordinateAngolari);
+					\node[attribute](ARh) [above left of = ascensioneRetta] {ARh} edge (ascensioneRetta);
+					\node[attribute](ARm) [above of = ascensioneRetta] {ARm}edge (ascensioneRetta);									\node[attribute](ARs) [above right of = ascensioneRetta] {ARs} edge (ascensioneRetta);
+			
+			\node[relationship, below left=30mm and 100mm] (relazioneFlusso) [below right of=Galassia, label={[right](1,n)}] {FlussoGalassia}; \draw (relazioneFlusso) |- (Galassia);
+			
+			\node[entity, below=150mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlusso);
+				\node[attribute, left=10mm] (atomo) [above left of=Flusso] {Atomo} edge (Flusso);
+				\node[attribute, right=15mm] (tipologiaFlusso) [above right of = Flusso] {Tipologia} edge (Flusso);				
 				
-			\node[relationship, right=25mm] (riferisce) [right of=CaratteristicheGalassia] {riferisce} edge (CaratteristicheGalassia);
+			\node[relationship, right=80mm] (misuraFlusso) [right of=Flusso, label={[left, xshift=-75mm, yshift=-25mm](1,1)}] {istanzaFlusso} edge (Flusso);
 			
-			\node[entity, right=15mm] (RiferimentoBibliografico) [right of = riferisce] {RiferimentoBibliografico}  edge[label={[above right](1,1)}] (riferisce);
-				\node[attribute, left=15mm] (riferimentoDistanza) [above right of=RiferimentoBibliografico] {RefDistanza} edge (RiferimentoBibliografico); 
-				\node[attribute, right=18mm] (riferimentoMetallicita) [right of=RiferimentoBibliografico] {RefMetallicità} edge (RiferimentoBibliografico);
-				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=RiferimentoBibliografico] {RefLuminosità} edge (RiferimentoBibliografico);
-				
-			\node[relationship] (relazioneErrore) [below of=CaratteristicheGalassia] {erroreMisure} edge (CaratteristicheGalassia); 
-			
-			\node[entity] (Errore) [below of = relazioneErrore] {Errore}  edge[label={[above right](1,1)}, color=red] (relazioneErrore);
-				\node[attribute, left=10mm] (distanzaErrore) [left of=Errore] {ErroreDistanza} edge (Errore); 
-				\node[attribute, right=15mm] (metallicitaErrore) [right of=Errore] {ErroreMetallicità} edge (Errore);
-				\node[attribute, above=10mm] (riferimentoLuminosita) [below of=Errore] {ErroreLuminosità} edge (Errore);
-				
-			\node[relationship, right=20mm] (posizioneAngolare) [right of=Galassia] {posizioneAngolare} edge (Galassia); 
-			
-			\node[entity, right=50mm] (CoordinateAngolari) [right of = posizioneAngolare] {CoordinateAngolari}  edge[label={[below left
-				](1,1)}, color=red] (posizioneAngolare);
-				\node[attribute, right=20mm] (declinazione) [right of=CoordinateAngolari] {Declinazione} edge (CoordinateAngolari); 
-				\node[attribute, right=15mm] (ascensioneRetta) [above right of=CoordinateAngolari] {AscensioneRetta} edge (CoordinateAngolari);
-			
-			\node[relationship, left=100mm] (relazioneFlusso) [below right of=Galassia] {misuraFlusso}; \draw (relazioneFlusso) |- (Galassia);
-			
-			\node[entity, below=120mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right](1,1)}, color=red] (relazioneFlusso);
-				\node[attribute, left=10mm] (atomo) [left of=Flusso] {Atomo} edge[color=red] (Flusso);
-				\node[entity, below left =20mm and 20mm of Flusso] (FlussoRighe) [below of = Flusso] {FlussoRighe};
-				\draw[vecArrow] (FlussoRighe) -| (Flusso);
-				\node[entity, below right=20mm and 25mm of Flusso] (FlussoContinuo) [below of = Flusso] {FlussoContinuo};
-				\draw[vecArrow] (FlussoContinuo) -| (Flusso);
-				\node[attribute] (ref160) [above right of=FlussoContinuo] {Riferimento160um} edge (FlussoContinuo);
-				\node[attribute, right=20mm] (aperturaContuinuo) [right of=FlussoContinuo] {Apertura} edge (FlussoContinuo);
-				
-			\node[entity, left=25mm] (FlussoRigheHP) [below of = FlussoRighe] {FlussoRigheHP};
-				\draw[vecArrow] (FlussoRigheHP) -| (FlussoRighe);
-				\node[attribute, left=10mm] (aperture) [left of=FlussoRigheHP] {Aperture} edge (FlussoRigheHP);
-				\node[entity, right=25mm] (FlussoRigheSpitzer) [below of = FlussoRighe] {FlussoRigheSpitzer};
-				\draw[vecArrow] (FlussoRigheSpitzer) -| (FlussoRighe);
-				\node[attribute] (IRS) [below of=FlussoRigheSpitzer] {IRSMode} edge (FlussoRigheSpitzer);
-				
-			\node[relationship, right=80mm] (misuraFlusso) [right of=Flusso] {misuraFlusso} edge (Flusso);
-				\node[entity, right=40mm] (Misura) [right of = misuraFlusso] {Misura};
+			%errore valore
+			\node[entity, right=100mm] (Misura) [right of = misuraFlusso] {Misura};
 					\node[attribute, right=20mm] (valore) [right of=
 					Misura] {Valore} edge (Misura); 
-					\node[attribute] (erroreValore) [above right of=Misura] {Errore} edge (Misura);
+					\node[attribute, right=10mm] (erroreValore) [above right of=Misura] {Errore} edge (Misura);
 					\node[attribute] (riferimento) [below right of=Misura] {Riferimento} edge (Misura);
-					
-				\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura] {MisuraFlusso};
-					\draw[color=red] (MisuraFlusso) -| (misuraFlusso);
+			
+			\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura, label={[left, xshift=-20mm, yshift=-3mm](1,1)}] {MisuraFlusso};
+					\draw (MisuraFlusso) -| (misuraFlusso);
 					\draw[vecArrow] (MisuraFlusso) -| (Misura);
-				\node[entity, below right = 50mm and 20mm] (MisuraLuminosita) [below right of = Misura] {MisuraLuminosità};
-					\draw[vecArrow] (MisuraLuminosita) -| (Misura);
+					\node[attribute, left=15mm](upperLimit) [above left of = MisuraFlusso] {UpperLimit} edge (MisuraFlusso);
+					\node[attribute, left=20mm] (ref160) [below left of=MisuraFlusso] {Riferimento160um} edge (MisuraFlusso);
+					\node[attribute] (aperturaContinuo) [above of=MisuraFlusso] {Apertura} edge (MisuraFlusso);
+					\node[attribute] (IRS) [below of=MisuraFlusso] {IRSMode} edge (MisuraFlusso);
+			\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below right of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
+					\draw[vecArrow] (CaratteristicheFisiche) -| (Misura);
+					\node[attribute] (tipo) [below of = CaratteristicheFisiche] {Tipologia} edge (CaratteristicheFisiche); 
+					
+			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+					\draw (carafisi) |- (CaratteristicheFisiche);
+					\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
+					
+			%%%%%Chiavi composte%%%%
+			\draw (-12, -21.7) -- (-2, -21.7);
+			\filldraw[fill=black] (-2, -21.7) circle (2mm);
+			
+			\draw (13, -36.5) -- (21, -36.5);
+			\draw (13, -36.5) -- (13, -34.5);
+			\filldraw[fill=black] (13,-34.5) circle (2mm);
+			
+			%%%%%%%%%%%%%%%%%%%%%%
+			
 			\end{tikzpicture}
 		}
-	\caption{Primo schema ER}
+	\caption{Schema E-R}
 	\end{figure}
 	
 	\begin{itemize}
-		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione. Se collegano un'entità con una relazione definiscono identificazione esterna.
+		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione.
 	\end{itemize}
+	
+	\begin{flushleft}
+		Nello schema E-R non figurano le entità \textit{Utente Registrato} nè \textit{Amministratore}. Questo deriva dal fatto che anche gli utenti dell'applicazione vengono gestiti tramite il sistema ma, ciononostante, non hanno relazioni con le altre entità. Saranno certamente collegate in qualità di classi al resto del sistema tramite opportuni metodi, ma come entità rimangono distaccate dal resto dello schema.
 		
+		%Per eventuale seconda stesura togliere attributi luminosità, non sono richiesti dalla app. Sia in CatteristicheGalassia che in Flusso l'identificatore è composto
+	\end{flushleft}
+	
 		\newpage
 
 \section{Progettazione logica}
+
+\subsection{Il modello relazionale}
+
+\subsection{Definizione del carico di lavoro}
+
+	\subsubsection{Tavola dei volumi}
+		\begin{flushleft}
+				La \textit{tavola dei volumi} riporta il carico previsto a regime per ogni entità e per ogni relazione presenti nello schema ER. Nella \textit{tavola delle operazioni} invece viene riportata per ogni operazione la frequenza di invocazione a regime, unitamente ad un simbolo che la caratterizza come interattiva o come batch, nel seguito indicate come di consueto con \textit{I} e \textit{B}. In questo caso tuttavia non vi sono operazioni che il sistema possa compiere in modalità \textit{batch} poichè ognuna ha bisogno di essere portata a termine nel minor tempo possibile a partire dalla sua sottoposizione al sistema.\newline
+				I volumi relativi alle entità e alle relazioni sono stati ricavati dall'esame dei file allegati alla traccia del progetto e, dal momento che tra i requisiti funzionali non vi è alcuna operazione di inserimento, i volumi a regime delle entità in relazione con Galassia  sono tutti relativi al numero di galassie presenti nel relativo file (241, come riportato di seguito).\newline
+				mentre la tavola delle operazioni è stata stesa attingendo alla personale fantasia.
+		\end{flushleft}
+		\begin{table}[ht]
+				\begin{minipage}{0.5\textwidth}
+					\centering
+					\begin{tabular}{lll}
+						\hline
+						\rowcolor[HTML]{66CC99}Concetto & Tipo & Volume \\ \hline
+						%\textit{Satellite} 					& E & 3   \\
+						\textit{Galassia}					& E & 250 \\
+						\textit{CoordinateAngolari} 		& E & 250 \\
+						\textit{Flusso}						& E & $\sum flussi$ \\
+						\textit{MisuraFlusso}				& E & $\sum flussi$ \\
+						\textit{CaratteristicheFisiche}		& E & 250 \\
+						\textit{PosizioneAngolare}			& R & 250 \\
+						\textit{misureFisiche}				& R & 250 \\
+						\textit{FlussoGalassia}				& R & $\sum flussi$\\
+						\textit{istanzaFlusso} 				& R & $\sum flussi$ 
+					\end{tabular}
+					\caption{Tavola dei volumi}
+				\end{minipage}
+				\hfillx
+				\begin{minipage}{0.5\textwidth}
+					\centering
+					\begin{tabular}{lll}
+						\hline
+						\rowcolor[HTML]{66CC99}Concetto & Tipo & Volume \\ \hline
+						\textit{Operazione 1} & I & 1000 al giorno 	\\
+						\textit{Operazione 2} & I & 10 al giorno	\\
+						\textit{Operazione 3} & I & 5 al giorno		\\
+						\textit{Operazione 4} & I & 2000 al giorno	\\
+						\textit{Operazione 5} & I & 500 al giorno 	\\
+						\textit{Operazione 6} & I & 500 al giorno 	\\
+						\textit{Operazione 7} & I &	2000 al giorno	
+					\end{tabular}
+					\caption{Tavola delle operazioni}
+				\end{minipage}
+		\end{table}
+	
+	\subsection{Ristrutturazione dello schema ER}
+	
+	\subsubsection{Analisi delle ridondanze}
+		\begin{flushleft}
+			In questa fase bisogna trovare tutte le relazioni e gli attributi che possono essere ricavati a partire da altre relazioni o entità. Le ridondanze vanno mantenute solo nel caso in cui effettivamente apportano un vantaggio prestazionale al sistema.		
+			Nel caso dello schema E-R del sistema non vi sono ridondanze, il che ci permette di passare alla fase successiva.
+		\end{flushleft}
+	\subsubsection{Eliminazione delle generalizzazioni}
+		\begin{flushleft}
+			Questa fase è necessaria in quanto i DBMS tradizionali non offrono la possibilità di rappresentare direttamente una generalizzazione. Bisogna dunque sostituire la gerarchia con uno schema che dia le stesse informazioni del precedente.
+			Le alternative che si sono presentate sono due:
+			\begin{itemize}
+				\item Incorporare gli attributi di \textit{Misura} nelle entità figlie
+				\item Sostituire la specializzazione di \textit{Misura} con due relazioni
+			\end{itemize}
+			Dal momento che la prima alternativa presenta un minor numero di accessi nelle operazioni relative ai flussi, è stata preferita quest'ultima.
+			In seconda battuta dobbiamo tradurre i multiattributi poichè nemmeno questi vengono trattati dai DBMS tradizionali. Nel caso in esame sono state create due nuove entità, \textit{Ascensione Retta} e \textit{Declinazione}, identificate esternamente dall'entitità \textit{Galassia}.
+		\end{flushleft}
+
+		\begin{figure}[h]
+			\resizebox{16cm}{!}{
+				\begin{tikzpicture}[node distance=7em]
+				\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+				\tikzset{derived attribute/.style={attribute,dashed}} 
+				\tikzset{total/.style={double distance=1.5pt}} 
+				\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+				\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+				\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+				
+				% for double arrows a la chef
+				% adapt line thickness and line width, if needed
+				\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+					1 with {\arrow[semithick]{open triangle 60}}},
+				double distance=1.4pt, shorten >= 5.5pt,
+				preaction = {decorate},
+				postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+				\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+				
+				\node[entity] (Galassia) {Galassia};
+				\node[attribute, above=20mm] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+				\node[attribute, above=30mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+				\node[attribute, right=15mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+				\node[attribute, right=40mm] (CS) [above of = Galassia] {ClasseSpettrale} edge (Galassia);
+				
+				\node[relationship, below right=20mm and 100mm](CoordDec) [below right of = Galassia] {CoordDec};
+				\draw (CoordDec) |- (Galassia);
+				
+				\node[entity, below=30mm] (declinazione) [below of=CoordDec] {Declinazione} edge (CoordDec);
+				\node[attribute, left=20mm](DecSig) [below of=declinazione] {DecSig} edge (declinazione);
+				\node[attribute, left=20mm](DecH) [below left of=declinazione] {Dech} edge (declinazione);
+				\node[attribute, left=20mm](DecM) [left of=declinazione] {Decm} edge (declinazione);
+				\node[attribute, left=20mm](DecS) [above left of=declinazione] {Decs} edge (declinazione);
+				
+				\node[relationship, right=120mm](CoordAR) [right of = CoordDec] {CoordAR};
+				\draw (CoordAR) |- (Galassia);
+				
+				\node[entity, below=30mm] (ascensioneRetta) [below of=CoordAR] {AscensioneRetta} edge[label={[above, xshift=-5mm, yshift=10mm](1,1)}] (CoordAR);
+				\node[attribute](ARh) [below left of = ascensioneRetta] {ARh} edge (ascensioneRetta);
+				\node[attribute](ARm) [below of = ascensioneRetta] {ARm} edge (ascensioneRetta);
+				\node[attribute](ARs) [below right of = ascensioneRetta] {ARs} edge (ascensioneRetta);
+				
+				\node[relationship, below left=30mm and 100mm] (relazioneFlusso) [below right of=Galassia, label={[right](1,n)}] {FlussoGalassia}; \draw (relazioneFlusso) |- (Galassia);
+				
+				\node[entity, below=150mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlusso);
+				\node[attribute, left=20mm] (atomo) [above left of=Flusso] {Atomo} edge (Flusso);
+				\node[attribute, right=20mm] (tipologiaFlusso) [above right of = Flusso] {Tipologia} edge (Flusso);		
+				
+				\node[relationship, right=80mm] (misuraFlusso) [right of=Flusso, label={[left, xshift=-75mm, yshift=-25mm](1,1)}] {istanzaFlusso} edge (Flusso);
+				
+				\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura, label={[left, xshift=-20mm, yshift=-3mm](1,1)}] {MisuraFlusso};
+				\draw (MisuraFlusso) -| (misuraFlusso);
+				\node[attribute, left=15mm](upperLimit) [above left of = MisuraFlusso] {UpperLimit} edge (MisuraFlusso);
+				\node[attribute, left=20mm] (ref160) [below left of=MisuraFlusso] {Riferimento160um} edge (MisuraFlusso);
+				\node[attribute] (aperturaContinuo) [above of=MisuraFlusso] {Apertura} edge (MisuraFlusso);
+				\node[attribute] (IRS) [below of=MisuraFlusso] {IRSMode} edge (MisuraFlusso);
+				\node[attribute, right=20mm] (valore) [right of=
+				MisuraFlusso] {Valore} edge (MisuraFlusso); 
+				\node[attribute, right=10mm] (erroreValore) [above right of=MisuraFlusso] {Errore} edge (MisuraFlusso);
+				\node[attribute] (riferimento) [below right of=MisuraFlusso] {Riferimento} edge (MisuraFlusso);
+				
+				\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
+
+				\node[attribute] (tipo) [below of = CaratteristicheFisiche] {Tipologia} edge (CaratteristicheFisiche);
+				\node[attribute, right=20mm] (valore) [right of=
+				CaratteristicheFisiche] {Valore} edge (CaratteristicheFisiche); 
+				\node[attribute, right=10mm] (erroreValore) [above right of=CaratteristicheFisiche] {Errore} edge (CaratteristicheFisiche);
+				\node[attribute, above right=5mm and 10mm] (riferimento) [below right of=CaratteristicheFisiche] {Riferimento} edge (CaratteristicheFisiche);
+				
+				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+				\draw (carafisi) |- (CaratteristicheFisiche);
+				\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
+				
+				%%%%%Chiavi%%%%
+				%%FLUSSO%%
+				\draw (-11, -21.7) -- (-4, -21.7);
+				\filldraw[fill=black] (-11, -21.7) circle (2mm);
+				
+				%%CARATTERISTICHE FISICHE%%
+				\draw (13, -37) -- (18.3, -37);
+				\draw (13, -37) -- (13, -35);
+				\filldraw[fill=black] (13,-35) circle (2mm);
+				
+				%%DECLINAZIONE%%
+				\draw (11, -8.5) -- (13, -8.5);
+				\draw (11, -8.5) -- (11, -9.4);
+				\filldraw[fill=black] (13, -8.5) circle (2mm);
+				
+				%%ASCENSIONE RETTA%%
+				\draw (26, -8.5) -- (28, -8.5);
+				\draw (28, -8.5) -- (28, -9.4);
+				\filldraw[fill=black] (26, -8.5) circle (2mm);
+				%%%%%%%%%%%%%%%%%%%%%
+				
+				\end{tikzpicture}
+			}
+			\caption{Schema E-R ristrutturato, eliminati i multiattributi e generalizzazioni}
+		\end{figure}
+
+		\begin{flushleft}
+			Una volta eliminati i multiattributi e le generalizzazioni, possiamo passare alla risoluzione degli identificatori esterni:
+		\end{flushleft}
+
+		\begin{figure}[h]
+			\resizebox{16cm}{!}{
+				\begin{tikzpicture}[node distance=7em]
+				\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+				\tikzset{derived attribute/.style={attribute,dashed}} 
+				\tikzset{total/.style={double distance=1.5pt}} 
+				\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+				\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+				\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+				
+				% for double arrows a la chef
+				% adapt line thickness and line width, if needed
+				\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+					1 with {\arrow[semithick]{open triangle 60}}},
+				double distance=1.4pt, shorten >= 5.5pt,
+				preaction = {decorate},
+				postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+				\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+				
+				\node[entity] (Galassia) {Galassia};
+				\node[attribute, above=20mm] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+				\node[attribute, above=30mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+				\node[attribute, right=15mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+				\node[attribute, right=40mm] (CS) [above of = Galassia] {ClasseSpettrale} edge (Galassia);
+				
+				\node[relationship, below right=20mm and 100mm](CoordDec) [below right of = Galassia] {CoordDec};
+				\draw (CoordDec) |- (Galassia);
+				
+				\node[entity, below=30mm] (declinazione) [below of=CoordDec] {Declinazione} edge (CoordDec);
+				\node[attribute, left=20mm](DecSig) [below of=declinazione] {DecSig} edge (declinazione);
+				\node[attribute, left=20mm](DecH) [below left of=declinazione] {Dech} edge (declinazione);
+				\node[attribute, left=20mm](DecM) [left of=declinazione] {Decm} edge (declinazione);
+				\node[attribute, left=20mm](DecS) [above left of=declinazione] {Decs} edge (declinazione);
+				\node[attribute, right=20mm](NomeGalassiaCA)[right of=declinazione] {\key{NomeGalassia}} edge (declinazione);
+				
+				\node[relationship, right=120mm](CoordAR) [right of = CoordDec] {CoordAR};
+				\draw (CoordAR) |- (Galassia);
+				
+				\node[entity, below=30mm] (ascensioneRetta) [below of=CoordAR] {AscensioneRetta} edge[label={[above, xshift=-5mm, yshift=10mm](1,1)}] (CoordAR);
+				\node[attribute](ARh) [below left of = ascensioneRetta] {ARh} edge (ascensioneRetta);
+				\node[attribute](ARm) [below of = ascensioneRetta] {ARm} edge (ascensioneRetta);
+				\node[attribute](ARs) [below right of = ascensioneRetta] {ARs} edge (ascensioneRetta);
+				\node[attribute, right=20mm](NomeGalassiaAR)[right of=ascensioneRetta] {\key{NomeGalassia}} edge (ascensioneRetta);
+				
+				\node[relationship, below left=30mm and 100mm] (relazioneFlusso) [below right of=Galassia, label={[right](1,n)}] {FlussoGalassia}; \draw (relazioneFlusso) |- (Galassia);
+				
+				\node[entity, below=150mm] (Flusso) [below of = relazioneFlusso] {Flusso}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlusso);
+				\node[attribute, left=20mm] (atomo) [above left of=Flusso] {Atomo} edge (Flusso);
+				\node[attribute, left=20mm] (tipologiaFlusso) [below left of = Flusso] {Tipologia} edge (Flusso);
+				\node[attribute, left=20mm](NomeGalassiaFl) [left of = Flusso] {\key{NomeGalassia}} edge (Flusso);		
+				
+				\node[relationship, right=80mm] (misuraFlusso) [right of=Flusso, label={[left, xshift=-75mm, yshift=-25mm](1,1)}] {istanzaFlusso} edge (Flusso);
+				
+				\node[entity, below left=50mm and 10mm] (MisuraFlusso) [below left of = Misura, label={[left, xshift=-20mm, yshift=-3mm](1,1)}] {MisuraFlusso};
+				\draw (MisuraFlusso) -| (misuraFlusso);
+				\node[attribute, left=15mm](upperLimit) [above left of = MisuraFlusso] {UpperLimit} edge (MisuraFlusso);
+				\node[attribute, left=20mm] (ref160) [below left of=MisuraFlusso] {Riferimento160um} edge (MisuraFlusso);
+				\node[attribute] (aperturaContinuo) [above of=MisuraFlusso] {Apertura} edge (MisuraFlusso);
+				\node[attribute] (IRS) [below of=MisuraFlusso] {IRSMode} edge (MisuraFlusso);
+				\node[attribute, right=20mm] (valore) [right of=
+				MisuraFlusso] {Valore} edge (MisuraFlusso); 
+				\node[attribute, right=10mm] (erroreValore) [above right of=MisuraFlusso] {Errore} edge (MisuraFlusso);
+				\node[attribute] (riferimento) [below right of=MisuraFlusso] {Riferimento} edge (MisuraFlusso);
+				
+				\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
+				
+				\node[attribute] (tipo) [below of = CaratteristicheFisiche] {Tipologia} edge (CaratteristicheFisiche);
+					\node[attribute, right=20mm] (valore) [right of=
+					CaratteristicheFisiche] {Valore} edge (CaratteristicheFisiche); 
+					\node[attribute, right=10mm] (erroreValore) [above right of=CaratteristicheFisiche] {Errore} edge (CaratteristicheFisiche);
+					\node[attribute, above right=5mm and 10mm] (riferimento) [below right of=CaratteristicheFisiche] {Riferimento} edge (CaratteristicheFisiche);
+					\node[attribute, left=10mm](NomeGalassiaCF) [below left of = CaratteristicheFisiche] {\key{NomeGalassia}} edge (CaratteristicheFisiche);
+				
+				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+				\draw (carafisi) |- (CaratteristicheFisiche);
+				\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
+				
+				%%%%%Chiavi%%%%
+				%%FLUSSO%%
+				\draw (-10, -20.7) -- (-10, -24.7);
+				\filldraw[fill=black] (-10, -20.7) circle (2mm);
+				
+				%%CARATTERISTICHE FISICHE%%
+				\draw (13, -37) -- (18.3, -37);
+				\filldraw[fill=black] (13,-37) circle (2mm);
+				%%%%%%%%%%%%%%%%%%%%%
+				
+				\end{tikzpicture}
+			}
+			\caption{Schema E-R ristrutturato, eliminati gli identificatori esterni}
+		\end{figure}
+\newpage
+
+\subsection{Traduzione dello schema ER}
+
+	\begin{flushleft}
+		Lo schema E-R è stato tradotto nel seguente schema relazionale:
+		
+		\textsf{\textit{Galassia}(\underline{Nome}, Redshift, NomeAlternativo, ClasseSpettrale)}\newline
+		\textsf{\textit{Declinazione}(DecSig, Dech, Decm, Decs, NomeGalassia)}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textit{AscensioneRetta}(ARh, ARm, ARs, NomeGalassia)}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textit{Flusso}(\underline{Atomo, Tipologia, NomeGalassia})}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textit{MisuraFlusso(Valore, Errore, Riferimento, IRSMode, Riferimento160$\mu$m, UpperLimit)}}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textit{CaratteristicheFisiche}(Valore, Errore, Riferimento, \underline{Tipologia, NomeGalassia})}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline		
+		\textsf{\textit{FlussoGalassia}(NomeGalassia, Tipologia, Atomo)}\newline
+		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\textsf{\textbf{FK}: Tipo, Atomo \textbf{REFERENCES} \textit{Flusso} NOT NULL}
+	\end{flushleft}
 
 
 \section{Implementazione}
@@ -839,10 +1132,15 @@
 			L'indirizzo del repository relativo a questo progetto è \textsf{\href{https://github.com/dailytowns/ProgettoBasi}{repo}}
 		\end{flushleft}
 
-\include{B-albero}
+%\include{B-albero}
 
 %%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
+
+\section{Cenni alla progettazione fisica}
+
+\newpage
+
 \renewcommand\refname{Bibliografia}
 \begin{thebibliography} {99}
 	\bibitem{Atzeni} Atzeni, Ceri, Fraternali, Paraboschi, Torlone
@@ -858,5 +1156,4 @@
 	\bibitem{Arlow} J. Arlow, Neustadt, Uml e Unified Process
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \end{document}
