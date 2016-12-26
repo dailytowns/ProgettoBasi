@@ -5,37 +5,37 @@ package Model;
  */
 public class RightAscension {
 
-    private int hour;
-    private int minute;
-    private double seconds;
+    private Integer hour;
+    private Integer minute;
+    private Double seconds;
 
-    public RightAscension(int hour, int minute, double seconds) {
-        this.hour = hour;
-        this.minute = minute;
+    public RightAscension(Integer hours, Integer minutes, Double seconds) {
+        this.hour = hours;
+        this.minute = minutes;
         this.seconds = seconds;
     }
 
-    public int getHour() {
+    public Integer getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(Integer hour) {
         this.hour = hour;
     }
 
-    public int getMinute() {
+    public Integer getMinute() {
         return minute;
     }
 
-    public void setMinute(int minute) {
+    public void setMinute(Integer minute) {
         this.minute = minute;
     }
 
-    public double getSeconds() {
+    public Double getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(double seconds) {
+    public void setSeconds(Double seconds) {
         this.seconds = seconds;
     }
 

@@ -26,6 +26,8 @@
             <Menu mnemonicParsing="false" text="Ricerca">
               <items>
                 <MenuItem fx:id="menuRicercaGalassiaPerNome" mnemonicParsing="false" text="Ricerca galassie per nome..." />
+                  <MenuItem fx:id="menuRicercaGalassiaPerRedshift" mnemonicParsing="false" text="Ricerca galassie per redshift..." />
+                  <MenuItem fx:id="menuRicercaGalassiaPerRaggio" mnemonicParsing="false" text="Ricerca galassie per raggio..." />
               </items>
             </Menu>
       </menus>

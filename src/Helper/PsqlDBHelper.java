@@ -1,8 +1,6 @@
 package Helper;
 
-import Model.Galaxy;
-import Model.User;
-import Model.UserHib;
+import Model.*;
 import com.opencsv.CSVReader;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
@@ -52,8 +50,12 @@ public class PsqlDBHelper {
         }
     }
 
-    public void closeConnection(String url) {
-
+    public void closeConnection() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean checkUser(String user, String password) {
@@ -110,7 +112,7 @@ public class PsqlDBHelper {
                 if (stmt != null) {
                     stmt.close();
                 }
-                closeConnection(url);
+                closeConnection();
 
             } catch (SQLException ex) {
                 System.err.println( ex.getClass().getName()+": "+ ex.getMessage() );
@@ -121,85 +123,7 @@ public class PsqlDBHelper {
         System.out.println("Records created successfully");
     }
 
-    /**
-     * Importa il file delle galassie.
-     * @param path È il percorso del file da importare
-     */
-    public void importCSVGalaxies(String path) {
-        CSVReader reader = null;
-        String[] nextLine;
-        //String[] headerLine;
-
-        int i = 0;
-        try {
-            reader = new CSVReader(new FileReader(path), '\t', '\'', 64);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        /*Il ciclo while permette di saltare l'eventuale header
-        try {
-            while ((headerLine = reader.readNext()) != null) {
-                i = 0;
-                // nextLine[] is an array of values from the line
-                System.out.println("headerLine " + headerLine[0]);
-                if (headerLine.length > 1) {
-                    System.out.println(headerLine.length);
-                    System.out.println("Prima di sql");
-                    insertRecords("INSERT INTO Galassia VALUES (" + headerLine[0] + ", " + headerLine[25] + ", " + headerLine[8] + ");");
-                    System.out.println("Dopo sql");
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        try {
-            while ((nextLine = reader.readNext()) != null) {
-                i = 0;
-                System.out.println("length " + nextLine.length);
-                // nextLine[] is an array of values from the line
-                /*if (nextLine.length > 1) {
-                    while (i < nextLine.length) {
-                        System.out.print(nextLine[i] + " ");
-                        i++;
-                    }
-                }*/
-                insertRecords("INSERT INTO galassia(nome, nomealternativo, redshift) VALUES ('" +
-                        nextLine[0] + "', '" + nextLine[25] + "', " + Double.valueOf(nextLine[8]) + ");");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void insertRecords(String sql) {
-        Connection conn = null;
-        Statement st = null;
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "portento123");
-            conn.setAutoCommit(false);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            st = conn.createStatement();
-            st.executeUpdate(sql);
-            st.close();
-            conn.commit();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void insertRecordsHibernate(UserHib user) {
+     private void insertRecordsHibernate(UserHib user) {
         // A SessionFactory is set up once for an application!
         SessionFactory sessionFactory;
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -237,19 +161,107 @@ public class PsqlDBHelper {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia;" );
             while ( rs.next() ) {
-                String nome = rs.getString("Nome");
-                String nomeAlternativo = rs.getString("NomeAlternativo");
-                double redshift  = rs.getDouble("Redshift");
+                String nome = rs.getString("nome");
+                String nomeAlternativo = rs.getString("nomealt");
+                double redshift  = rs.getDouble("redshift");
+                String classeSpettrale = rs.getString("classespettrale");
                 System.out.println( "NOME = " + nome );
                 System.out.println( "NOMEALTERNATIVO = " + nomeAlternativo );
                 System.out.println( "REDSHIFT = " + redshift );
-
+                System.out.println( "CLASSESPETTRALE = " + classeSpettrale);
                 Galaxy galaxy = new Galaxy(nome, nomeAlternativo, redshift);
                 obs.add(galaxy);
             }
             rs.close();
             stmt.close();
-            conn.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
+    public ObservableList<Galaxy> retrieveGalaxiesDB(Double redshiftValue, String lgt) {
+        ObservableList<Galaxy> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia WHERE redshift " + lgt + " " + redshiftValue + ";" );
+            while ( rs.next() ) {
+                String nome = rs.getString("nome");
+                String nomeAlternativo = rs.getString("nomealt");
+                double redshift  = rs.getDouble("redshift");
+                String classeSpettrale = rs.getString("classespettrale");
+                Galaxy galaxy = new Galaxy(nome, nomeAlternativo, redshift);
+                obs.add(galaxy);
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
+    public ObservableList<Galaxy> retrieveGalaxiesDB(Declination declination, RightAscension rightAscension,
+                                                     int number, double radius) {
+        ObservableList<Galaxy> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+        AngularCoordinate acPoint = new AngularCoordinate(declination, rightAscension);
+        double relativeDistance;
+        int i = 0; //Il contatore serve per limitarci alle prime number galassie trovate
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * " +
+                    " FROM galassia INNER JOIN coordinateangolari ON galassia.nome = coordinateangolari.nomegalassia" );
+            while ( rs.next() ) {
+                if(i < number) {
+                    String nomeGalassia = rs.getString("nome");
+                    String nomealt = rs.getString("nomealt");
+                    Double redshift = rs.getDouble("redshift");
+                    /*String classeSpettrale = rs.getString("classespettrale");*/
+                    String sign = rs.getString("decsign");
+                    Integer decDegrees = rs.getInt("decdeg");
+                    Integer decMinutes = rs.getInt("decmin");
+                    Double decSeconds = rs.getDouble("decsec");
+                    Integer arHours = rs.getInt("arh");
+                    Integer arMinutes = rs.getInt("arm");
+                    Double arSeconds = rs.getDouble("ars");
+
+                    AngularCoordinate acGalaxy = new AngularCoordinate(new Declination(sign, decDegrees, decMinutes, decSeconds),
+                            new RightAscension(arHours, arMinutes, arSeconds));
+                    relativeDistance = AngularCoordinate.computeDistanceBetweenCoordinates(acGalaxy, acPoint);
+                    if(relativeDistance <= radius){
+                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift);
+                        obs.add(galaxy);
+                    }
+
+                    i++;
+                }
+            }
+            rs.close();
+            stmt.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
@@ -279,12 +291,8 @@ public class PsqlDBHelper {
             ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia WHERE nome LIKE '"+nameGalaxy+"%';" );
             while ( rs.next() ) {
                 String nome = rs.getString("nome");
-                String nomeAlternativo = rs.getString("nomealternativo");
+                String nomeAlternativo = rs.getString("nomealt");
                 double redshift  = rs.getDouble("redshift");
-                //System.out.println( "NOME = " + nome );
-                //System.out.println( "NOMEALTERNATIVO = " + nomeAlternativo );
-                //System.out.println( "REDSHIFT = " + redshift );
-
                 galaxy = new Galaxy(nome, nomeAlternativo, redshift);
             }
             rs.close();
@@ -298,8 +306,142 @@ public class PsqlDBHelper {
         return galaxy;
     }
 
-    public void resetGalassia() {
+    public void createTableGalassia() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
 
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE galassia (" +
+                    "nome CHARACTER VARYING PRIMARY KEY," +
+                    "nomealt CHARACTER VARYING," +
+                    "redshift DOUBLE PRECISION," +
+                    "classespettrale CHARACTER VARYING);";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public void createTableCoordinateAngolari() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE coordinateangolari (" +
+                    "nomegalassia CHARACTER VARYING REFERENCES galassia," +
+                    "ARh INTEGER," +
+                    "ARm INTEGER," +
+                    "ARs DOUBLE PRECISION," +
+                    "decsign CHARACTER VARYING," +
+                    "decdeg INTEGER," +
+                    "decmin INTEGER," +
+                    "decsec DOUBLE PRECISION," +
+                    "PRIMARY KEY (nomegalassia));";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    /*public void createTableAscensione() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE ascensioneretta (" +
+                    "nomegalassia CHARACTER VARYING REFERENCES galassia," +
+                    "ARh INTEGER," +
+                    "ARm INTEGER," +
+                    "ARs DOUBLE PRECISION);";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public void createTableDeclinazione() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE declinazione (" +
+                    "nomegalassia CHARACTER VARYING REFERENCES galassia, " +
+                    "decsign CHARACTER," +
+                    "decdeg INTEGER," +
+                    "decmin INTEGER," +
+                    "decsec DOUBLE PRECISION," +
+                    "PRIMARY KEY (decdeg, decmin, decsec));";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }*/
+
+    public void createTableCaratteristiche() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE caratteristichefisiche (" +
+                    "nomegalassia CHARACTER VARYING REFERENCES galassia, " +
+                    "tipologia CHARACTER VARYING," +
+                    "valore DOUBLE PRECISION," +
+                    "errore DOUBLE PRECISION," +
+                    "riferimento INTEGER," +
+                    "PRIMARY KEY (nomegalassia, tipologia));";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public void createTableDistanza() {
+            Statement stmt = null;
+            try {
+                Class.forName("org.postgresql.Driver");
+                conn.setAutoCommit(true);
+                System.out.println("Opened database successfully");
+
+                stmt = conn.createStatement();
+                String sql = "CREATE TABLE distanza (" +
+                        "nomegalassia CHARACTER VARYING REFERENCES galassia, " +
+                        "valore DOUBLE PRECISION," +
+                        "riferimento INTEGER," +
+                        "PRIMARY KEY (nomegalassia));";
+                stmt.execute(sql);
+                stmt.close();
+            } catch ( Exception e ) {
+                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+                System.exit(0);
+            }
+        }
+
+    public void deleteTable(String table) {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -307,36 +449,71 @@ public class PsqlDBHelper {
             System.out.println("Opened database successfully");
 
             stmt = conn.createStatement();
-            String sql = "DROP TABLE galassia;";
+            String sql = "DROP TABLE " + table;
             stmt.executeUpdate(sql);
             conn.commit();
-
-            stmt = conn.createStatement();
-            sql = "CREATE TABLE public.galassia\n" +
-                    "(\n" +
-                    "  nome CHARACTER VARYING NOT NULL,\n" +
-                    "  nomealternativo CHARACTER VARYING,\n" +
-                    "  redshift DOUBLE PRECISION,\n" +
-                    "  CONSTRAINT galassia_pkey PRIMARY KEY (nome)\n" +
-                    ")\n" +
-                    "WITH (\n" +
-                    "  OIDS=FALSE\n" +
-                    ");\n" +
-                    "ALTER TABLE public.galassia\n" +
-                    "  OWNER TO postgres;\n";
-            stmt.executeUpdate(sql);
             stmt.close();
-            conn.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+            //System.exit(0);
         }
+    }
+
+    public boolean checkGalaxyTable() {
+        boolean result = true;
+        try {
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet res = meta.getTables(null, null, "galassia",
+                   null);
+            if (res.next()) {
+                result = true;
+            } else
+                result = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void insertRecord(String sql) {
+        Statement st = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            st = conn.createStatement();
+            st.executeUpdate(sql);
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkTable(String table) {
+        boolean exist = true;
+
+        try {
+            DatabaseMetaData dbm = conn.getMetaData();
+            // check if "employee" table is there
+            ResultSet tables = dbm.getTables(null, null, table, null);
+            if (tables.next()) {
+                exist = true;
+            } else {
+                exist = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exist;
     }
 
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        psqlDBHelper.searchGalaxyForName("M95");
-        //psqlDBHelper.resetGalassia();
+        //psqlDBHelper.searchGalaxyForName("M95");
+        //psqlDBHelper.deleteGalassia();
+        //psqlDBHelper = new PsqlDBHelper();
+        //psqlDBHelper.createTableGalassia();
+        //psqlDBHelper.checkGalaxyTable();
         //psqlDBHelper.importCSVGalaxies("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\MRTable3_sample.csv");
     }
 }

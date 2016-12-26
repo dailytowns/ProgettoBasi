@@ -25,6 +25,8 @@ import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 
 public class LoginControl {
 
@@ -45,11 +47,19 @@ public class LoginControl {
                 LoginControl.this.handle(event);
             }
         });
+
+        dumpDB();
+    }
+
+    private void dumpDB() {
+        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+        if(!psqlDBHelper.checkGalaxyTable())
+            psqlDBHelper.createTableGalassia();
     }
 
     private void handle(ActionEvent e) {
 
-                /*Nessun input presente*/
+        /*Nessun input presente*/
         if (txtUser.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Attenzione!");

@@ -1,11 +1,12 @@
 package Control;
 
 
+import Helper.ImportCSV;
+import Helper.ImportCSVFlux;
+import Helper.ImportCSVGalaxy;
 import Helper.PsqlDBHelper;
 import Model.Galaxy;
-import View.GalaxyCell;
-import View.InsertUserView;
-import View.SearchGalaxyForNameView;
+import View.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +47,10 @@ public class AdminControl {
     private ListView listGalaxies;
     @FXML
     private ScrollPane scrollGalaxies;
+    @FXML
+    private MenuItem menuRicercaGalassiaPerRedshift;
+    @FXML
+    private MenuItem menuRicercaGalassiaPerRaggio;
 
     @FXML
     public void initialize() {
@@ -68,36 +73,33 @@ public class AdminControl {
 
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open Resource File");
+                ImportCSV importCSV;
+                PsqlDBHelper psqlDBHelper;
 
                 boolean chosen = false;
 
                 List<File> listOfFile = fileChooser.showOpenMultipleDialog(stage);
-                    //if (listOfFile.size() == 1) {
-                    if(listOfFile != null) {
-                        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-                        for (File file : listOfFile) {
-                            if (file.getName().equals("MRTable3_sample.csv")) {
-                            //if (file.getName().equals("MRTable3_sample.csv")) {
-                                psqlDBHelper.importCSVGalaxies(file.getAbsolutePath());
 
+                    if(listOfFile != null && listOfFile.size() == 1) {
+
+                        switch(listOfFile.get(0).getName()) {
+                            case "MRTable3_sample.csv":
+                                psqlDBHelper = new PsqlDBHelper();
+                                importCSV = new ImportCSVGalaxy();
+                                importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                                 ObservableList<Galaxy> list = retrieveGalaxies();
-
                                 listGalaxies.setItems(list);
                                 listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
-                                chosen = true;
-                            }
-                            else {
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Attenzione!");
-                                alert.setHeaderText(null);
-                                alert.setContentText("Scegli il file che contiene il catalogo delle galassie");
-                                alert.showAndWait();
-                            }
+                                break;
+                            case "MRTable4_Flux.csv":
+                                psqlDBHelper = new PsqlDBHelper();
+                                importCSV = new ImportCSVFlux();
+
                         }
                     } else {
                     /*L'utente ha cliccato su Annulla*/
                         System.out.println("Lista vuota");
-                        }
+                    }
                 }
 
         });
@@ -106,6 +108,20 @@ public class AdminControl {
             @Override
             public void handle(ActionEvent event) {
                 SearchGalaxyForNameView searchGalaxyForNameView = new SearchGalaxyForNameView();
+            }
+        });
+
+        menuRicercaGalassiaPerRedshift.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchGalaxyForRedshiftView searchGalaxyForRedshiftView = new SearchGalaxyForRedshiftView();
+            }
+        });
+
+        menuRicercaGalassiaPerRaggio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchGalaxyForRadiusView searchGalaxyForRadius = new SearchGalaxyForRadiusView();
             }
         });
 
@@ -122,6 +138,7 @@ public class AdminControl {
     private ObservableList<Galaxy> retrieveGalaxies() {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB();
+        psqlDBHelper.closeConnection();
         return obs;
     }
 
