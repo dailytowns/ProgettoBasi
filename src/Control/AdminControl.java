@@ -6,10 +6,7 @@ import Helper.ImportCSVFlux;
 import Helper.ImportCSVGalaxy;
 import Helper.PsqlDBHelper;
 import Model.Galaxy;
-import View.GalaxyCell;
-import View.InsertUserView;
-import View.SearchGalaxyForNameView;
-import View.SearchGalaxyForRedshiftView;
+import View.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,6 +49,8 @@ public class AdminControl {
     private ScrollPane scrollGalaxies;
     @FXML
     private MenuItem menuRicercaGalassiaPerRedshift;
+    @FXML
+    private MenuItem menuRicercaGalassiaPerRaggio;
 
     @FXML
     public void initialize() {
@@ -116,6 +115,13 @@ public class AdminControl {
             @Override
             public void handle(ActionEvent event) {
                 SearchGalaxyForRedshiftView searchGalaxyForRedshiftView = new SearchGalaxyForRedshiftView();
+            }
+        });
+
+        menuRicercaGalassiaPerRaggio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchGalaxyForRadiusView searchGalaxyForRadius = new SearchGalaxyForRadiusView();
             }
         });
 

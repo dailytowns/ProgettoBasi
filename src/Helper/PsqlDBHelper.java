@@ -1,8 +1,6 @@
 package Helper;
 
-import Model.Galaxy;
-import Model.User;
-import Model.UserHib;
+import Model.*;
 import com.opencsv.CSVReader;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
@@ -185,6 +183,94 @@ public class PsqlDBHelper {
         return obs;
     }
 
+    public ObservableList<Galaxy> retrieveGalaxiesDB(Double redshiftValue, String lgt) {
+        ObservableList<Galaxy> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia WHERE redshift " + lgt + " " + redshiftValue + ";" );
+            while ( rs.next() ) {
+                String nome = rs.getString("nome");
+                String nomeAlternativo = rs.getString("nomealt");
+                double redshift  = rs.getDouble("redshift");
+                String classeSpettrale = rs.getString("classespettrale");
+                Galaxy galaxy = new Galaxy(nome, nomeAlternativo, redshift);
+                obs.add(galaxy);
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
+    public ObservableList<Galaxy> retrieveGalaxiesDB(Declination declination, RightAscension rightAscension,
+                                                     int number, double radius) {
+        ObservableList<Galaxy> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+        AngularCoordinate acPoint = new AngularCoordinate(declination, rightAscension);
+        double relativeDistance;
+        int i = 0; //Il contatore serve per limitarci alle prime number galassie trovate
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * " +
+                    " FROM galassia INNER JOIN coordinateangolari ON galassia.nome = coordinateangolari.nomegalassia" );
+            while ( rs.next() ) {
+                if(i < number) {
+                    String nomeGalassia = rs.getString("nome");
+                    String nomealt = rs.getString("nomealt");
+                    Double redshift = rs.getDouble("redshift");
+                    /*String classeSpettrale = rs.getString("classespettrale");*/
+                    String sign = rs.getString("decsign");
+                    Integer decDegrees = rs.getInt("decdeg");
+                    Integer decMinutes = rs.getInt("decmin");
+                    Double decSeconds = rs.getDouble("decsec");
+                    Integer arHours = rs.getInt("arh");
+                    Integer arMinutes = rs.getInt("arm");
+                    Double arSeconds = rs.getDouble("ars");
+
+                    AngularCoordinate acGalaxy = new AngularCoordinate(new Declination(sign, decDegrees, decMinutes, decSeconds),
+                            new RightAscension(arHours, arMinutes, arSeconds));
+                    relativeDistance = AngularCoordinate.computeDistanceBetweenCoordinates(acGalaxy, acPoint);
+                    if(relativeDistance <= radius){
+                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift);
+                        obs.add(galaxy);
+                    }
+
+                    i++;
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
     public void insertUser(User user) {
         String sql = "INSERT INTO \"registereduser\" (\"name\", \"surname\", \"email\", \"userid\", \"password\") VALUES ('" + user.getName() + "', '" + user.getSurname() + "', '" +
                             user.getEmail() + "', '" + user.getUserId() + "', '" + user.getPassword() +"');";
@@ -241,7 +327,33 @@ public class PsqlDBHelper {
         }
     }
 
-    public void createTableAscensione() {
+    public void createTableCoordinateAngolari() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE coordinateangolari (" +
+                    "nomegalassia CHARACTER VARYING REFERENCES galassia," +
+                    "ARh INTEGER," +
+                    "ARm INTEGER," +
+                    "ARs DOUBLE PRECISION," +
+                    "decsign CHARACTER VARYING," +
+                    "decdeg INTEGER," +
+                    "decmin INTEGER," +
+                    "decsec DOUBLE PRECISION," +
+                    "PRIMARY KEY (nomegalassia));";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    /*public void createTableAscensione() {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -283,7 +395,7 @@ public class PsqlDBHelper {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
-    }
+    }*/
 
     public void createTableCaratteristiche() {
         Statement stmt = null;
@@ -383,8 +495,7 @@ public class PsqlDBHelper {
         try {
             DatabaseMetaData dbm = conn.getMetaData();
             // check if "employee" table is there
-            ResultSet tables = null;
-            tables = dbm.getTables(null, null, table, null);
+            ResultSet tables = dbm.getTables(null, null, table, null);
             if (tables.next()) {
                 exist = true;
             } else {

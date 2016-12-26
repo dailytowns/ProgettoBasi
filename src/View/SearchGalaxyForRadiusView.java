@@ -8,14 +8,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Created by feder on 25/12/2016.
+ * Created by feder on 26/12/2016.
  */
-public class SearchGalaxyForRedshiftView {
+public class SearchGalaxyForRadiusView {
 
-    public SearchGalaxyForRedshiftView () {
+    public SearchGalaxyForRadiusView () {
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("../resources/fxml/SearchGalaxyForRedshift.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../resources/fxml/SearchGalaxyForRadius.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

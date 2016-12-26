@@ -37,28 +37,37 @@ public class ImportCSVGalaxy extends ImportCSV {
 
         try {
             while ((headerLine = reader.readNext()) != null) {
-                    nextLine = headerLine[0].split(";");
-                    if(nextLine.length != 26)
-                        continue;
-                    System.out.println("headerLine " + nextLine[0]);
-                    System.out.println(nextLine.length);
-                    System.out.println("Prima di sql");
+                nextLine = headerLine[0].split(";");
+                if(nextLine.length != 26)
+                    continue;
+                System.out.println("headerLine " + nextLine[0]);
+                System.out.println(nextLine.length);
+                System.out.println("Prima di sql");
 
-                    psqlDBHelper.insertRecord("INSERT INTO galassia(nome, nomealt, redshift, classespettrale) VALUES ('"
-                            + nextLine[0] + "', '" + nextLine[25] + "', " + nextLine[8] + ", '" + nextLine[11] + "');");
+                psqlDBHelper.insertRecord("INSERT INTO galassia(nome, nomealt, redshift, classespettrale) VALUES ('"
+                        + nextLine[0] + "', '" + nextLine[25] + "', " + nextLine[8] + ", '" + nextLine[11] + "');");
                 System.out.println("DOPO GALASSIA");
-                    psqlDBHelper.insertRecord("INSERT INTO declinazione(nomegalassia, decsign, decdeg, decmin, decsec) VALUES ('"
+
+
+                 /*   psqlDBHelper.insertRecord("INSERT INTO declinazione(nomegalassia, decsign, decdeg, decmin, decsec) VALUES ('"
                             + nextLine[0] + "','" + nextLine[4] + "', " + nextLine[5] + ", " + nextLine[6] + ", " + nextLine[7] + ");");
                 System.out.println("DOPO DECLINAZIONE");
                     psqlDBHelper.insertRecord("INSERT INTO ascensioneretta(nomegalassia, ARh, ARm, ARs) VALUES ('"
                         + nextLine[0] + "', " + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ");");
-                System.out.println("DOPO ASCENSIONE");
+                System.out.println("DOPO ASCENSIONE");*/
 
+                 try {
+                     psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg, decmin, decsec) VALUES ('"
+                             + nextLine[0] + "'," + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ", '" +
+                             nextLine[4] + "', " + nextLine[5] + ", " + nextLine[6] + ", " + nextLine[7] + ");");
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
 
-                   Metallicita metallicita = new Metallicita(nextLine[0], nextLine[22], nextLine[23], nextLine[24]);
-                    psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
-                            + "riferimento) VALUES('" + nextLine[0] + "', " + "'metallicita', " + metallicita.getValore() + ", "
-                            + metallicita.getErrore() + ", " + metallicita.getRiferimento() + ");");
+                Metallicita metallicita = new Metallicita(nextLine[0], nextLine[22], nextLine[23], nextLine[24]);
+                psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
+                        + "riferimento) VALUES('" + nextLine[0] + "', " + "'metallicita', " + metallicita.getValore() + ", "
+                        + metallicita.getErrore() + ", " + metallicita.getRiferimento() + ");");
                 System.out.println("DOPO METALLO");
 
                 /*psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
@@ -66,11 +75,11 @@ public class ImportCSVGalaxy extends ImportCSV {
                         + nextLine[23] + ", " + nextLine[24]+ ");");
                 System.out.println("DOPO METALLO");*/
 
-                    Distanza distanza = new Distanza(nextLine[9], nextLine[10]);
-                    psqlDBHelper.insertRecord("INSERT INTO distanza(nomegalassia, valore, riferimento) VALUES('" +
-                            nextLine[0] + "', " + distanza.getValore() + ", " + distanza.getRiferimento() + ");");
+                Distanza distanza = new Distanza(nextLine[9], nextLine[10]);
+                psqlDBHelper.insertRecord("INSERT INTO distanza(nomegalassia, valore, riferimento) VALUES('" +
+                        nextLine[0] + "', " + distanza.getValore() + ", " + distanza.getRiferimento() + ");");
                 System.out.println("DOPO DISTANZA");
-                    System.out.println("Dopo sql");
+                System.out.println("Dopo sql");
 /*                psqlDBHelper.insertRecord("INSERT INTO distanza(nomegalassia, valore, riferimento) VALUES('" +
                         nextLine[0] + "', " + nextLine[9] + ", " + nextLine[10] + ");");
                 System.out.println("DOPO DISTANZA");
@@ -85,10 +94,8 @@ public class ImportCSVGalaxy extends ImportCSV {
 
     private void resetDB() {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        if(psqlDBHelper.checkTable("declinazione"))
-            psqlDBHelper.deleteTable("declinazione");
-        if(psqlDBHelper.checkTable("ascensioneretta"))
-            psqlDBHelper.deleteTable("ascensioneretta");
+        if(psqlDBHelper.checkTable("coordinateangolari"))
+            psqlDBHelper.deleteTable("coordinateangolari");
         if(psqlDBHelper.checkTable("caratteristichefisiche"))
             psqlDBHelper.deleteTable("caratteristichefisiche");
         if(psqlDBHelper.checkTable("distanza"))
@@ -96,8 +103,7 @@ public class ImportCSVGalaxy extends ImportCSV {
         if(psqlDBHelper.checkTable("galassia"))
             psqlDBHelper.deleteTable("galassia");
         psqlDBHelper.createTableGalassia();
-        psqlDBHelper.createTableDeclinazione();
-        psqlDBHelper.createTableAscensione();
+        psqlDBHelper.createTableCoordinateAngolari();
         psqlDBHelper.createTableCaratteristiche();
         psqlDBHelper.createTableDistanza();
         psqlDBHelper.closeConnection();

@@ -5,32 +5,32 @@ package Model;
  */
 public class Declination {
 
-    private char sign;
-    private int hour;
-    private int minute;
-    private double seconds;
+    private String sign;
+    private Integer degrees;
+    private Integer minute;
+    private Double seconds;
 
-    public Declination(char sign, int hour, int minute, double seconds) {
+    public Declination(String sign, int hour, int minute, double seconds) {
         this.sign = sign;
-        this.hour = hour;
+        this.degrees = hour;
         this.minute = minute;
         this.seconds = seconds;
     }
 
-    public char getSign() {
+    public String getSign() {
         return sign;
     }
 
-    public void setSign(char sign) {
+    public void setSign(String sign) {
         this.sign = sign;
     }
 
-    public int getHour() {
-        return hour;
+    public int getDegrees() {
+        return degrees;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public void setDegrees(int degrees) {
+        this.degrees = degrees;
     }
 
     public int getMinute() {
@@ -49,9 +49,9 @@ public class Declination {
         this.seconds = seconds;
     }
 
-    public static double convertToDegrees(Declination d) {
-        double res = d.getHour() + d.getMinute()/60 + d.getSeconds()/3600;
-        if(d.getSign() == '-')
+    public static Double convertToDegrees(Declination d) {
+        double res = d.getDegrees() + d.getMinute()/60 + d.getSeconds()/3600;
+        if(d.getSign() == "-")
             return res*(-1);
         return res;
     }
