@@ -449,7 +449,7 @@ public class PsqlDBHelper {
 
         try {
             DatabaseMetaData dbm = conn.getMetaData();
-            // check if "employee" table is there
+            // Controlla se esiste la tabella "table"
             ResultSet tables = dbm.getTables(null, null, table, null);
             if (tables.next()) {
                 exist = true;
@@ -463,11 +463,52 @@ public class PsqlDBHelper {
     }
 
     public void createTableFlusso() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
 
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE flusso (" +
+                    "nomegalassia CHARACTER VARYING," +
+                    "tipologia CHARACTER VARYING," +
+                    "upperlimit CHARACTER VARYING," +
+                    "atomo CHARACTER VARYING," +
+                    "valore DOUBLE PRECISION," +
+                    "aperture CHARACTER VARYING," +
+                    "errore DOUBLE PRECISION);";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
     }
 
-    public void createTableAtomo() {
+    public void createTableFlussoContinuo() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
 
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE flussocontinuo (" +
+                    "nomegalassia CHARACTER VARYING," +
+                    "tipologia CHARACTER VARYING," +
+                    "upperlimit CHARACTER VARYING," +
+                    "atomo CHARACTER VARYING," +
+                    "valore DOUBLE PRECISION," +
+                    "aperture CHARACTER VARYING," +
+                    "ref160 CHARACTER VARYING," +
+                    "errore DOUBLE PRECISION);";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
     }
 
     public static void main(String[] args) {
