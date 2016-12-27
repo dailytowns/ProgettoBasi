@@ -256,7 +256,6 @@ public class PsqlDBHelper {
                         Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift);
                         obs.add(galaxy);
                     }
-
                     i++;
                 }
             }
@@ -352,50 +351,6 @@ public class PsqlDBHelper {
             System.exit(0);
         }
     }
-
-    /*public void createTableAscensione() {
-        Statement stmt = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn.setAutoCommit(true);
-            System.out.println("Opened database successfully");
-
-            stmt = conn.createStatement();
-            String sql = "CREATE TABLE ascensioneretta (" +
-                    "nomegalassia CHARACTER VARYING REFERENCES galassia," +
-                    "ARh INTEGER," +
-                    "ARm INTEGER," +
-                    "ARs DOUBLE PRECISION);";
-            stmt.execute(sql);
-            stmt.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-    }
-
-    public void createTableDeclinazione() {
-        Statement stmt = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            conn.setAutoCommit(true);
-            System.out.println("Opened database successfully");
-
-            stmt = conn.createStatement();
-            String sql = "CREATE TABLE declinazione (" +
-                    "nomegalassia CHARACTER VARYING REFERENCES galassia, " +
-                    "decsign CHARACTER," +
-                    "decdeg INTEGER," +
-                    "decmin INTEGER," +
-                    "decsec DOUBLE PRECISION," +
-                    "PRIMARY KEY (decdeg, decmin, decsec));";
-            stmt.execute(sql);
-            stmt.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-    }*/
 
     public void createTableCaratteristiche() {
         Statement stmt = null;

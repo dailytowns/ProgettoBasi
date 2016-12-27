@@ -94,7 +94,7 @@ public class AdminControl {
                             case "MRTable4_Flux.csv":
                                 psqlDBHelper = new PsqlDBHelper();
                                 importCSV = new ImportCSVFlux();
-
+                                importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                         }
                     } else {
                     /*L'utente ha cliccato su Annulla*/
