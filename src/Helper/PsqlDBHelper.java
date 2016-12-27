@@ -462,6 +462,14 @@ public class PsqlDBHelper {
         return exist;
     }
 
+    public void createTableFlusso() {
+
+    }
+
+    public void createTableAtomo() {
+
+    }
+
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         //psqlDBHelper.searchGalaxyForName("M95");

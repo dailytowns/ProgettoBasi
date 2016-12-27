@@ -6,6 +6,17 @@ package Helper;
 public class ImportCSVFlux extends ImportCSV {
     @Override
     public void importFile(String path) {
+
+
         System.out.println("In importFile flux");
+    }
+
+    private void resetDB() {
+        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+        if(psqlDBHelper.checkTable("flusso"))
+            psqlDBHelper.deleteTable("flusso");
+        psqlDBHelper.createTableFlusso();
+        psqlDBHelper.createTableAtomo();
+        psqlDBHelper.closeConnection();
     }
 }
