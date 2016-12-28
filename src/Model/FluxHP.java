@@ -3,7 +3,7 @@ package Model;
 /**
  * Created by feder on 27/12/2016.
  */
-public class Flux {
+public class FluxHP extends Flux {
 
     private String nomeGalassia;
     private String tipologia;
@@ -13,7 +13,9 @@ public class Flux {
     private String aperture;
     private Double error;
 
-    public Flux(String nomeGalassia, String tipologia, String atomo, String valore, String upperLimit, String error) {
+    public FluxHP(String nomeGalassia, String tipologia, String atomo, String valore, String upperLimit,
+                  String aperture, String error) {
+        super(nomeGalassia, tipologia, atomo, valore, upperLimit, error);
         this.nomeGalassia = nomeGalassia;
         this.tipologia = tipologia;
         this.atomo = atomo;
@@ -105,5 +107,4 @@ public class Flux {
     public void setUpperLimit(String upperLimit) {
         this.upperLimit = upperLimit;
     }
-
 }

@@ -23,11 +23,16 @@
                   <MenuItem fx:id="menuImporta" mnemonicParsing="false" text="Importa file CSV..." />
                </items>
         </Menu>
-            <Menu mnemonicParsing="false" text="Ricerca">
+            <Menu mnemonicParsing="false" text="Ricerca galassie">
               <items>
                 <MenuItem fx:id="menuRicercaGalassiaPerNome" mnemonicParsing="false" text="Ricerca galassie per nome..." />
                   <MenuItem fx:id="menuRicercaGalassiaPerRedshift" mnemonicParsing="false" text="Ricerca galassie per redshift..." />
                   <MenuItem fx:id="menuRicercaGalassiaPerRaggio" mnemonicParsing="false" text="Ricerca galassie per raggio..." />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Ricerca flussi">
+              <items>
+                <MenuItem fx:id="menuRicercaValErrFlusso" mnemonicParsing="false" text="Ricerca flussi di una galassia..." />
               </items>
             </Menu>
       </menus>

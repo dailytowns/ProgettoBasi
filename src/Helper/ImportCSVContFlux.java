@@ -1,7 +1,6 @@
 package Helper;
 
-import Model.ContFlux;
-import Model.Flux;
+import Model.ContFluxHP;
 import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
@@ -36,7 +35,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 if(nextLine.length != 22)
                     continue;
 
-                ContFlux fluxOIII52 = new ContFlux(nextLine[0], "cHP", "OIII52",
+                ContFluxHP fluxOIII52 = new ContFluxHP(nextLine[0], "cHP", "OIII52",
                         nextLine[1], "NO", nextLine[21], nextLine[20], nextLine[2]);
                 psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, " +
                         "aperture, ref160, errore) VALUES ('" + fluxOIII52.getNomeGalassia() + "', 'cHP', '" + fluxOIII52.getUpperLimit() + "', 'OIII52'," +
@@ -44,7 +43,7 @@ public class ImportCSVContFlux extends ImportCSV {
 
 
                 try {
-                    ContFlux fluxNIII = new ContFlux(nextLine[0], "cHP", "NIII57",
+                    ContFluxHP fluxNIII = new ContFluxHP(nextLine[0], "cHP", "NIII57",
                             nextLine[3], "NO", nextLine[21], nextLine[20], nextLine[4]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxNIII.getNomeGalassia() + "', 'cHP', '" + fluxNIII.getUpperLimit() + "'" +
@@ -55,7 +54,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 }
 
                 try {
-                    ContFlux fluxOI = new ContFlux(nextLine[0], "cHP", "OI63",
+                    ContFluxHP fluxOI = new ContFluxHP(nextLine[0], "cHP", "OI63",
                             nextLine[6], nextLine[5], nextLine[21], nextLine[20], nextLine[7]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxOI.getNomeGalassia() + "', 'cHP', '" + fluxOI.getUpperLimit() + "'" +
@@ -66,7 +65,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 }
 
                 try {
-                    ContFlux fluxOIII88 = new ContFlux(nextLine[0], "cHP", "OIII88",
+                    ContFluxHP fluxOIII88 = new ContFluxHP(nextLine[0], "cHP", "OIII88",
                             nextLine[9], nextLine[8], nextLine[21], nextLine[20], nextLine[10]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxOIII88.getNomeGalassia() + "', 'cHP', '" + fluxOIII88.getUpperLimit() + "'" +
@@ -77,7 +76,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 }
 
                 try {
-                    ContFlux fluxNII122 = new ContFlux(nextLine[0], "cHP", "NIII122",
+                    ContFluxHP fluxNII122 = new ContFluxHP(nextLine[0], "cHP", "NIII122",
                             nextLine[12], nextLine[11], nextLine[21], nextLine[20], nextLine[13]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxNII122.getNomeGalassia() + "', 'cHP', '" + fluxNII122.getUpperLimit() + "'" +
@@ -88,7 +87,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 }
 
                 try {
-                    ContFlux fluxOI145 = new ContFlux(nextLine[0], "cHP", "OI145",
+                    ContFluxHP fluxOI145 = new ContFluxHP(nextLine[0], "cHP", "OI145",
                             nextLine[15], nextLine[14], nextLine[21], nextLine[20], nextLine[16]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxOI145.getNomeGalassia() + "', 'cHP', '" + fluxOI145.getUpperLimit() + "'" +
@@ -99,7 +98,7 @@ public class ImportCSVContFlux extends ImportCSV {
                 }
 
                 try {
-                    ContFlux fluxCII158 = new ContFlux(nextLine[0], "cHP", "CII158",
+                    ContFluxHP fluxCII158 = new ContFluxHP(nextLine[0], "cHP", "CII158",
                             nextLine[18], nextLine[17], nextLine[21], nextLine[20], nextLine[19]);
                     psqlDBHelper.insertRecord("INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, aperture, ref160, errore) " +
                             "VALUES ('" + fluxCII158.getNomeGalassia() + "', 'cHP', '" + fluxCII158.getUpperLimit() + "'" +

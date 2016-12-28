@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<AnchorPane fx:id="basePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="116.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="lblNomeGalassia" prefHeight="119.0" prefWidth="118.0" text="NomeGalassia" />
+            <Label fx:id="lblErrore" prefHeight="116.0" prefWidth="64.0" text="Errore" />
+            <Label fx:id="lblUpperLimit" prefHeight="116.0" prefWidth="92.0" text="UpperLimit" />
+            <Label fx:id="lblAtomo" prefHeight="116.0" prefWidth="66.0" text="Atomo" />
+            <Label fx:id="lblValore" prefHeight="118.0" prefWidth="140.0" text="Valore" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

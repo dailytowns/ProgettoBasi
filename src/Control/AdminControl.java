@@ -1,10 +1,7 @@
 package Control;
 
 
-import Helper.ImportCSV;
-import Helper.ImportCSVFlux;
-import Helper.ImportCSVGalaxy;
-import Helper.PsqlDBHelper;
+import Helper.*;
 import Model.Galaxy;
 import View.*;
 import javafx.collections.FXCollections;
@@ -51,6 +48,8 @@ public class AdminControl {
     private MenuItem menuRicercaGalassiaPerRedshift;
     @FXML
     private MenuItem menuRicercaGalassiaPerRaggio;
+    @FXML
+    private MenuItem menuRicercaValErrFlusso;
 
     @FXML
     public void initialize() {
@@ -84,7 +83,6 @@ public class AdminControl {
 
                         switch(listOfFile.get(0).getName()) {
                             case "MRTable3_sample.csv":
-                                psqlDBHelper = new PsqlDBHelper();
                                 importCSV = new ImportCSVGalaxy();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                                 ObservableList<Galaxy> list = retrieveGalaxies();
@@ -92,9 +90,18 @@ public class AdminControl {
                                 listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
                                 break;
                             case "MRTable4_Flux.csv":
-                                psqlDBHelper = new PsqlDBHelper();
                                 importCSV = new ImportCSVFlux();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                            case "MRTable6_cont.csv":
+                                importCSV = new ImportCSVContFlux();
+                                importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                            case "MRTable8_irs.csv":
+                                importCSV = new ImportCSVFluxLineSpitzer();
+                                importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                            case "MRTable11_C_3x3_5x5_flux.csv":
+                                importCSV = new ImportCSVFlux();
+                                importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+
                         }
                     } else {
                     /*L'utente ha cliccato su Annulla*/
@@ -122,6 +129,13 @@ public class AdminControl {
             @Override
             public void handle(ActionEvent event) {
                 SearchGalaxyForRadiusView searchGalaxyForRadius = new SearchGalaxyForRadiusView();
+            }
+        });
+
+        menuRicercaValErrFlusso.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchFluxValErrView searchFluxValErrView = new SearchFluxValErrView();
             }
         });
 

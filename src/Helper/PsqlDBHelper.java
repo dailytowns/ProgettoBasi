@@ -1,6 +1,7 @@
 package Helper;
 
 import Model.*;
+import View.FluxCell;
 import com.opencsv.CSVReader;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
@@ -511,6 +512,69 @@ public class PsqlDBHelper {
         }
     }
 
+    public void createTableFlussoSp() {
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(true);
+            System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE flussosp (" +
+                    "nomegalassia CHARACTER VARYING," +
+                    "tipologia CHARACTER VARYING," +
+                    "upperlimit CHARACTER VARYING," +
+                    "atomo CHARACTER VARYING," +
+                    "valore DOUBLE PRECISION," +
+                    "errore DOUBLE PRECISION," +
+                    "irsmode CHARACTER VARYING);";
+            stmt.execute(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
+    public ObservableList retrieveValErrFluxDB(String galaxy, String[] atoms) {
+        ObservableList<FluxCellData> obs = FXCollections.observableArrayList();
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            /*conn = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
+                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully")
+            stmt = conn.createStatement();
+            int i = 0;
+            ResultSet rs = null;
+            while(i<atoms.length) {
+                rs = stmt.executeQuery("SELECT * FROM (SELECT * FROM flusso WHERE nomegalassia LIKE " +
+                        "'" + galaxy + "%" + "') AS TEMP WHERE TEMP.atomo='" + atoms[i] + "';");
+                while (rs.next()) {
+                    String nomeGalassia = rs.getString("nomegalassia");
+                    String atomo = rs.getString("atomo");
+                    String upperLimit = rs.getString("upperlimit");
+                    Double valore = rs.getDouble("valore");
+                    Double errore = rs.getDouble("errore");
+                    FluxCellData flux = new FluxCellData(nomeGalassia, atomo, errore, upperLimit, valore);
+                    obs.add(flux);
+                }
+                i++;
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return obs;
+    }
+
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         //psqlDBHelper.searchGalaxyForName("M95");
@@ -519,5 +583,6 @@ public class PsqlDBHelper {
         //psqlDBHelper.createTableGalassia();
         //psqlDBHelper.checkGalaxyTable();
         //psqlDBHelper.importCSVGalaxies("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\MRTable3_sample.csv");
-    }
+        psqlDBHelper.retrieveValErrFluxDB("IZw1", new String[]{"OI63", "CII158"});
+    };
 }
