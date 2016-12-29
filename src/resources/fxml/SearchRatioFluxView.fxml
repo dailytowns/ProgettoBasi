@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.SearchRatioFluxViewControl">
+   <children>
+      <TextField fx:id="txtGalassia" layoutX="54.0" layoutY="44.0" promptText="Nome prima galassia" />
+      <TextField fx:id="txtPrimaRiga" layoutX="234.0" layoutY="44.0" promptText="Prima riga" />
+      <TextField fx:id="txtSecondaRiga" layoutX="234.0" layoutY="90.0" promptText="Seconda riga" />
+      <Button fx:id="btnOK" layoutX="234.0" layoutY="149.0" mnemonicParsing="false" text="OK" />
+      <Label layoutX="54.0" layoutY="252.0" text="Il rapporto tra i due flussi è" />
+      <Label fx:id="lblRapporto" layoutX="366.0" layoutY="252.0" text="ValoreRapporto" />
+      <Label fx:id="lblLimit" layoutX="54.0" layoutY="296.0" prefHeight="17.0" prefWidth="401.0" text="Upper o LowerLimit?" />
+      <ComboBox fx:id="comboFluxType1" layoutX="418.0" layoutY="44.0" prefWidth="150.0" promptText="Tipo flusso">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="flusso" />
+               <String fx:value="flussocontinuo" />
+               <String fx:value="flussosp" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+      <ComboBox fx:id="comboFluxType2" layoutX="418.0" layoutY="90.0" prefWidth="150.0" promptText="Tipo flusso">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="flusso" />
+               <String fx:value="flussocontinuo" />
+               <String fx:value="flussosp" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+   </children>
+</AnchorPane>

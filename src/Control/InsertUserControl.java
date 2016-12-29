@@ -74,9 +74,6 @@ public class InsertUserControl {
                 numbers++;
             i++;
         }
-        if(numbers < 2)
-            return false;
-
-        return true;
+        return numbers >= 2;
     }
 }

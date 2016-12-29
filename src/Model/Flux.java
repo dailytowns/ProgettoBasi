@@ -39,6 +39,10 @@ public class Flux {
     }
 
     protected boolean checkValue(String value) {
+
+        if(value == null)
+            return false;
+
         int i = 0;
 
         while(i < value.length()) {
@@ -54,32 +58,16 @@ public class Flux {
         return error;
     }
 
-    public void setError(Double error) {
-        this.error = error;
-    }
-
     public String getAperture() {
         return aperture;
-    }
-
-    public void setAperture(String aperture) {
-        this.aperture = aperture;
     }
 
     public String getNomeGalassia() {
         return nomeGalassia;
     }
 
-    public void setNomeGalassia(String nomeGalassia) {
-        this.nomeGalassia = nomeGalassia;
-    }
-
     public String getTipologia() {
         return tipologia;
-    }
-
-    public void setTipologia(String tipologia) {
-        this.tipologia = tipologia;
     }
 
     public String getAtomo() {
@@ -100,10 +88,6 @@ public class Flux {
 
     public String getUpperLimit() {
         return upperLimit;
-    }
-
-    public void setUpperLimit(String upperLimit) {
-        this.upperLimit = upperLimit;
     }
 
 }

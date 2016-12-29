@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.util.List;
+
 /**
  * Created by feder on 27/12/2016.
  */
@@ -22,7 +24,11 @@ public class SearchFluxValErrControl {
     @FXML
     private TextField txtAtoms;
     @FXML
-    private ListView listFluxes;
+    private ListView listFluxesRHP;
+    @FXML
+    private ListView listFluxesCont;
+    @FXML
+    private ListView listFluxesSpitzer;
     @FXML
     private Button btnOK;
 
@@ -35,18 +41,27 @@ public class SearchFluxValErrControl {
                 String galaxy = txtGalaxy.getText();
                 String[] atoms = txtAtoms.getText().split(";");
 
-                ObservableList<Galaxy> list = retrieveValErrFlux(galaxy, atoms);
-                listFluxes.setItems(list);
-                listFluxes.setCellFactory(fluxCell -> new FluxCell());
+                ObservableList<Galaxy> list = retrieveValErrFlux(galaxy, atoms, "flusso");
+                listFluxesRHP.setItems(list);
+                listFluxesRHP.setCellFactory(fluxCell -> new FluxCell());
+
+                list = retrieveValErrFlux(galaxy, atoms, "flussocontinuo");
+                listFluxesCont.setItems(list);
+                listFluxesCont.setCellFactory(fluxCell -> new FluxCell());
+
+                list = retrieveValErrFlux(galaxy, atoms, "flussosp");
+                listFluxesSpitzer.setItems(list);
+                listFluxesSpitzer.setCellFactory(fluxCell -> new FluxCell());
+
             }
         });
 
 
     }
 
-    private ObservableList retrieveValErrFlux(String galaxy, String[] atoms) {
+    private ObservableList retrieveValErrFlux(String galaxy, String[] atoms, String table) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveValErrFluxDB(galaxy, atoms);
+        ObservableList<Galaxy> obs = psqlDBHelper.retrieveValErrFluxDB(galaxy, atoms, table);
         psqlDBHelper.closeConnection();
         return obs;
     }

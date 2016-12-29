@@ -50,6 +50,8 @@ public class AdminControl {
     private MenuItem menuRicercaGalassiaPerRaggio;
     @FXML
     private MenuItem menuRicercaValErrFlusso;
+    @FXML
+    private MenuItem menuRapporti;
 
     @FXML
     public void initialize() {
@@ -136,6 +138,13 @@ public class AdminControl {
             @Override
             public void handle(ActionEvent event) {
                 SearchFluxValErrView searchFluxValErrView = new SearchFluxValErrView();
+            }
+        });
+
+        menuRapporti.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SearchRatioFluxView searchRatioFluxView = new SearchRatioFluxView();
             }
         });
 

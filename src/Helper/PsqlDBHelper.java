@@ -7,6 +7,7 @@ import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -26,7 +27,6 @@ import java.util.*;
  */
 public class PsqlDBHelper {
 
-    private String url = "jdbc:postgresql://localhost:5432/postgres";
     private String user;
     private String password;
     private Connection conn;
@@ -45,7 +45,8 @@ public class PsqlDBHelper {
         props.setProperty("password", "portento123");
 
         try {
-            conn = DriverManager.getConnection(this.url, props);
+            String url = "jdbc:postgresql://localhost:5432/postgres";
+            conn = DriverManager.getConnection(url, props);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,10 +71,7 @@ public class PsqlDBHelper {
             while (rs.next())
                 count++;
 
-            if(count == 1)
-                authenticated = true;
-            else
-                authenticated = false;
+            authenticated = count == 1;
 
             rs.close();
             st.close();
@@ -421,10 +419,7 @@ public class PsqlDBHelper {
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet res = meta.getTables(null, null, "galassia",
                    null);
-            if (res.next()) {
-                result = true;
-            } else
-                result = false;
+            result = res.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -445,6 +440,58 @@ public class PsqlDBHelper {
         }
     }
 
+    public void insertRecord(ContFluxHP contFluxHP) {
+
+        PreparedStatement pstmt = null;
+        try {
+            String query ="INSERT INTO flussocontinuo(nomegalassia, tipologia, upperlimit, atomo, valore, " +
+                    "aperture, ref160, errore) VALUES (?,?,?,?,?,?,?,?);";
+
+            // create PrepareStatement object
+            pstmt = conn.prepareStatement(query);
+            /*NOMEGALASSIA*/
+            pstmt.setString(1, contFluxHP.getNomeGalassia());
+            /*TIPOLOGIA FLUSSO*/
+            pstmt.setString(2, contFluxHP.getTipologia());
+            /*UPPERLIMIT*/
+            if(contFluxHP.getUpperLimit().equals("NO") || contFluxHP.getUpperLimit().equals(null))
+                pstmt.setNull(3, java.sql.Types.VARCHAR);
+            else
+                pstmt.setString(3, contFluxHP.getUpperLimit());
+            /*ATOMO*/
+            pstmt.setString(4, contFluxHP.getAtomo());
+            /*VALORE*/
+            if(contFluxHP.getValore() == null)
+                pstmt.setNull(5, Types.DOUBLE);
+            else
+                pstmt.setDouble(5, contFluxHP.getValore());
+            /*APERTURE*/
+            pstmt.setString(6, contFluxHP.getAperture());
+            /*REF160um*/
+            if(contFluxHP.getRef160um() == null)
+                pstmt.setNull(7, Types.VARCHAR);
+            else
+                pstmt.setString(7, contFluxHP.getRef160um());
+            /*ERRORE*/
+            if(contFluxHP.getError() == null)
+                pstmt.setNull(8, Types.DOUBLE);
+            else
+                pstmt.setDouble(8, contFluxHP.getError());
+
+            // execute query, and return number of rows created
+            int rowCount = pstmt.executeUpdate();
+            System.out.println("rowCount=" + rowCount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean checkTable(String table) {
         boolean exist = true;
 
@@ -452,11 +499,7 @@ public class PsqlDBHelper {
             DatabaseMetaData dbm = conn.getMetaData();
             // Controlla se esiste la tabella "table"
             ResultSet tables = dbm.getTables(null, null, table, null);
-            if (tables.next()) {
-                exist = true;
-            } else {
-                exist = false;
-            }
+            exist = tables.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -536,32 +579,64 @@ public class PsqlDBHelper {
         }
     }
 
-    public ObservableList retrieveValErrFluxDB(String galaxy, String[] atoms) {
-        ObservableList<FluxCellData> obs = FXCollections.observableArrayList();
+    public Flux retrieveValFluxDB (String galaxy, String atom, String table) {
+
+        Flux result = null;
         Statement stmt = null;
 
         try {
             Class.forName("org.postgresql.Driver");
-            /*conn = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/testdb",
-                            "manisha", "123");*/
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully")
+            stmt = conn.createStatement();
+            int i = 0;
+            ResultSet rs = stmt.executeQuery("SELECT * FROM (SELECT * FROM " + table + " WHERE nomegalassia LIKE " +
+                        "'" + galaxy + "%" + "') AS TEMP WHERE TEMP.atomo='" + atom + "';");
+            try {
+                while(rs.next()) {
+                    Double value = rs.getDouble("valore");
+                    String _value = String.valueOf(value);
+                    String upperLimit = rs.getString("upperlimit");
+                    result = new Flux(galaxy, table, atom, _value, upperLimit, null);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+        return result;
+    }
+
+    public ObservableList retrieveValErrFluxDB(String galaxy, String[] atoms, String table) {
+        ObservableList<FluxCellData> obs = FXCollections.observableArrayList();
+
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
             conn.setAutoCommit(false);
             //System.out.println("Opened database successfully")
             stmt = conn.createStatement();
             int i = 0;
             ResultSet rs = null;
             while(i<atoms.length) {
-                rs = stmt.executeQuery("SELECT * FROM (SELECT * FROM flusso WHERE nomegalassia LIKE " +
+                rs = stmt.executeQuery("SELECT * FROM (SELECT * FROM " + table + " WHERE nomegalassia LIKE " +
                         "'" + galaxy + "%" + "') AS TEMP WHERE TEMP.atomo='" + atoms[i] + "';");
-                while (rs.next()) {
-                    String nomeGalassia = rs.getString("nomegalassia");
-                    String atomo = rs.getString("atomo");
-                    String upperLimit = rs.getString("upperlimit");
-                    Double valore = rs.getDouble("valore");
-                    Double errore = rs.getDouble("errore");
-                    FluxCellData flux = new FluxCellData(nomeGalassia, atomo, errore, upperLimit, valore);
-                    obs.add(flux);
+                parseRow(rs, obs);
+
+                if(obs.size() == 0){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Info");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Nessuna riga trovata in " + table);
+                    alert.showAndWait();
                 }
+
                 i++;
             }
             rs.close();
@@ -575,6 +650,23 @@ public class PsqlDBHelper {
         return obs;
     }
 
+    private void parseRow(ResultSet rs, ObservableList<FluxCellData> obs) {
+
+        try {
+            while (rs.next()) {
+                String nomeGalassia = rs.getString("nomegalassia");
+                String atomo = rs.getString("atomo");
+                String upperLimit = rs.getString("upperlimit");
+                Double valore = rs.getDouble("valore");
+                Double errore = rs.getDouble("errore");
+                FluxCellData fluxCellData = new FluxCellData(nomeGalassia, atomo, errore, upperLimit, valore);
+                obs.add(fluxCellData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         //psqlDBHelper.searchGalaxyForName("M95");
@@ -583,6 +675,9 @@ public class PsqlDBHelper {
         //psqlDBHelper.createTableGalassia();
         //psqlDBHelper.checkGalaxyTable();
         //psqlDBHelper.importCSVGalaxies("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\MRTable3_sample.csv");
-        psqlDBHelper.retrieveValErrFluxDB("IZw1", new String[]{"OI63", "CII158"});
-    };
+        //psqlDBHelper.retrieveValErrFluxDB("IZw1", new String[]{"OI63", "CII158"}, "flusso");
+        if(psqlDBHelper.retrieveValFluxDB("Mrk938", "SIII", "flussocontinuo") == null)
+            System.out.println("aoidfodinvodnvosdvnofsvosfn");
+
+    }
 }

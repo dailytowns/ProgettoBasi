@@ -33,6 +33,7 @@
             <Menu mnemonicParsing="false" text="Ricerca flussi">
               <items>
                 <MenuItem fx:id="menuRicercaValErrFlusso" mnemonicParsing="false" text="Ricerca flussi di una galassia..." />
+                  <MenuItem fx:id="menuRapporti" mnemonicParsing="false" text="Rapporti tra flussi..." />
               </items>
             </Menu>
       </menus>

@@ -39,7 +39,7 @@ public class UserHib implements Serializable {
         this.userid = userid;
         this.password = password;
         this.name = name;
-        this.surname = surnname;
+        this.surname = surname;
         this.email = email;
     }
 

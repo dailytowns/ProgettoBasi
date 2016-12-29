@@ -59,7 +59,7 @@ public class FluxCell extends ListCell<FluxCellData> {
             lblErrore.setText(String.valueOf(flux.getError()));
             lblValore.setText(String.valueOf(flux.getValore()));
 
-            if(flux.getUpperLimit().equals("<"))
+            if(isUpperLimit(flux.getUpperLimit()))
                 lblUpperLimit.setText("Sì");
             else
                 lblUpperLimit.setText("No");
@@ -67,6 +67,21 @@ public class FluxCell extends ListCell<FluxCellData> {
             setGraphic(basePane);
         }
 
+    }
+
+    private boolean isUpperLimit(String upperLimit) {
+
+        if(upperLimit==null)
+            return false;
+
+        int i = 0;
+        while (i<upperLimit.length()){
+                if(upperLimit.charAt(i) == '<') {
+                    return true;
+                }
+                i++;
+            }
+        return false;
     }
 
 }
