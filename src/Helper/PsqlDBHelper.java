@@ -122,7 +122,7 @@ public class PsqlDBHelper {
         System.out.println("Records created successfully");
     }
 
-     private void insertRecordsHibernate(UserHib user) {
+    private void insertRecordsHibernate(UserHib user) {
         // A SessionFactory is set up once for an application!
         SessionFactory sessionFactory;
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -141,7 +141,6 @@ public class PsqlDBHelper {
             // so destroy it manually.
             StandardServiceRegistryBuilder.destroy( registry );
         }
-
     }
 
     public ObservableList<Galaxy> retrieveGalaxiesDB() {
@@ -676,8 +675,10 @@ public class PsqlDBHelper {
         //psqlDBHelper.checkGalaxyTable();
         //psqlDBHelper.importCSVGalaxies("C:\\Users\\feder\\Desktop\\ProgettoBasi\\progetto15161\\MRTable3_sample.csv");
         //psqlDBHelper.retrieveValErrFluxDB("IZw1", new String[]{"OI63", "CII158"}, "flusso");
-        if(psqlDBHelper.retrieveValFluxDB("Mrk938", "SIII", "flussocontinuo") == null)
-            System.out.println("aoidfodinvodnvosdvnofsvosfn");
-
+/*        if(psqlDBHelper.retrieveValFluxDB("Mrk938", "SIII", "flussocontinuo") == null)
+            System.out.println("aoidfodinvodnvosdvnofsvosfn");*/
+       // UserHib userHib = new UserHib("doiidov", "dovndv", "dovindv", "dojvboduvd", "odvndov");
+       // psqlDBHelper.insertRecordsHibernate(userHib);
+       // psqlDBHelper.retrieveRecordHibernate();
     }
 }

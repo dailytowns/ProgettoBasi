@@ -2,7 +2,6 @@ package Control;
 
 import Helper.PsqlDBHelper;
 import Model.Flux;
-import Model.Galaxy;
 import View.FluxCell;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

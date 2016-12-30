@@ -1,8 +1,6 @@
 package View;
 
-import Model.Flux;
 import Model.FluxCellData;
-import Model.Galaxy;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

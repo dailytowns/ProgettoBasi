@@ -1,6 +1,5 @@
 package Helper;
 
-import Model.FluxHP;
 import Model.FluxSp;
 import com.opencsv.CSVReader;
 

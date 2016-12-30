@@ -35,7 +35,7 @@ public class UserHib implements Serializable {
 
     }
 
-    public UserHib(String userid, String password, String name, String surnname, String email) {
+    public UserHib(String userid, String password, String name, String surname, String email) {
         this.userid = userid;
         this.password = password;
         this.name = name;
@@ -67,11 +67,11 @@ public class UserHib implements Serializable {
         this.name = name;
     }
 
-    public String getSurnname() {
+    public String getSurname() {
         return surname;
     }
 
-    public void setSurnname(String surnname) {
+    public void setSurname(String surnname) {
         this.surname = surnname;
     }
 

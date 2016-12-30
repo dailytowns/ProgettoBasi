@@ -1,6 +1,5 @@
 package Control;
 
-import Model.Galaxy;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

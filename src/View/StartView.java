@@ -20,19 +20,13 @@ import javafx.stage.Stage;
 
 public class StartView extends Application {
 
-    @FXML private Label lblGalaxian;
-    @FXML private Text txtUser;
-    @FXML private PasswordField pswUser;
-    @FXML private Button btnOk;
-    @FXML private BorderPane basePane;
-
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/StartViewCSS2.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/StartViewCSS.fxml"));
         Scene scene = new Scene(root, 640, 480);
         primaryStage.setScene(scene);
         primaryStage.show();
