@@ -22,6 +22,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javassist.tools.Dump;
+import org.postgresql.copy.CopyManager;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -41,7 +43,6 @@ public class LoginControl {
     @FXML
     public void initialize() {
         btnOk.setDefaultButton(true);
-
         btnOk.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 LoginControl.this.handle(event);

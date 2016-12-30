@@ -14,6 +14,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.postgresql.copy.CopyManager;
 
 import javax.enterprise.event.Event;
 import java.io.FileNotFoundException;
@@ -665,6 +666,8 @@ public class PsqlDBHelper {
             e.printStackTrace();
         }
     }
+
+
 
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
