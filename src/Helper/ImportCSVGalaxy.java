@@ -1,6 +1,8 @@
 package Helper;
 
+import Model.CaratteristicheFisiche;
 import Model.Distanza;
+import Model.Luminosita;
 import Model.Metallicita;
 import com.opencsv.CSVReader;
 
@@ -48,14 +50,6 @@ public class ImportCSVGalaxy extends ImportCSV {
                         + nextLine[0] + "', '" + nextLine[25] + "', " + nextLine[8] + ", '" + nextLine[11] + "');");
                 System.out.println("DOPO GALASSIA");
 
-
-                 /*   psqlDBHelper.insertRecord("INSERT INTO declinazione(nomegalassia, decsign, decdeg, decmin, decsec) VALUES ('"
-                            + nextLine[0] + "','" + nextLine[4] + "', " + nextLine[5] + ", " + nextLine[6] + ", " + nextLine[7] + ");");
-                System.out.println("DOPO DECLINAZIONE");
-                    psqlDBHelper.insertRecord("INSERT INTO ascensioneretta(nomegalassia, ARh, ARm, ARs) VALUES ('"
-                        + nextLine[0] + "', " + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ");");
-                System.out.println("DOPO ASCENSIONE");*/
-
                  try {
                      psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg, decmin, decsec) VALUES ('"
                              + nextLine[0] + "'," + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ", '" +
@@ -64,10 +58,13 @@ public class ImportCSVGalaxy extends ImportCSV {
                      e.printStackTrace();
                  }
 
-                Metallicita metallicita = new Metallicita(nextLine[0], nextLine[22], nextLine[23], nextLine[24]);
-                psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
-                        + "riferimento) VALUES('" + nextLine[0] + "', " + "'metallicita', " + metallicita.getValore() + ", "
-                        + metallicita.getErrore() + ", " + metallicita.getRiferimento() + ");");
+                Metallicita metallicita = new Metallicita(nextLine[22], nextLine[23], nextLine[24]);
+                Luminosita luminosita = new Luminosita(nextLine[13], nextLine[15]);
+                CaratteristicheFisiche caratteristicheFisiche = new CaratteristicheFisiche(nextLine[0], metallicita, luminosita);
+                psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, valoremet, erroremet, "
+                        + "riferimentomet, valorelum, riferimentolum) VALUES('" + nextLine[0] + "', " +
+                        metallicita.getValore() + ", "+ metallicita.getErrore() + ", " + metallicita.getRiferimento() +
+                        ", " + luminosita.getValore() + ", " + luminosita.getRiferimento() + ");");
                 System.out.println("DOPO METALLO");
 
                 /*psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
@@ -75,11 +72,11 @@ public class ImportCSVGalaxy extends ImportCSV {
                         + nextLine[23] + ", " + nextLine[24]+ ");");
                 System.out.println("DOPO METALLO");*/
 
-                Distanza distanza = new Distanza(nextLine[9], nextLine[10]);
+                /*Distanza distanza = new Distanza(nextLine[9], nextLine[10]);
                 psqlDBHelper.insertRecord("INSERT INTO distanza(nomegalassia, valore, riferimento) VALUES('" +
                         nextLine[0] + "', " + distanza.getValore() + ", " + distanza.getRiferimento() + ");");
                 System.out.println("DOPO DISTANZA");
-                System.out.println("Dopo sql");
+                System.out.println("Dopo sql");*/
 /*                psqlDBHelper.insertRecord("INSERT INTO distanza(nomegalassia, valore, riferimento) VALUES('" +
                         nextLine[0] + "', " + nextLine[9] + ", " + nextLine[10] + ");");
                 System.out.println("DOPO DISTANZA");

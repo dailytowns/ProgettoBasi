@@ -1,29 +1,22 @@
 package Model;
 
 /**
- * Created by feder on 24/12/2016.
+ * Created by feder on 31/12/2016.
  */
-
-public class Metallicita {
+public class Luminosita {
 
     private Double valore;
-    private Double errore;
     private Integer riferimento;
 
-    public Metallicita(String valore, String errore, String riferimento) {
-        controllaValori(valore, errore, riferimento);
+    public Luminosita(String valore, String riferimento) {
+        controllaValori(valore, riferimento);
     }
-
-    private void controllaValori(String valore, String errore, String riferimento) {
+    private void controllaValori(String valore, String riferimento) {
 
         if(checkValue(valore))
             this.valore = Double.parseDouble(valore);
         else
             this.valore = null;
-        if(checkValue(errore))
-            this.errore = Double.parseDouble(errore);
-        else
-            this.errore = null;
         if(checkValue(riferimento))
             this.riferimento = Integer.parseInt(riferimento);
         else
@@ -45,10 +38,6 @@ public class Metallicita {
 
     public Double getValore() {
         return valore;
-    }
-
-    public Double getErrore() {
-        return errore;
     }
 
     public Integer getRiferimento() {

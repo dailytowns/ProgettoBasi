@@ -2,6 +2,7 @@ package Control;
 
 import Helper.PsqlDBHelper;
 import Model.Galaxy;
+import Model.GalaxyData;
 import View.GalaxyFoundView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,10 +34,10 @@ public class SearchGalaxyControl {
             @Override
             public void handle(ActionEvent event) {
                 PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-                Galaxy galaxy = psqlDBHelper.searchGalaxyForName(txtSearchGalaxy.getText());
+                GalaxyData galaxy = psqlDBHelper.searchGalaxyForName(txtSearchGalaxy.getText());
 
-                if(!galaxy.equals(null)) {
-                    GalaxyFoundView galaxyFoundView = new GalaxyFoundView(galaxy.getName(), galaxy.getAltName(), galaxy.getRedshift());
+                if(galaxy!=null) {
+                    GalaxyFoundView galaxyFoundView = new GalaxyFoundView(galaxy);
                 }
             }
         });

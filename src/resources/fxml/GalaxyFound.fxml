@@ -4,30 +4,48 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.GalaxyFoundControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.GalaxyFoundControl">
    <children>
-      <Label layoutX="52.0" layoutY="99.0" prefHeight="17.0" prefWidth="91.0" text="Nome">
+      <Label layoutX="24.0" layoutY="99.0" prefHeight="17.0" prefWidth="42.0" text="Nome">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="226.0" layoutY="99.0" text="Nome alternativo">
-         <font>
-            <Font name="System Italic" size="12.0" />
-         </font>
-      </Label>
-      <Label layoutX="457.0" layoutY="99.0" text="Redshift">
+      <Label layoutX="93.0" layoutY="99.0" text="Redshift">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </Label>
       <Label layoutX="206.0" layoutY="29.0" text="Galassia trovata">
          <font>
-            <Font name="Kristen ITC" size="24.0" />
+            <Font name="Book Antiqua" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="lblNomeGalassia" layoutX="52.0" layoutY="145.0" text="Label" />
-      <Label fx:id="lblNomeAltGalassia" layoutX="226.0" layoutY="145.0" text="Label" />
-      <Label fx:id="lblRedshiftGalassia" layoutX="457.0" layoutY="145.0" text="Label" />
+      <Label fx:id="lblNomeGalassia" layoutX="24.0" layoutY="145.0" text="Label" />
+      <Label fx:id="lblRedshiftGalassia" layoutX="100.0" layoutY="145.0" text="Label" />
+      <Label layoutX="170.0" layoutY="99.0" text="Luminosità" />
+      <Label layoutX="256.0" layoutY="99.0" text="RifLuminosità" />
+      <Label layoutX="357.0" layoutY="99.0" text="Metallicità" />
+      <Label layoutX="475.0" layoutY="99.0" text="RifMetallicità" />
+      <Label fx:id="lblLuminosita" layoutX="185.0" layoutY="145.0" text="Label" />
+      <Label fx:id="lblRifLuminosita" layoutX="278.0" layoutY="145.0" text="Label" />
+      <Label fx:id="lblMetallicita" layoutX="371.0" layoutY="145.0" text="Label" />
+      <Label fx:id="lblRifMetallicita" layoutX="502.0" layoutY="145.0" text="Label" />
+      <Label layoutX="59.0" layoutY="210.0" text="Declinazione" />
+      <Label layoutX="79.0" layoutY="245.0" text="Segno" />
+      <Label layoutX="79.0" layoutY="275.0" text="Gradi" />
+      <Label layoutX="79.0" layoutY="301.0" text="Minuti" />
+      <Label layoutX="79.0" layoutY="327.0" text="Secondi" />
+      <Label layoutX="419.0" layoutY="210.0" text="Ascensione Retta" />
+      <Label layoutX="371.0" layoutY="275.0" text="Ore" />
+      <Label layoutX="371.0" layoutY="301.0" text="Minuti" />
+      <Label layoutX="371.0" layoutY="327.0" text="Secondi" />
+      <Label fx:id="lblDecDeg" layoutX="178.0" layoutY="275.0" text="Label" />
+      <Label fx:id="lblDecMin" layoutX="178.0" layoutY="301.0" text="Label" />
+      <Label fx:id="lblDecSec" layoutX="178.0" layoutY="327.0" text="Label" />
+      <Label fx:id="lblARh" layoutX="488.0" layoutY="275.0" text="Label" />
+      <Label fx:id="lblARm" layoutX="488.0" layoutY="301.0" text="Label" />
+      <Label fx:id="lblARs" layoutX="488.0" layoutY="327.0" text="Label" />
+      <Label fx:id="lblDecSign" layoutX="178.0" layoutY="245.0" text="Label" />
    </children>
 </AnchorPane>

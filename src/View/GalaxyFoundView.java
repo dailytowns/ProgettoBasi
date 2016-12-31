@@ -1,6 +1,8 @@
 package View;
 
 import Control.GalaxyFoundControl;
+import Model.Galaxy;
+import Model.GalaxyData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,7 +18,7 @@ import java.io.IOException;
  */
 public class GalaxyFoundView {
 
-    public GalaxyFoundView (String name, String altName, double redshift) {
+    public GalaxyFoundView (GalaxyData galaxyData) {
         Parent root = null;
         FXMLLoader fxmlLoader = null;
         try {
@@ -26,9 +28,20 @@ public class GalaxyFoundView {
             e1.printStackTrace();
         }
         GalaxyFoundControl controller = fxmlLoader.getController();
-        controller.setGalaxyName(name);
-        controller.setGalaxyAltName(altName);
-        controller.setRedshift(redshift);
+        controller.setLblGalaxyName(galaxyData.getNomeGalassia());
+        controller.setLblRedshift(galaxyData.getRedshift());
+        controller.setLblLuminosita(galaxyData.getCaratteristicheFisiche().getLuminosita().getValore());
+        controller.setLblMetallicita(galaxyData.getCaratteristicheFisiche().getMetallicita().getValore());
+        controller.setLblRifLuminosita(galaxyData.getCaratteristicheFisiche().getLuminosita().getRiferimento());
+        controller.setLblRifMetallicita(galaxyData.getCaratteristicheFisiche().getMetallicita().getRiferimento());
+        controller.setLblARh(galaxyData.getCoordinateAngolari().getRightAscension().getHour());
+        controller.setLblARm(galaxyData.getCoordinateAngolari().getRightAscension().getMinute());
+        controller.setLblARs(galaxyData.getCoordinateAngolari().getRightAscension().getSeconds());
+        controller.setLblDecDeg(galaxyData.getCoordinateAngolari().getDeclination().getDegrees());
+        controller.setLblDecMin(galaxyData.getCoordinateAngolari().getDeclination().getMinute());
+        controller.setLblDecSec(galaxyData.getCoordinateAngolari().getDeclination().getSeconds());
+        controller.setLblDecSign(galaxyData.getCoordinateAngolari().getDeclination().getSign());
+
         Scene newScene = new Scene(root, 640, 480);
         Stage newStage = new Stage();
         newStage.setScene(newScene);

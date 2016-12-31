@@ -333,8 +333,12 @@
 			\textbf{RV1} Lo user-id \textit{deve} avere un numero minimo di caratteri pari a 6\newline
 			\textbf{RV2} La password di un utente amministratore \textit{deve} avere un numero minimo di caratteri pari a 9 e \textit{deve} contenere almeno un numero\newline
 			%lower-limit
-			\textbf{RV3} L'upper-limit viene settato se il valore misurato era minore della sensibilità dello strumento, quindi al massimo è pari al minimo della sensibilità dello strumento
-			\textbf{RV4} Il file contenente dati sulle galassie dovrà essere salvato con il nome \textit{MR3Table\_Sample.csv}
+			\textbf{RV3} L'upper-limit viene settato se il valore misurato era minore della sensibilità dello strumento, quindi al massimo è pari al minimo della sensibilità dello strumento\newline
+			\textbf{RV4} Il file contenente dati sulle galassie dovrà essere salvato con il nome \textit{MRTable3\_Sample.csv}\newline
+			\textbf{RV5} Il file contenente dati sui flussi delle righe dovrà essere salvato con il nome \textit{MRTable4\_flux.csv}\newline
+			\textbf{RV6} Il file contenente dati sui flussi continui dovrà essere salvato con il nome \textit{MRTable6\_cont.csv}\newline
+			\textbf{RV7} Il file contenente dati sui flussi delle righe calcolati dal satellite Spitzer dovrà essere salvato con il nome \textit{MRTable8\_irs.csv}\newline
+			\textbf{RV8} Il file contenente dati sui flussi delle righe per tutti i valori di aperture dovrà essere salvato con il nome \textit{MRTable11\_C\_3x3\_5x5\_flux.csv}\newline
 		\end{flushleft}
 
 %	\begin{table}[h]
@@ -791,6 +795,19 @@
 			}
 			\caption{Schema E-R ristrutturato, eliminati gli identificatori esterni}
 		\end{figure}
+
+\newpage
+		\begin{flushleft}
+			Come previsto in un processo di sviluppo iterativo, in seguito alla fase di implementazione si è resa necessaria una modifica nello schema ER. \newline
+			Infatti, implementando i requisiti, la modifica degli schemi ER iniziali era obbligatoria per continuare a rispettare le specifiche ed eliminare tutte quelle informazioni mai accedute nel database.
+			Viene sintetizzato di seguito quanto è emerso:
+			\begin{itemize}
+				\item La distanza non è una caratteristica fisica delle galassie utilizzata da alcun requisito. Nel numero 6 la distanza considerata è calcolata fra due punti arbitrari. Di conseguenza può essere omessa dall'ER. 
+				\item Le caratteristiche fisiche metallicità e luminosità vengono sempre accedute insieme, di conseguenza risulta utile porle nella stessa entità in modo da migliorare le prestazioni di accesso al dato.
+				\item Discorso analogo vale per le entità \textit{Declinazione} ed \textit{Ascensione Retta} che, essendo accedute sempre in coppia, tornano a formare un'entità unica.
+				\item Non tutte le galassie hanno dati sulle caratteristiche fisiche, quindi la cardinalità Galassia-misureFisiche è (0,1)
+			\end{itemize}
+		\end{flushleft}
 \newpage
 
 \subsection{Traduzione dello schema ER}
