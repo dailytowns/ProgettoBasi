@@ -28,19 +28,13 @@ import java.util.*;
  */
 public class PsqlDBHelper {
 
-    private String user;
-    private String password;
     private Connection conn;
 
     public PsqlDBHelper () {
-        //this.url = url;
-        //this.user = user;
-        //this.password = password;
         openConnection();
     }
 
     private void openConnection() {
-
         Properties props = new Properties();
         props.setProperty("user", "postgres");
         props.setProperty("password", "portento123");
@@ -67,6 +61,29 @@ public class PsqlDBHelper {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM registereduser WHERE userid ='" + user + "' AND " +
                                                                                     "password = '" + password + "'");
+            int count = 0;
+
+            while (rs.next())
+                count++;
+
+            authenticated = count == 1;
+
+            rs.close();
+            st.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authenticated;
+    }
+
+    public boolean checkAdmin(String user, String password) {
+        boolean authenticated = false;
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM amministratore WHERE userid ='" + user + "' AND " +
+                    "password = '" + password + "'");
             int count = 0;
 
             while (rs.next())
@@ -666,8 +683,6 @@ public class PsqlDBHelper {
             e.printStackTrace();
         }
     }
-
-
 
     public static void main(String[] args) {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();

@@ -6,6 +6,7 @@ package Control;
 
 import Helper.PsqlDBHelper;
 import View.AdminView;
+import View.UserView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -53,9 +54,8 @@ public class LoginControl {
     }
 
     private void dumpDB() {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        if(!psqlDBHelper.checkGalaxyTable())
-            psqlDBHelper.createTableGalassia();
+        /*PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
+        psqlDBHelper.dumpDB();*/
     }
 
     private void handle(ActionEvent e) {
@@ -70,19 +70,22 @@ public class LoginControl {
         } else {    /*Cerca nel database il matching tra username e password*/
             PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
             boolean check = psqlDBHelper.checkUser(txtUser.getText(), pswUser.getText());
-
             if (check) {
-
-                AdminView adminView = new AdminView();
-
+                UserView userView = new UserView();
                 //hide this current window (if this is whant you want
                 btnOk.getScene().getWindow().hide();
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Attenzione!");
-                alert.setHeaderText(null);
-                alert.setContentText("Lo username o la password non sono corretti");
-                alert.showAndWait();
+                check = psqlDBHelper.checkAdmin(txtUser.getText(), pswUser.getText());
+                if(check) {
+                    AdminView adminView = new AdminView();
+                    btnOk.getScene().getWindow().hide();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Attenzione!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Lo username o la password non sono corretti");
+                    alert.showAndWait();
+                }
             }
         }
     }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.UserViewControl">
+    <children>
+        <MenuBar fx:id="menuMain" VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Ricerca galassie">
+                    <items>
+                        <MenuItem fx:id="menuRicercaGalassiaPerNome" mnemonicParsing="false" text="Ricerca galassie per nome..." />
+                        <MenuItem fx:id="menuRicercaGalassiaPerRedshift" mnemonicParsing="false" text="Ricerca galassie per redshift..." />
+                        <MenuItem fx:id="menuRicercaGalassiaPerRaggio" mnemonicParsing="false" text="Ricerca galassie per raggio..." />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Ricerca flussi">
+                    <items>
+                        <MenuItem fx:id="menuRicercaValErrFlusso" mnemonicParsing="false" text="Ricerca flussi di una galassia..." />
+                        <MenuItem fx:id="menuRapporti" mnemonicParsing="false" text="Rapporti tra flussi..." />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                <SplitPane dividerPositions="0.29797979797979796" prefHeight="375.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                            <children>
+                                <ScrollPane fx:id="scrollGalaxies" prefHeight="373.0" prefWidth="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <content>
+                                        <ListView fx:id="listGalaxies" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="371.0" prefWidth="432.0" styleClass="labelGalaxies" stylesheets="@../../View/style.css" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
