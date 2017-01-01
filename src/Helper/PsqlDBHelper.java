@@ -552,7 +552,7 @@ public class PsqlDBHelper {
         return exist;
     }
 
-    public void createTableFlusso() {
+    public void createTableFlussoRigheHP() {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -560,14 +560,14 @@ public class PsqlDBHelper {
             System.out.println("Opened database successfully");
 
             stmt = conn.createStatement();
-            String sql = "CREATE TABLE flusso (" +
+            String sql = "CREATE TABLE flussorighehp (" +
                     "nomegalassia CHARACTER VARYING," +
-                    "tipologia CHARACTER VARYING," +
                     "upperlimit CHARACTER VARYING," +
                     "atomo CHARACTER VARYING," +
                     "valore DOUBLE PRECISION," +
                     "aperture CHARACTER VARYING," +
-                    "errore DOUBLE PRECISION);";
+                    "errore DOUBLE PRECISION," +
+                    "PRIMARY KEY (nomegalassia, atomo));";
             stmt.execute(sql);
             stmt.close();
         } catch ( Exception e ) {
@@ -576,7 +576,7 @@ public class PsqlDBHelper {
         }
     }
 
-    public void createTableFlussoContinuo() {
+    public void createTableFlussoContinuoHP() {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -586,13 +586,13 @@ public class PsqlDBHelper {
             stmt = conn.createStatement();
             String sql = "CREATE TABLE flussocontinuo (" +
                     "nomegalassia CHARACTER VARYING," +
-                    "tipologia CHARACTER VARYING," +
                     "upperlimit CHARACTER VARYING," +
                     "atomo CHARACTER VARYING," +
                     "valore DOUBLE PRECISION," +
                     "aperture CHARACTER VARYING," +
                     "ref160 CHARACTER VARYING," +
-                    "errore DOUBLE PRECISION);";
+                    "errore DOUBLE PRECISION," +
+                    "PRIMARY KEY (nomegalassia, atomo));";
             stmt.execute(sql);
             stmt.close();
         } catch ( Exception e ) {
@@ -609,14 +609,14 @@ public class PsqlDBHelper {
             System.out.println("Opened database successfully");
 
             stmt = conn.createStatement();
-            String sql = "CREATE TABLE flussosp (" +
+            String sql = "CREATE TABLE flussorighesp (" +
                     "nomegalassia CHARACTER VARYING," +
-                    "tipologia CHARACTER VARYING," +
                     "upperlimit CHARACTER VARYING," +
                     "atomo CHARACTER VARYING," +
                     "valore DOUBLE PRECISION," +
                     "errore DOUBLE PRECISION," +
-                    "irsmode CHARACTER VARYING);";
+                    "irsmode CHARACTER VARYING," +
+                    "PRIMARY KEY (nomegalassia, atomo));";
             stmt.execute(sql);
             stmt.close();
         } catch ( Exception e ) {
@@ -643,7 +643,7 @@ public class PsqlDBHelper {
                     Double value = rs.getDouble("valore");
                     String _value = String.valueOf(value);
                     String upperLimit = rs.getString("upperlimit");
-                    result = new Flux(galaxy, table, atom, _value, upperLimit, null);
+                    result = new Flux(galaxy, atom, _value, upperLimit, null);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

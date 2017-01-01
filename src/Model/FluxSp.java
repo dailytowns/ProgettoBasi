@@ -7,8 +7,8 @@ public class FluxSp extends Flux {
 
     private String IRSMode;
 
-    public FluxSp(String nomeGalassia, String tipologia, String atomo, String valore, String upperLimit, String error, String IRSMode) {
-        super(nomeGalassia, tipologia, atomo, valore, upperLimit, error);
+    public FluxSp(String nomeGalassia, String atomo, String valore, String upperLimit, String error, String IRSMode) {
+        super(nomeGalassia, atomo, valore, upperLimit, error);
         if(checkValue(IRSMode))
             this.IRSMode = IRSMode;
         else

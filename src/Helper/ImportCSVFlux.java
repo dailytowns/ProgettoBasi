@@ -34,52 +34,52 @@ public class ImportCSVFlux extends ImportCSV {
                 if(nextLine.length != 23)
                     continue;
 
-                FluxHP fluxHPOIII52 = new FluxHP(nextLine[0], "rHP", "OIII52",
+                FluxHP fluxHPOIII52 = new FluxHP(nextLine[0], "OIII52",
                         nextLine[2], nextLine[1], nextLine[22], nextLine[3]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) VALUES ('" + fluxHPOIII52.getNomeGalassia() + "', " + "'rHP', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) VALUES ('" + fluxHPOIII52.getNomeGalassia() + "', '" +
                         fluxHPOIII52.getUpperLimit() + "', 'OIII52'," + fluxHPOIII52.getValore() + ", '" +
                         fluxHPOIII52.getAperture() + "', " + fluxHPOIII52.getError() + ");");
 
-                FluxHP fluxHPNIII = new FluxHP(nextLine[0], "rHP", "NIII57",
+                FluxHP fluxHPNIII = new FluxHP(nextLine[0], "NIII57",
                         nextLine[5], nextLine[4], nextLine[22], nextLine[6]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) " + "VALUES ('" + fluxHPNIII.getNomeGalassia() + "', 'rHP', '" + fluxHPNIII.getUpperLimit() +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) " + "VALUES ('" + fluxHPNIII.getNomeGalassia() + "', '" + fluxHPNIII.getUpperLimit() +
                         "'" + ", 'NIII57', " + fluxHPNIII.getValore() + ", '" + fluxHPNIII.getAperture() + "'," +
                         fluxHPNIII.getError() + ");");
 
-                FluxHP fluxHPOI = new FluxHP(nextLine[0], "rHP", "OI63",
+                FluxHP fluxHPOI = new FluxHP(nextLine[0], "OI63",
                         nextLine[8], nextLine[7], nextLine[22], nextLine[9]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) " + "VALUES ('" + fluxHPOI.getNomeGalassia() + "', 'rHP', '" + fluxHPOI.getUpperLimit() +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) " + "VALUES ('" + fluxHPOI.getNomeGalassia() + "', '" + fluxHPOI.getUpperLimit() +
                         "'" + ", 'OI63', " + fluxHPOI.getValore() + ", '" + fluxHPOI.getAperture() + "'," +
                         fluxHPOI.getError() + ");");
 
-                FluxHP fluxHPOIII88 = new FluxHP(nextLine[0], "rHP", "OIII88",
+                FluxHP fluxHPOIII88 = new FluxHP(nextLine[0], "OIII88",
                         nextLine[11], nextLine[10], nextLine[22], nextLine[12]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) VALUES ('" + fluxHPOIII88.getNomeGalassia() + "', 'rHP', '" + fluxHPOIII88.getUpperLimit() +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) VALUES ('" + fluxHPOIII88.getNomeGalassia() + "', '" + fluxHPOIII88.getUpperLimit() +
                         "', 'OIII88', " + fluxHPOIII88.getValore() + ", '" + fluxHPOIII88.getAperture() + "'," +
                         fluxHPOIII88.getError() + ");");
 
-                FluxHP fluxHPNII122 = new FluxHP(nextLine[0], "rHP", "NIII122",
+                FluxHP fluxHPNII122 = new FluxHP(nextLine[0], "NIII122",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[15]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) VALUES ('" + fluxHPNII122.getNomeGalassia() + "', 'rHP', '" + fluxHPNII122.getUpperLimit() +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) VALUES ('" + fluxHPNII122.getNomeGalassia() + "', '" + fluxHPNII122.getUpperLimit() +
                         "', 'NIII122', " + fluxHPNII122.getValore() + ", '" + fluxHPNII122.getAperture() + "'," +
                         fluxHPNII122.getError() + ");");
 
-                FluxHP fluxHPOI145 = new FluxHP(nextLine[0], "rHP", "OI145",
+                FluxHP fluxHPOI145 = new FluxHP(nextLine[0], "OI145",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[18]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore," +
-                        "aperture, errore) VALUES ('" + fluxHPOI145.getNomeGalassia() + "', 'rHP', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore," +
+                        "aperture, errore) VALUES ('" + fluxHPOI145.getNomeGalassia() + "', '" +
                         fluxHPOI145.getUpperLimit() + "', 'OI145', " + fluxHPOI145.getValore() + ", '" + fluxHPOI145.getAperture() +
                         "', " + fluxHPOI145.getError() + ");");
 
-                FluxHP fluxHPCII158 = new FluxHP(nextLine[0], "rHP", "CII158",
+                FluxHP fluxHPCII158 = new FluxHP(nextLine[0], "CII158",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[21]);
-                psqlDBHelper.insertRecord("INSERT INTO flusso(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "aperture, errore) VALUES ('" + fluxHPCII158.getNomeGalassia() + "', 'rHP', '" + fluxHPCII158.getUpperLimit() +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
+                        "aperture, errore) VALUES ('" + fluxHPCII158.getNomeGalassia() + "', '" + fluxHPCII158.getUpperLimit() +
                         "', 'CII158', " + fluxHPCII158.getValore() + ", '" + fluxHPCII158.getAperture() + "'," + fluxHPCII158.getError() + ");");
                 System.out.println("DOPO GALASSIA");
 
@@ -96,9 +96,10 @@ public class ImportCSVFlux extends ImportCSV {
 
     private void resetDB() {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        if(psqlDBHelper.checkTable("flusso"))
-            psqlDBHelper.deleteTable("flusso");
-        psqlDBHelper.createTableFlusso();
+        if(psqlDBHelper.checkTable("flussorighehp")) {
+            psqlDBHelper.deleteTable("flussorighehp");
+            psqlDBHelper.createTableFlussoRigheHP();
+        }
         psqlDBHelper.closeConnection();
     }
 

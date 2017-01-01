@@ -433,7 +433,7 @@
 		\end{table}
 	
 		\begin{flushleft}
-			Di seguito viene riportato la stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.\newline
+			Di seguito viene riportato la prima stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.\newline
 			Un esempio di correzione che è stata apportata allo schema ER è l'elliminazione delle generalizzazioni relative all'entità \textit{Flusso} poichè nelle operazioni richieste dai requisiti non figura una distinzione tra le tipologie di flusso.
 		\end{flushleft}
 
@@ -514,16 +514,15 @@
 			\draw (13, -36.5) -- (13, -34.5);
 			\filldraw[fill=black] (13,-34.5) circle (2mm);
 			
+			\draw (11.5, -30.5) -- (9, -30.5);
+			\draw (9, -29.5) -- (9, -30.5);
+			\filldraw[fill=black] (9, -29.5) circle (2mm);
 			%%%%%%%%%%%%%%%%%%%%%%
 			
 			\end{tikzpicture}
 		}
-	\caption{Schema E-R}
+	\caption{Prima stesura dello schema E-R}
 	\end{figure}
-	
-	\begin{itemize}
-		\item Nello schema gli archi in \textcolor{red}{rosso} indicano identificazione.
-	\end{itemize}
 	
 	\begin{flushleft}
 		Nello schema E-R non figurano le entità \textit{Utente Registrato} nè \textit{Amministratore}. Questo deriva dal fatto che anche gli utenti dell'applicazione vengono gestiti tramite il sistema ma, ciononostante, non hanno relazioni con le altre entità. Saranno certamente collegate in qualità di classi al resto del sistema tramite opportuni metodi, ma come entità rimangono distaccate dal resto dello schema.
@@ -660,7 +659,8 @@
 				\node[attribute, right=20mm] (valore) [right of=
 				MisuraFlusso] {Valore} edge (MisuraFlusso); 
 				\node[attribute, right=10mm] (erroreValore) [above right of=MisuraFlusso] {Errore} edge (MisuraFlusso);
-				\node[attribute] (riferimento) [below right of=MisuraFlusso] {Riferimento} edge (MisuraFlusso);
+				\node[attribute] (riferimento) [below right of=MisuraFlusso] {Riferimento} edge (MisuraFlusso);	
+				
 				
 				\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
 
@@ -693,6 +693,11 @@
 				\draw (26, -8.5) -- (28, -8.5);
 				\draw (28, -8.5) -- (28, -9.4);
 				\filldraw[fill=black] (26, -8.5) circle (2mm);
+				
+				%%MISURA FLUSSO%%%%%
+				\draw (11.45, -30.4) -- (8, -30.4);
+				\draw (8, -30.4) -- (8, -29.4);
+				\filldraw[fill=black] (8, -29.4) circle (2mm);
 				%%%%%%%%%%%%%%%%%%%%%
 				
 				\end{tikzpicture}
@@ -763,10 +768,13 @@
 				\node[attribute, left=20mm] (ref160) [below left of=MisuraFlusso] {Riferimento160um} edge (MisuraFlusso);
 				\node[attribute] (aperturaContinuo) [above of=MisuraFlusso] {Apertura} edge (MisuraFlusso);
 				\node[attribute] (IRS) [below of=MisuraFlusso] {IRSMode} edge (MisuraFlusso);
-				\node[attribute, right=20mm] (valore) [right of=
+				\node[attribute, above right=12mm and 20mm] (valore) [right of=
 				MisuraFlusso] {Valore} edge (MisuraFlusso); 
 				\node[attribute, right=10mm] (erroreValore) [above right of=MisuraFlusso] {Errore} edge (MisuraFlusso);
 				\node[attribute] (riferimento) [below right of=MisuraFlusso] {Riferimento} edge (MisuraFlusso);
+				\node[attribute, below right = 5mm and 50mm](nomeGalassiaMisura) [right of = MisuraFlusso] {NomeGalassia} edge (MisuraFlusso);
+				\node[attribute, below right=15mm and 50mm] (atomo) [right of=MisuraFlusso] {Atomo} edge (MisuraFlusso);
+				\node[attribute, below right=15mm and 50mm] (tipologiaFlusso) [above right of = MisuraFlusso] {Tipologia} edge (MisuraFlusso);
 				
 				\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
 				
@@ -791,6 +799,8 @@
 				\filldraw[fill=black] (13,-37) circle (2mm);
 				%%%%%%%%%%%%%%%%%%%%%
 				
+				\draw (16, -31) -- (16, -29.5);
+				\filldraw[fill=black] (16, -29.5) circle (2mm);
 				\end{tikzpicture}
 			}
 			\caption{Schema E-R ristrutturato, eliminati gli identificatori esterni}
@@ -805,16 +815,111 @@
 				\item La distanza non è una caratteristica fisica delle galassie utilizzata da alcun requisito. Nel numero 6 la distanza considerata è calcolata fra due punti arbitrari. Di conseguenza può essere omessa dall'ER. 
 				\item Le caratteristiche fisiche metallicità e luminosità vengono sempre accedute insieme, di conseguenza risulta utile porle nella stessa entità in modo da migliorare le prestazioni di accesso al dato.
 				\item Discorso analogo vale per le entità \textit{Declinazione} ed \textit{Ascensione Retta} che, essendo accedute sempre in coppia, tornano a formare un'entità unica.
-				\item Non tutte le galassie hanno dati sulle caratteristiche fisiche, quindi la cardinalità Galassia-misureFisiche è (0,1)
+				\item Non tutte le galassie hanno dati sulle caratteristiche fisiche, quindi la cardinalità Galassia-misureFisiche è (0,1).
+				\item Oltre ad aver accorpato l'entità \textit{Flusso} con le misure associate, è stato anche suddiviso in tante entità quante sono le tipologie. Questa scomposizione, oltre ad evitare la presenza di valori nulli sugli attributi non presenti in tutte le tipologie di flusso, permette un accesso più rapido alle informazioni correlate al tipo di flusso ricercato.
+				\item L'attributo di \textit{tipologia} di \textit{Flusso} viene sostituito dalle tre entità \textit{FlussoContinuoHP}, \textit{FlussoRigheHP} e \textit{FlussoRigheSp} (i dati sul flusso continuo sono tutti provenienti dal satellite Herschel/PACS). Questa suddivisione aiuta nell'importazione dei file, evitando che vengano cancellati dati relativi ad altre tabelle.
 			\end{itemize}
 		\end{flushleft}
+	
+	\begin{figure}[ht!]
+		\resizebox{16cm}{!}{
+			\begin{tikzpicture}[node distance=7em]
+			\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+			\tikzset{derived attribute/.style={attribute,dashed}} 
+			\tikzset{total/.style={double distance=1.5pt}} 
+			\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+			\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+			\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+			
+			% for double arrows a la chef
+			% adapt line thickness and line width, if needed
+			\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+				1 with {\arrow[semithick]{open triangle 60}}},
+			double distance=1.4pt, shorten >= 5.5pt,
+			preaction = {decorate},
+			postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+			
+			\node[entity] (Galassia)[label={[right, xshift=15mm, yshift=-3mm](1,1)}] {Galassia};
+			\node[attribute, above=20mm] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+			\node[attribute, above=30mm] (redshift) [left of=Galassia] {Redshift} edge (Galassia);
+			\node[attribute, right=15mm] (nomeGalassia) [above left of=Galassia] {\key{Nome}} edge (Galassia);
+			\node[attribute, right=40mm] (CS) [above of = Galassia] {ClasseSpettrale} edge (Galassia);
+			
+			\node[relationship, below right=20mm and 140mm](CoordDec) [below right of = Galassia] {CoordDec};
+			\draw (CoordDec) |- (Galassia);
+			
+			\node[entity, below=30mm] (declinazione)[label={[right, xshift=-10mm, yshift=3mm](1,1)}] [below of=CoordDec] {Declinazione} edge (CoordDec);
+			\node[attribute, left=20mm](DecSig) [below of=declinazione] {DecSig} edge (declinazione);
+			\node[attribute, left=20mm](DecH) [below left of=declinazione] {Dech} edge (declinazione);
+			\node[attribute, left=20mm](DecM) [left of=declinazione] {Decm} edge (declinazione);
+			\node[attribute, left=20mm](DecS) [above left of=declinazione] {Decs} edge (declinazione);
+			\node[attribute, right=20mm](NomeGalassiaCA)[right of=declinazione] {\key{NomeGalassia}} edge (declinazione);
+			\node[attribute](ARh) [above right of = declinazione] {ARh} edge (declinazione);
+			\node[attribute](ARm) [below of = declinazione] {ARm} edge (declinazione);
+			\node[attribute](ARs) [below right of = declinazione] {ARs} edge (declinazione);
+			
+			\node[relationship, below left=30mm and 100mm] (relazioneFlussoRigheHP) [below right of=Galassia, label={[right](1,n)}] {righeHP}; 
+			\draw (relazioneFlussoRigheHP) |- (Galassia);
+			
+			\node[entity, below=150mm] (FlussoRigheHP) [below of = relazioneFlusso] {FlussoRigheHP}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlussoRigheHP);
+			\node[attribute, left=20mm] (atomo) [above left of=Flusso] {Atomo} edge (FlussoRigheHP);
+			\node[attribute, left=20mm](NomeGalassiaFl) [left of = Flusso] {\key{NomeGalassia}} edge (FlussoRigheHP);		
+			\node[attribute, left=25mm](upperLimitHP) [below of = FlussoRigheHP] {UpperLimit} edge (FlussoRigheHP);
+			\node[attribute, below right=20mm and 10mm](valorerigheHP) [below right of = FlussoRigheHP] {Valore} edge (FlussoRigheHP);
+			\node[attribute, below = 20mm](apertureHP) [below of = FlussoRigheHP] {Aperture} edge (FlussoRigheHP);
+			\node[attribute, right=15mm](erroreHP) [below right of = FlussoRigheHP] {Errore} edge (FlussoRigheHP);
+			
+			\node[relationship, below =30mm](relazioneFlussoContHP) [below of = Galassia, label={[right](1,n)}] {continuoHP} edge (Galassia);
+			
+			\node[entity, below=100mm] (FlussoContHP) [below of = relazioneFlussoContHP] {FlussoRigheHP}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlussoContHP);
+			\node[attribute, left=20mm] (atomo) [above left of=FlussoContHP] {Atomo} edge (FlussoContHP);
+			\node[attribute, left=20mm](NomeGalassiaFl) [left of = FlussoContHP] {\key{NomeGalassia}} edge (FlussoContHP);		
+			\node[attribute, left=25mm](upperLimitHP) [below of = FlussoContHP] {UpperLimit} edge (FlussoContHP);
+			\node[attribute, below right=20mm and 10mm](valorecontHP) [below right of = FlussoContHP] {Valore} edge (FlussoContHP);
+			\node[attribute, below = 20mm](apertureHP) [below of = FlussoContHP] {Aperture} edge (FlussoContHP);
+			\node[attribute, right=15mm](erroreHP) [below right of = FlussoContHP] {Errore} edge (FlussoContHP);
+			
+			\node[relationship, below right=30mm and 50mm](righeSp) [below right of = Galassia] {righeSpitzer};
+			\draw (righeSp) |- (Galassia);
+			
+			\node[entity, below=190mm] (FlussoRigheSp) [below of = righeSp] {FlussoRigheSp}  edge[label={[above right, yshift=10mm](1,1)}] (righeSp);
+			\node[attribute, left=20mm] (atomo) [above left of=FlussoRigheSp] {Atomo} edge (FlussoRigheSp);
+			\node[attribute, left=20mm](NomeGalassiaFl) [left of = FlussoRigheSp] {\key{NomeGalassia}} edge (FlussoRigheSp);		
+			\node[attribute, left=25mm](upperLimitHP) [below of = FlussoRigheSp] {UpperLimit} edge (FlussoRigheSp);
+			\node[attribute, below right=20mm and 10mm](valoreRigheSp) [below right of = FlussoRigheSp] {Valore} edge (FlussoRigheSp);
+			\node[attribute, below = 20mm](apertureHP) [below of = FlussoRigheSp] {Aperture} edge (FlussoRigheSp);
+			\node[attribute, right=15mm](erroreHP) [below right of = FlussoRigheSp] {Errore} edge (FlussoRigheSp);
+			\node[attribute, right=15mm](IRSMode) [above right of =FlussoRigheSp] {IRSMode} edge (FlussoRigheSp);
+			
+			
+			\node[entity, below right = 130mm and 20mm] (CaratteristicheFisiche) [below of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
+				\node[attribute] (valLum) [below of = CaratteristicheFisiche] {ValoreLuminosità} edge (CaratteristicheFisiche);
+				\node[attribute, right=20mm] (valMet) [right of=
+				CaratteristicheFisiche] {ValoreMetallicità} edge (CaratteristicheFisiche); 
+				\node[attribute, right=10mm] (errMet) [above right of=CaratteristicheFisiche] {ErroreMetallicità} edge (CaratteristicheFisiche);
+				\node[attribute, above right=5mm and 10mm] (riferimentoMet) [below right of=CaratteristicheFisiche] {RiferimentoMetallicità} edge (CaratteristicheFisiche);
+				\node[attribute, left=10mm](NomeGalassiaCF) [below left of = CaratteristicheFisiche] {\key{NomeGalassia}} edge (CaratteristicheFisiche);
+				\node[attribute](rifLum) [above of = CaratteristicheFisiche] {RiferimentoLuminosità} edge (CaratteristicheFisiche);
+			
+			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+			\draw (carafisi) |- (CaratteristicheFisiche);
+			\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
+			
+			%%%%%Chiavi%%%%
+			%%FLUSSO%%
+			\draw (-10, -20.7) -- (-10, -23.7);
+			\filldraw[fill=black] (-10, -20.7) circle (2mm);
+			\end{tikzpicture}
+		}
+		\caption{Schema E-R alla luce delle modifiche suggerite dalle fasi successive}
+	\end{figure}
 \newpage
 
 \subsection{Traduzione dello schema ER}
 
 	\begin{flushleft}
-		Lo schema E-R è stato tradotto nel seguente schema relazionale:
-		
+		La traduzione di uno schema ER ristrutturato è una fase della progettazione molto più algoritmica rispetto alla stesura dello schema ER stesso. Infatti vi sono un insieme di traduzioni standard a cui è possibile attenersi e che verranno utilizzate anche in questo contesto.\newline\newline		
 		\textsf{\textit{Galassia}(\underline{Nome}, Redshift, NomeAlternativo, ClasseSpettrale)}\newline
 		\textsf{\textit{Declinazione}(DecSig, Dech, Decm, Decs, NomeGalassia)}\newline
 		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline

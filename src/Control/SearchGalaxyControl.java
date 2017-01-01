@@ -20,12 +20,6 @@ public class SearchGalaxyControl {
     private Button btnOK;
     @FXML
     private TextField txtSearchGalaxy;
-    @FXML
-    private Label lblNomeGalassia;
-    @FXML
-    private Label lblNomeAltGalassia;
-    @FXML
-    private Label lblRedshiftGalassia;
 
     @FXML
     public void initialize() {
@@ -37,7 +31,7 @@ public class SearchGalaxyControl {
                 GalaxyData galaxy = psqlDBHelper.searchGalaxyForName(txtSearchGalaxy.getText());
 
                 if(galaxy!=null) {
-                    GalaxyFoundView galaxyFoundView = new GalaxyFoundView(galaxy);
+                    new GalaxyFoundView(galaxy);
                 }
             }
         });

@@ -33,67 +33,67 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
                 if (nextLine.length != 30)
                     continue;
 
-                FluxSp fluxSpSIV = new FluxSp(nextLine[0], "rSp", "SIV",
+                FluxSp fluxSpSIV = new FluxSp(nextLine[0], "SIV",
                         nextLine[2], nextLine[1], nextLine[3], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpSIV.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpSIV.getNomeGalassia() + "', '" +
                         fluxSpSIV.getUpperLimit() + "', 'SIV'," + fluxSpSIV.getValore() + ", "
                         + fluxSpSIV.getError() + ", '" + fluxSpSIV.getIRSMode() + "');");
 
-                FluxSp fluxSpNeII = new FluxSp(nextLine[0], "rSp", "NeII",
+                FluxSp fluxSpNeII = new FluxSp(nextLine[0], "NeII",
                         nextLine[5], nextLine[4], nextLine[6], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpNeII.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpNeII.getNomeGalassia() + "', '" +
                 fluxSpNeII.getUpperLimit() + "', 'NeII', " +fluxSpNeII.getValore() + ", "
                 + fluxSpNeII.getError() + ", '" + fluxSpNeII.getIRSMode() + "');");
 
-                FluxSp fluxSpNeV14 = new FluxSp(nextLine[0], "rSp", "NeV14",
+                FluxSp fluxSpNeV14 = new FluxSp(nextLine[0], "NeV14",
                         nextLine[8], nextLine[7], nextLine[9], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpNeV14.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpNeV14.getNomeGalassia() + "', '" +
                         fluxSpNeV14.getUpperLimit() + "', 'NeV14', " +fluxSpNeV14.getValore() + ", "
                         + fluxSpNeV14.getError() + ", '" + fluxSpNeV14.getIRSMode() + "');");
 
-                FluxSp fluxSpNeIII = new FluxSp(nextLine[0], "rSp", "NeII",
+                FluxSp fluxSpNeIII = new FluxSp(nextLine[0], "NeII",
                         nextLine[11], nextLine[10], nextLine[12], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpNeIII.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpNeIII.getNomeGalassia() + "', '" +
                         fluxSpNeIII.getUpperLimit() + "', 'NeIII', " +fluxSpNeIII.getValore() + ", "
                         + fluxSpNeIII.getError() + ", '" + fluxSpNeIII.getIRSMode() + "');");
 
-                FluxSp fluxSpSIII = new FluxSp(nextLine[0], "rSp", "SIII",
+                FluxSp fluxSpSIII = new FluxSp(nextLine[0],"SIII",
                         nextLine[14], nextLine[13], nextLine[15], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpSIII.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpSIII.getNomeGalassia() + "', '" +
                         fluxSpSIII.getUpperLimit() + "', 'SIII', " +fluxSpSIII.getValore() + ", "
                         + fluxSpSIII.getError() + ", '" + fluxSpSIII.getIRSMode() + "');");
 
-                FluxSp fluxSpNeV24 = new FluxSp(nextLine[0], "rSp", "NeV24",
+                FluxSp fluxSpNeV24 = new FluxSp(nextLine[0], "NeV24",
                         nextLine[17], nextLine[16], nextLine[18], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpNeV24.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpNeV24.getNomeGalassia() + "', '" +
                         fluxSpNeV24.getUpperLimit() + "', 'NeV24', " +fluxSpNeV24.getValore() + ", "
                         + fluxSpNeV24.getError() + ", '" + fluxSpNeV24.getIRSMode() + "');");
 
-                FluxSp fluxSpOIV = new FluxSp(nextLine[0], "rSp", "OIV",
+                FluxSp fluxSpOIV = new FluxSp(nextLine[0], "OIV",
                         nextLine[20], nextLine[19], nextLine[21], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpOIV.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpOIV.getNomeGalassia() + "', '" +
                         fluxSpOIV.getUpperLimit() + "', 'OIV', " +fluxSpOIV.getValore() + ", "
                         + fluxSpOIV.getError() + ", '" + fluxSpOIV.getIRSMode() + "');");
 
 
-                FluxSp fluxSpSIII33 = new FluxSp(nextLine[0], "rSp", "SIII33",
+                FluxSp fluxSpSIII33 = new FluxSp(nextLine[0],"SIII33",
                         nextLine[23], nextLine[22], nextLine[24], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpSIII33.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpSIII33.getNomeGalassia() + "', '" +
                         fluxSpSIII33.getUpperLimit() + "', 'SIII33', " +fluxSpSIII33.getValore() + ", "
                         + fluxSpSIII33.getError() + ", '" + fluxSpSIII33.getIRSMode() + "');");
 
-                FluxSp fluxSpSiII = new FluxSp(nextLine[0], "rSp", "SiII",
+                FluxSp fluxSpSiII = new FluxSp(nextLine[0], "SiII",
                         nextLine[26], nextLine[25], nextLine[27], nextLine[28]);
-                psqlDBHelper.insertRecord("INSERT INTO flussoSp(nomegalassia, tipologia, upperlimit, atomo, valore, " +
-                        "errore, irsmode) VALUES ('" + fluxSpSiII.getNomeGalassia() + "', 'rSp', '" +
+                psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
+                        "errore, irsmode) VALUES ('" + fluxSpSiII.getNomeGalassia() + "', '" +
                         fluxSpSiII.getUpperLimit() + "', 'SiII', " +fluxSpSiII.getValore() + ", "
                         + fluxSpSiII.getError() + ", '" + fluxSpSiII.getIRSMode() + "');");
 
@@ -106,9 +106,10 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
 
     private void resetDB() {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        if(psqlDBHelper.checkTable("flussosp"))
-            psqlDBHelper.deleteTable("flussosp");
-        psqlDBHelper.createTableFlussoSp();
+        if(psqlDBHelper.checkTable("flussorighesp")) {
+            psqlDBHelper.deleteTable("flussorighesp");
+            psqlDBHelper.createTableFlussoSp();
+        }
         psqlDBHelper.closeConnection();
     }
 

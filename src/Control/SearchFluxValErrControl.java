@@ -41,7 +41,7 @@ public class SearchFluxValErrControl {
                 String galaxy = txtGalaxy.getText();
                 String[] atoms = txtAtoms.getText().split(";");
 
-                ObservableList<Galaxy> list = retrieveValErrFlux(galaxy, atoms, "flusso");
+                ObservableList<Galaxy> list = retrieveValErrFlux(galaxy, atoms, "flussorighehp");
                 listFluxesRHP.setItems(list);
                 listFluxesRHP.setCellFactory(fluxCell -> new FluxCell());
 
@@ -49,7 +49,7 @@ public class SearchFluxValErrControl {
                 listFluxesCont.setItems(list);
                 listFluxesCont.setCellFactory(fluxCell -> new FluxCell());
 
-                list = retrieveValErrFlux(galaxy, atoms, "flussosp");
+                list = retrieveValErrFlux(galaxy, atoms, "flussorighesp");
                 listFluxesSpitzer.setItems(list);
                 listFluxesSpitzer.setCellFactory(fluxCell -> new FluxCell());
 

@@ -6,24 +6,22 @@ package Model;
 public class FluxHP extends Flux {
 
     private String nomeGalassia;
-    private String tipologia;
     private String atomo;
     private Double valore;
     private String upperLimit;
     private String aperture;
     private Double error;
 
-    public FluxHP(String nomeGalassia, String tipologia, String atomo, String valore, String upperLimit,
+    public FluxHP(String nomeGalassia, String atomo, String valore, String upperLimit,
                   String aperture, String error) {
-        super(nomeGalassia, tipologia, atomo, valore, upperLimit, error);
+        super(nomeGalassia, atomo, valore, upperLimit, error);
         this.nomeGalassia = nomeGalassia;
-        this.tipologia = tipologia;
         this.atomo = atomo;
         this.aperture = aperture;
         controllaValori(valore, upperLimit, error);
     }
 
-    protected void controllaValori(String valore, String upperLimit, String error) {
+    /*protected void controllaValori(String valore, String upperLimit, String error) {
         if(checkValue(valore))
             this.valore = Double.parseDouble(valore);
         else
@@ -51,7 +49,7 @@ public class FluxHP extends Flux {
         }
         return false;
     }
-
+*/
     public Double getError() {
         return error;
     }
@@ -74,14 +72,6 @@ public class FluxHP extends Flux {
 
     public void setNomeGalassia(String nomeGalassia) {
         this.nomeGalassia = nomeGalassia;
-    }
-
-    public String getTipologia() {
-        return tipologia;
-    }
-
-    public void setTipologia(String tipologia) {
-        this.tipologia = tipologia;
     }
 
     public String getAtomo() {

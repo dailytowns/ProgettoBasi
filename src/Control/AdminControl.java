@@ -85,18 +85,22 @@ public class AdminControl extends UserViewControl{
                                 listGalaxies.setItems(list);
                                 listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
                                 break;
-                            case "MRTable4_Flux.csv":
+                            case "MRTable4_flux.csv":
                                 importCSV = new ImportCSVFlux();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                                break;
                             case "MRTable6_cont.csv":
                                 importCSV = new ImportCSVContFlux();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                                break;
                             case "MRTable8_irs.csv":
                                 importCSV = new ImportCSVFluxLineSpitzer();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                                break;
                             case "MRTable11_C_3x3_5x5_flux.csv":
                                 importCSV = new ImportCSVFlux();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
+                                break;
 
                         }
                     } else {
