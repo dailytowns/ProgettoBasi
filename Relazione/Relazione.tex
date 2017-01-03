@@ -54,6 +54,7 @@
   breaklines=true,
   breakatwhitespace=true,
   tabsize=3}
+
 \lstdefinestyle{mystyleSQL}{frame=tb,
 	language=SQL,
 	aboveskip=3mm,
@@ -88,6 +89,7 @@
 \usetikzlibrary{arrows, decorations.markings}
 \usetikzlibrary{positioning,calc}
 \include{./tikzer2}
+\usepackage[simplified]{pgf-umlcd}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%Apertura del documento%%%%%%%%%%%%%%%%%%%%%%%
@@ -339,6 +341,7 @@
 			\textbf{RV6} Il file contenente dati sui flussi continui dovrà essere salvato con il nome \textit{MRTable6\_cont.csv}\newline
 			\textbf{RV7} Il file contenente dati sui flussi delle righe calcolati dal satellite Spitzer dovrà essere salvato con il nome \textit{MRTable8\_irs.csv}\newline
 			\textbf{RV8} Il file contenente dati sui flussi delle righe per tutti i valori di aperture dovrà essere salvato con il nome \textit{MRTable11\_C\_3x3\_5x5\_flux.csv}\newline
+			\textbf{RV9} Lo \textit{userid} di un utente del sistema non può coincidere con la \textit{password}\newline
 		\end{flushleft}
 
 %	\begin{table}[h]
@@ -440,9 +443,9 @@
 	\begin{figure}[h]
 		\resizebox{16cm}{!}{
 			\begin{tikzpicture}[node distance=7em]
-			\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+			\tikzset{multi attribute/.style={attribute,double distance=1.5pt}}
 			\tikzset{derived attribute/.style={attribute,dashed}} 
-			\tikzset{total/.style={double distance=1.5pt}} 
+			\tikzset{total/.style={double distance=1.5pt}}
 			\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
 			\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
 			\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
@@ -450,8 +453,7 @@
 			% for double arrows a la chef
 			% adapt line thickness and line width, if needed
 			\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-				1 with {\arrow[semithick]{open triangle 60}}},
-			double distance=1.4pt, shorten >= 5.5pt,
+				1 with {\arrow[semithick]{open triangle 60}}}, distance=1.4pt, shorten >= 5.5pt,
 			preaction = {decorate},
 			postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
 			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
@@ -499,10 +501,11 @@
 					\node[attribute] (aperturaContinuo) [above of=MisuraFlusso] {Apertura} edge (MisuraFlusso);
 					\node[attribute] (IRS) [below of=MisuraFlusso] {IRSMode} edge (MisuraFlusso);
 			\node[entity, below right = 100mm and 20mm] (CaratteristicheFisiche) [below right of = Misura, label={[left, xshift=-50mm, yshift=-3mm](1,1)}] {CatteristicheFisiche};
+			%Non tutte le galassie hanno tutte le caratteristiche fisiche registrate
 					\draw[vecArrow] (CaratteristicheFisiche) -| (Misura);
 					\node[attribute] (tipo) [below of = CaratteristicheFisiche] {Tipologia} edge (CaratteristicheFisiche); 
 					
-			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](0,1)}] {misureFisiche};
 					\draw (carafisi) |- (CaratteristicheFisiche);
 					\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
 					
@@ -603,9 +606,9 @@
 		\begin{figure}[h]
 			\resizebox{16cm}{!}{
 				\begin{tikzpicture}[node distance=7em]
-				\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+				\tikzset{multi attribute/.style={attribute,distance=1.5pt}}
 				\tikzset{derived attribute/.style={attribute,dashed}} 
-				\tikzset{total/.style={double distance=1.5pt}} 
+				\tikzset{total/.style={double distance=1.5pt}}
 				\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
 				\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
 				\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
@@ -613,8 +616,7 @@
 				% for double arrows a la chef
 				% adapt line thickness and line width, if needed
 				\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-					1 with {\arrow[semithick]{open triangle 60}}},
-				double distance=1.4pt, shorten >= 5.5pt,
+					1 with {\arrow[semithick]{open triangle 60}}}, distance=1.4pt, shorten >= 5.5pt,
 				preaction = {decorate},
 				postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
 				\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
@@ -670,7 +672,7 @@
 				\node[attribute, right=10mm] (erroreValore) [above right of=CaratteristicheFisiche] {Errore} edge (CaratteristicheFisiche);
 				\node[attribute, above right=5mm and 10mm] (riferimento) [below right of=CaratteristicheFisiche] {Riferimento} edge (CaratteristicheFisiche);
 				
-				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](0,1)}] {misureFisiche};
 				\draw (carafisi) |- (CaratteristicheFisiche);
 				\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
 				
@@ -712,9 +714,9 @@
 		\begin{figure}[h]
 			\resizebox{16cm}{!}{
 				\begin{tikzpicture}[node distance=7em]
-				\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+				\tikzset{multi attribute/.style={attribute,distance=1.5pt}}
 				\tikzset{derived attribute/.style={attribute,dashed}} 
-				\tikzset{total/.style={double distance=1.5pt}} 
+				\tikzset{total/.style={distance=1.5pt}}
 				\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
 				\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
 				\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
@@ -723,7 +725,7 @@
 				% adapt line thickness and line width, if needed
 				\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
 					1 with {\arrow[semithick]{open triangle 60}}},
-				double distance=1.4pt, shorten >= 5.5pt,
+				double relativeDistance=1.4pt, shorten >= 5.5pt,
 				preaction = {decorate},
 				postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
 				\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
@@ -785,7 +787,7 @@
 					\node[attribute, above right=5mm and 10mm] (riferimento) [below right of=CaratteristicheFisiche] {Riferimento} edge (CaratteristicheFisiche);
 					\node[attribute, left=10mm](NomeGalassiaCF) [below left of = CaratteristicheFisiche] {\key{NomeGalassia}} edge (CaratteristicheFisiche);
 				
-				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+				\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](0,1)}] {misureFisiche};
 				\draw (carafisi) |- (CaratteristicheFisiche);
 				\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
 				
@@ -824,9 +826,9 @@
 	\begin{figure}[ht!]
 		\resizebox{16cm}{!}{
 			\begin{tikzpicture}[node distance=7em]
-			\tikzset{multi attribute/.style={attribute,double distance=1.5pt}} 
+			\tikzset{multi attribute/.style={attribute,distance=1.5pt}}
 			\tikzset{derived attribute/.style={attribute,dashed}} 
-			\tikzset{total/.style={double distance=1.5pt}} 
+			\tikzset{total/.style={distance=1.5pt}}
 			\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
 			\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
 			\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
@@ -835,7 +837,7 @@
 			% adapt line thickness and line width, if needed
 			\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
 				1 with {\arrow[semithick]{open triangle 60}}},
-			double distance=1.4pt, shorten >= 5.5pt,
+			double relativeDistance=1.4pt, shorten >= 5.5pt,
 			preaction = {decorate},
 			postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
 			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
@@ -902,14 +904,23 @@
 				\node[attribute, left=10mm](NomeGalassiaCF) [below left of = CaratteristicheFisiche] {\key{NomeGalassia}} edge (CaratteristicheFisiche);
 				\node[attribute](rifLum) [above of = CaratteristicheFisiche] {RiferimentoLuminosità} edge (CaratteristicheFisiche);
 			
-			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](1,1)}] {misureFisiche};
+			\node[relationship, left=50mm] (carafisi) [left of=relazioneFlusso, label={[right](0,1)}] {misureFisiche};
 			\draw (carafisi) |- (CaratteristicheFisiche);
 			\draw[transform canvas={yshift=3mm}]  (carafisi) |- (Galassia);
 			
 			%%%%%Chiavi%%%%
-			%%FLUSSO%%
+			%%FLUSSORIGHEHP%%
 			\draw (-10, -20.7) -- (-10, -23.7);
 			\filldraw[fill=black] (-10, -20.7) circle (2mm);
+			
+			%%FLUSSOCONTHP%%%
+			\draw (-2.5, -16) -- (-2.5, -19.5);
+			\filldraw[fill=black] (-2.5, -16) circle (2mm);	
+			
+			%%FLUSSORIGHESP%%
+			\draw (5, -24.5) -- (5, -27.5);
+			\filldraw[fill=black] (5, -24.5) circle (2mm);		
+			
 			\end{tikzpicture}
 		}
 		\caption{Schema E-R alla luce delle modifiche suggerite dalle fasi successive}
@@ -937,8 +948,298 @@
 		\textsf{\textbf{FK}: Tipo, Atomo \textbf{REFERENCES} \textit{Flusso} NOT NULL}
 	\end{flushleft}
 
-
+\newpage
 \section{Implementazione}
+
+	\subsection{Class diagram}
+	\begin{flushleft}
+		Come ricordiamo dai principi di ingegneria del software, la fase di \textit{analisi} definisce l'ambito di lavoro del sistema da realizzare, ovvero quali sono i compiti che deve effettivamente svolgere. La fase di \textit{progettazione} per converso si occupa di definire in che modo questi compiti verranno portati a termine dal sistema.\newline
+		Il fine più importante di questa fase è la stesura di un diagramma delle classi che rifletta ciò che il committente ha richiesto e che è stato inserito fra i requisiti funzionali del sistema.
+		Di seguito viene riportato il diagramma delle classi per il sistema di cui si occupa la relazione, suddiviso sulla base dei requisiti funzionali in modo da risultare più chiaro. Nella stessa ottica, sono stati inseriti nelle classi solo attributi e metodi che vengono effettivamente richiamati nell'ambito del requisito.\newline\newline
+	\end{flushleft}
+
+	\begin{flushleft}
+		\begin{figure}[h]
+			\resizebox{18cm}{12.5cm}{
+				\begin{tikzpicture}
+				\begin{class}[text width=4cm]{StartView}{-4,-1.85}
+				\operation{+main() : void}
+				\end{class}
+				
+				\begin{class}[text width=5cm] {LoginControl}{3,-0.5}
+				\attribute{-txtUser : TextField}
+				\attribute{-txtPsw : TextField}
+				\attribute{-btnOK : Button}
+				\operation{+initialize() : void}
+				\operation{+checkUser(String name, String password) : bool}
+				\end{class}
+				
+				\association{StartView}{}{}{LoginControl}{}{}
+				
+				\begin{class}[text width=5cm]{UserDAO}{9.5,-0.29}
+				\attribute{-connection : Connection}
+				\operation{-openConnection() : void}
+				\operation{-closeConnection() : void}
+				\operation{+checkUser(String name, String password) : bool}
+				\operation{+checkAdmin(String name, String password) : bool}
+				\end{class}
+				
+				\draw[umlcd style] (StartView.east) -- (LoginControl.west);
+				\draw[umlcd style] (LoginControl.east) -- (UserDAO.west);
+				
+				\begin{class}[text width = 5cm]{User}{9.5, -8}
+				\attribute{-name : String}
+				\attribute{-surname : String}
+				\attribute{-email : String}
+				\attribute{-userid : String}
+				\attribute{-password : String}
+				\end{class}
+				
+				\draw[umlcd style] (UserDAO.south) -- (User.north);
+				
+				\begin{class}[text width = 5cm]{UserView}{-4,-8}
+				\operation{+UserView() : UserView}
+				\operation{-startView() : void}
+				\end{class}
+				
+				\begin{class}[text width = 6cm]{AdminView}{-4, -12}
+				\inherit{UserView}	
+				\operation{+AdminView() : AdminView}
+				\operation{-startView() : void}
+				\end{class}
+				
+				\draw[dashed, ->] (LoginControl.south) |- node[xshift=-20mm, yshift=3mm]{<<istanzia>>} (UserView.east);
+				\draw[dashed, ->] (LoginControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (AdminView.east);
+				\end{tikzpicture}
+			}
+			\caption{Vista requisito funzionale \texttt{\#}1}
+		\end{figure}
+	\end{flushleft}
+	
+	\newpage
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+			\begin{class}[text width=6cm]{AdminView}{0,-0.35}
+				\operation{+AdminView() : AdminView}
+				\operation{-startView() : void}
+			\end{class}
+			
+			\begin{class}[text width=6cm] {AdminControl}{8,-0.35}
+				\attribute {-menuInsertUser : Menu}
+				\operation{+initialize() : void}
+				\operation{+handleEventInsertUser() : void}
+			\end{class}
+			
+			\begin{class}[text width=7cm] {InsertUserView}{0,-5}
+				\operation{+InsertUserView() : InsertUserView}
+				\operation{-startView() : void}
+			\end{class}
+			
+			\begin{class}[text width=8cm] {InsertUserControl}{0, -11}
+				\attribute{-txtName : TextField}
+				\attribute{-txtSurname : TextField}
+				\attribute{-txtEmail : TextField}
+				\attribute{-txtUserId : TextField}
+				\attribute{-txtPassword : TextField}
+				\attribute{-btnOK : Button}
+				\operation{+initialize() : void}
+				\operation{-handleEventButtonOK(String name, String surname, String email, String userid, String password) : void}
+			\end{class}
+			
+			\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (InsertUserView.east);
+		
+			\association{InsertUserView}{}{}{InsertUserControl}{}{}
+			\association{AdminView}{}{}{AdminControl}{}{}
+			
+			\begin{class}[text width=6cm]{UserDAO}{10,-12.36}
+				\attribute{connection : Connection}
+				\operation{+UserDAO() : UserDAO}
+				\operation{-openConnection() : void}
+				\operation{-closeConnection() : void}
+				\operation{+insertUser(User user) : bool}
+			\end{class}
+			
+			\association{InsertUserControl}{}{}{UserDAO}{}{}
+			
+			\begin{class}[text width = 6cm]{User}{10, -20}
+			\attribute{-name : String}
+			\attribute{-surname : String}
+			\attribute{-email : String}
+			\attribute{-userid : String}
+			\attribute{-password : String}
+			\end{class}
+			
+			\association{UserDAO}{}{<<inserisce>>}{User}{}{}
+		\end{tikzpicture}
+	\caption{Vista requisito funzionale \texttt{\#}3 - Inserimento di un utente}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\begin{class}[text width=6cm]{AdminView}{-4,-0.5}
+			\operation{+AdminView() : AdminView}
+			\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=6cm] {AdminControl}{3,0}
+		\attribute {-menuImportFile : Menu}
+		\operation{+initialize() : void}
+		\operation{+handleEventImportFile() : String}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {ImportFileView}{-4,-6}
+			\operation{+ImportFileView() : ImportFileView}
+			\operation{-startView() : void}
+		\end{class}
+		
+		\begin{abstractclass}[text width=6cm] {ImportCSV}{3, -11}
+			\umlnote at(-3,-10){Sfruttato il pattern \textit{Factory Method}};
+			\operation{\textit{+importFile(String path)} : \textit{void}}
+		\end{abstractclass}
+		
+		\begin{class}[text width=6cm]{ImportCSVFluxLineHP} {-5, -15}
+			\operation{-resetDB() : void}
+			\operation{+importFile(String path) : void}
+		\end{class}
+		\begin{class}[text width=6cm]{ImportCSVFluxContHP} {6, -15}
+			\operation{-resetDB() : void}
+			\operation{+importFile(String path) : void}
+		\end{class}
+		\begin{class}[text width=6cm]{ImportCSVFluxLineSpitzer} {-5, -19.5}
+			\operation{-resetDB() : void}
+			\operation{+importFile(String path) : void}
+		\end{class}
+		\begin{class}[text width=6cm]{ImportCSVGalaxy} {6, -20}
+			\operation{-resetDB() : void}
+			\operation{+importFile(String path) : void}
+		\end{class}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (ImportFileView.east);
+		
+		\draw[dashed, ->] (ImportCSV.west) -| node[xshift=-8mm, yshift=-25mm]{<<eredita>>} (ImportCSVFluxLineHP.north);
+		
+		\draw[dashed, ->] (ImportCSV.west) |- node[xshift=-8mm, yshift=5mm]{<<eredita>>} (ImportCSVFluxLineSpitzer.east);
+		
+		\draw[dashed, ->] (ImportCSV.south) -| node[xshift=-8mm, yshift=-75mm]{<<eredita>>} (ImportCSVGalaxy.west);
+		
+		\draw[dashed, ->] (ImportCSV.east) |- node[xshift=-8mm, yshift=5mm]{<<eredita>>} (ImportCSVFluxContHP.north);
+		
+		\draw[dashed, ->] (AdminControl.south) to node[xshift=-7mm, yshift=-35mm]{<<usa>>} (ImportCSV.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}4 - Import di un file}
+	\end{figure}
+\clearpage
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+			\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+			\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+				\operation{+AdminView() : AdminView}
+				\operation{-startView() : void}
+			\end{class}
+			
+			\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+				\attribute {-menuSearchGalaxyForName : Menu}
+				\operation{+initialize() : void}
+				\operation{+handleEventMenuSearchGalaxyForName() : void}
+			\end{class}
+			
+			\association{AdminView}{}{}{AdminControl}{}{}
+			
+			\begin{class}[text width=7cm] {SearchGalaxyForNameView}{0,-5}
+				\operation{+SearchGalaxyForNameView() : SearchGalaxyForNameView}
+				\operation{-startView() : void}
+			\end{class}
+			
+			\begin{class}[text width=7cm]{SearchGalaxyForNameControl}{0,-9}
+				\attribute{-txtGalaxyName : TextField}
+				\attribute{-btnOK : Button}
+				\operation{+initialize() : void}
+			\end{class}
+			
+			\association{SearchGalaxyForNameControl}{}{}{SearchGalaxyForNameView}{}{}
+			
+			\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchGalaxyForNameView.east);
+			
+			\begin{class}[text width = 8cm]{GalaxyDAO}{10, -10}
+				\operation{+searchGalaxyForName(String name) : Galaxy}
+			\end{class}
+			
+			\association{SearchGalaxyForNameControl}{}{}{GalaxyDAO}{}{}
+			
+			\begin{class}[text width = 10cm]{Galaxy}{10, -14}
+				\attribute{-nome : String}
+				\attribute{-nomeAlt : String}
+				\attribute{-redshift : Double}
+				\attribute{-coordinateAngolari : CoordinateAngolari}
+				\attribute{-caratteristicheFisiche : CaratteristicheFisiche}
+			\end{class}
+			
+			\draw[dashed, ->] (GalaxyDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Galaxy.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}5 - Ricerca di una galassia per nome}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+		\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+		\operation{+AdminView() : AdminView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+		\attribute {-menuSearchGalaxyForName : Menu}
+		\operation{+initialize() : void}
+		\operation{+handleEventMenuSearchGalaxyForRadius() : void}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {SearchGalaxyForRadiusView}{0,-5}
+		\operation{+SearchGalaxyForRadiusView() : SearchGalaxyForRadiusView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=7cm]{SearchGalaxyForRadiusControl}{0,-9}
+		\attribute{-txtARh : TextField}
+		\attribute{-txtARm : TextField}
+		\attribute{-txtARs : TextField}
+		\attribute{-txtDecSign : TextField}
+		\attribute{-txtDech : TextField}
+		\attribute{-txtDecm : TextField}
+		\attribute{-txtDecs : TextField}
+		\attribute{-numberGalaxies : TextField}
+		\attribute{-listGalaxies : List}
+		\attribute{-btnOK : Button}
+		\operation{+initialize() : void}
+		\end{class}
+		
+		\association{SearchGalaxyForNameControl}{}{}{SearchGalaxyForNameView}{}{}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchGalaxyForNameView.east);
+		
+		\begin{class}[text width = 8cm]{GalaxyDAO}{10, -10}
+		\operation{+searchGalaxyForRadius(Declination d, RightAscension ra, int n, double radius) : Galaxy}
+		\end{class}
+		
+		\association{SearchGalaxyForNameControl}{}{}{GalaxyDAO}{}{}
+		
+		\begin{class}[text width = 10cm]{Galaxy}{10, -14}
+		\attribute{-nome : String}
+		\attribute{-nomeAlt : String}
+		\attribute{-redshift : Double}
+		\attribute{-coordinateAngolari : CoordinateAngolari}
+		\attribute{-caratteristicheFisiche : CaratteristicheFisiche}
+		\end{class}
+		
+		\draw[dashed, ->] (GalaxyDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Galaxy.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}6 - Ricerca le prime \textit{n} galassie all'interno di un raggio}
+	\end{figure}
+
+\clearpage
 	\subsection{Scelta dell'ambiente}
 	\begin{flushleft}
 		Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline

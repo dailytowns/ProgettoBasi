@@ -2,7 +2,6 @@ package View;
 
 import Control.GalaxyFoundControl;
 import Model.Galaxy;
-import Model.GalaxyData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,11 +13,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Created by feder on 07/12/2016.
+ * @author Federico Amici
+ * La classe costituisce la View con i dati della galassia recuperati
+ * dalla base di dati
  */
 public class GalaxyFoundView {
 
-    public GalaxyFoundView (GalaxyData galaxyData) {
+    public GalaxyFoundView (Galaxy galaxy) {
         Parent root = null;
         FXMLLoader fxmlLoader = null;
         try {
@@ -28,19 +29,29 @@ public class GalaxyFoundView {
             e1.printStackTrace();
         }
         GalaxyFoundControl controller = fxmlLoader.getController();
-        controller.setLblGalaxyName(galaxyData.getNomeGalassia());
-        controller.setLblRedshift(galaxyData.getRedshift());
-        controller.setLblLuminosita(galaxyData.getCaratteristicheFisiche().getLuminosita().getValore());
-        controller.setLblMetallicita(galaxyData.getCaratteristicheFisiche().getMetallicita().getValore());
-        controller.setLblRifLuminosita(galaxyData.getCaratteristicheFisiche().getLuminosita().getRiferimento());
-        controller.setLblRifMetallicita(galaxyData.getCaratteristicheFisiche().getMetallicita().getRiferimento());
-        controller.setLblARh(galaxyData.getCoordinateAngolari().getRightAscension().getHour());
-        controller.setLblARm(galaxyData.getCoordinateAngolari().getRightAscension().getMinute());
-        controller.setLblARs(galaxyData.getCoordinateAngolari().getRightAscension().getSeconds());
-        controller.setLblDecDeg(galaxyData.getCoordinateAngolari().getDeclination().getDegrees());
-        controller.setLblDecMin(galaxyData.getCoordinateAngolari().getDeclination().getMinute());
-        controller.setLblDecSec(galaxyData.getCoordinateAngolari().getDeclination().getSeconds());
-        controller.setLblDecSign(galaxyData.getCoordinateAngolari().getDeclination().getSign());
+        controller.setLblGalaxyName(galaxy.getName());
+        controller.setLblRedshift(galaxy.getRedshift());
+
+        if(galaxy.getCaratteristicheFisiche().getLuminosita() != null) {
+            if(galaxy.getCaratteristicheFisiche().getLuminosita().getValore() != null)
+                controller.setLblLuminosita(galaxy.getCaratteristicheFisiche().getLuminosita().getValore());
+            if(galaxy.getCaratteristicheFisiche().getLuminosita().getRiferimento() != null)
+                controller.setLblRifLuminosita(galaxy.getCaratteristicheFisiche().getLuminosita().getRiferimento());
+        }
+
+        if(galaxy.getCaratteristicheFisiche().getMetallicita() != null) {
+            if(galaxy.getCaratteristicheFisiche().getMetallicita().getValore() != null)
+                controller.setLblMetallicita(galaxy.getCaratteristicheFisiche().getMetallicita().getValore());
+            if (galaxy.getCaratteristicheFisiche().getMetallicita().getRiferimento() != null)
+                controller.setLblRifMetallicita(galaxy.getCaratteristicheFisiche().getMetallicita().getRiferimento());
+        }
+        controller.setLblARh(galaxy.getCoordinateAngolari().getRightAscension().getHour());
+        controller.setLblARm(galaxy.getCoordinateAngolari().getRightAscension().getMinute());
+        controller.setLblARs(galaxy.getCoordinateAngolari().getRightAscension().getSeconds());
+        controller.setLblDecDeg(galaxy.getCoordinateAngolari().getDeclination().getDegrees());
+        controller.setLblDecMin(galaxy.getCoordinateAngolari().getDeclination().getMinute());
+        controller.setLblDecSec(galaxy.getCoordinateAngolari().getDeclination().getSeconds());
+        controller.setLblDecSign(galaxy.getCoordinateAngolari().getDeclination().getSign());
 
         Scene newScene = new Scene(root, 640, 480);
         Stage newStage = new Stage();

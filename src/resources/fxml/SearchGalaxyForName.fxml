@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="188.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.SearchGalaxyControl">
    <children>
-      <TextField fx:id="txtSearchGalaxy" layoutX="139.0" layoutY="76.0" prefHeight="36.0" prefWidth="322.0" />
+      <TextField fx:id="txtGalaxyName" layoutX="139.0" layoutY="76.0" prefHeight="36.0" prefWidth="322.0" />
       <Label fx:id="lblSearchGalaxy" layoutX="199.0" layoutY="29.0" text="Scrivi il nome della galassia da cercare">
          <font>
             <Font name="Kristen ITC" size="12.0" />

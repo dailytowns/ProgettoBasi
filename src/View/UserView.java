@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Created by feder on 31/12/2016.
+ * @author Federico Amici
+ * Classe adibita al caricamento dell'interfaccia grafica vista da un utente registrato.
  */
 public class UserView {
 

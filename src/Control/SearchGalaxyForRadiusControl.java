@@ -1,10 +1,10 @@
 package Control;
 
+import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
-import Model.Declination;
-import Model.Galaxy;
-import Model.RightAscension;
+import Model.*;
 import View.GalaxyCell;
+import View.GalaxyRadiusCell;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.xml.soap.Text;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -75,19 +76,20 @@ public class SearchGalaxyForRadiusControl {
                 int numberOfGalaxies = Integer.valueOf(txtNumberOfGalaxies.getText());
                 double radius = Double.valueOf(txtRadius.getText());
 
-                ObservableList<Galaxy> list = retrieveGalaxiesForRadius(declination, rightAscension, numberOfGalaxies, radius);
+                ObservableList<GalaxyDataRadius> list = retrieveGalaxiesForRadius(declination, rightAscension, numberOfGalaxies, radius);
+
                 listGalaxies.setItems(list);
-                listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                listGalaxies.setCellFactory(galaxyCell -> new GalaxyRadiusCell());
             }
         });
 
     }
 
-    private ObservableList<Galaxy> retrieveGalaxiesForRadius(Declination declination, RightAscension rightAscension,
+    private ObservableList<GalaxyDataRadius> retrieveGalaxiesForRadius(Declination declination, RightAscension rightAscension,
                                                              int numberOfGalaxies, double radius) {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB(declination, rightAscension, numberOfGalaxies, radius);
-        psqlDBHelper.closeConnection();
+        GalaxyDAO galaxyDAO = new GalaxyDAO();
+        ObservableList<GalaxyDataRadius> obs = galaxyDAO.retrieveGalaxiesDB(declination, rightAscension, numberOfGalaxies, radius);
+        galaxyDAO.closeConnection();
         return obs;
     }
 

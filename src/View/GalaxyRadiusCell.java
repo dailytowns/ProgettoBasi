@@ -1,7 +1,6 @@
 package View;
 
-import Model.Galaxy;
-import Model.GalaxyData;
+import Model.GalaxyDataRadius;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -12,27 +11,27 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 
 /**
- * Created by feder on 07/12/2016.
+ * @author Federico Amici
+ * Classe adibita alla presentazione dei dati sulle galassie
+ * ordinati per raggio
  */
-public class GalaxyCell extends ListCell<GalaxyData> {
+public class GalaxyRadiusCell extends ListCell<GalaxyDataRadius> {
 
     @FXML
     private Label lblNome;
-    @FXML
-    private Label lblNomeAlt;
-    @FXML
-    private Label lblRedshift;
     @FXML
     private Label lblNumber;
     @FXML
     private AnchorPane basePane;
     @FXML
     private HBox hBox;
+    @FXML
+    private Label lblRadius;
 
     private FXMLLoader fxmlLoader;
 
     @Override
-    protected void updateItem(GalaxyData galaxy, boolean empty) {
+    protected void updateItem(GalaxyDataRadius galaxy, boolean empty) {
         super.updateItem(galaxy, empty);
 
         if(empty || galaxy == null) {
@@ -42,7 +41,7 @@ public class GalaxyCell extends ListCell<GalaxyData> {
 
         } else {
             if (fxmlLoader == null) {
-                fxmlLoader = new FXMLLoader(getClass().getResource("/resources/fxml/ListCell.fxml"));
+                fxmlLoader = new FXMLLoader(getClass().getResource("/resources/fxml/GalaxyRadiusListCell.fxml"));
                 fxmlLoader.setController(this);
 
                 try {
@@ -53,8 +52,7 @@ public class GalaxyCell extends ListCell<GalaxyData> {
             }
 
             lblNome.setText(String.valueOf(galaxy.getGalaxy().getName()));
-            lblNomeAlt.setText(galaxy.getGalaxy().getAltName());
-            lblRedshift.setText(String.valueOf(galaxy.getGalaxy().getRedshift()));
+            lblRadius.setText(String.valueOf(galaxy.getRadius()));
             lblNumber.setText(String.valueOf(galaxy.getCounter()));
 
             setGraphic(basePane);

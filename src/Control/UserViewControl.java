@@ -2,6 +2,7 @@ package Control;
 
 import Helper.*;
 import Model.Galaxy;
+import Model.GalaxyData;
 import View.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +17,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by feder on 31/12/2016.
+ * @author Federico Amici
+ * La classe si occupa di associare i listener alla view
+ * di un utente registrato
  */
 public class UserViewControl {
 
@@ -37,7 +40,7 @@ public class UserViewControl {
 
     @FXML
     public void initialize() {
-        ObservableList<Galaxy> list = retrieveGalaxies();
+        ObservableList<GalaxyData> list = retrieveGalaxies();
 
         listGalaxies.setItems(list);
         listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
@@ -87,10 +90,10 @@ public class UserViewControl {
         listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());*/
     }
 
-    private ObservableList<Galaxy> retrieveGalaxies() {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB();
-        psqlDBHelper.closeConnection();
+    private ObservableList<GalaxyData> retrieveGalaxies() {
+        GalaxyDAO galaxyDAO = new GalaxyDAO();
+        ObservableList<GalaxyData> obs = galaxyDAO.retrieveGalaxiesDB();
+        galaxyDAO.closeConnection();
         return obs;
     }
 

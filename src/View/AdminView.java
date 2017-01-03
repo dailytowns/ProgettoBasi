@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
+ * @author Federico Amici
  * Classe adibita al caricamento dell'interfaccia grafica per un utente amministratore.
  */
 public class AdminView {

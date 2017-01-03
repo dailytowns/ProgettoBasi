@@ -1,36 +1,24 @@
 package Model;
 
-/**
- * Created by feder on 31/12/2016.
- */
 public class GalaxyData {
 
-    private String nomeGalassia;
-    private Double redshift;
-    private CaratteristicheFisiche caratteristicheFisiche;
-    private CoordinateAngolari coordinateAngolari;
+    private Galaxy galaxy;
+    private int counter;
 
-    public GalaxyData(String nomeGalassia, Double redshift, CaratteristicheFisiche caratteristicheFisiche,
-                      CoordinateAngolari coordinateAngolari) {
-        this.nomeGalassia = nomeGalassia;
-        this.redshift = redshift;
-        this.caratteristicheFisiche = caratteristicheFisiche;
-        this.coordinateAngolari = coordinateAngolari;
+    public GalaxyData(Galaxy galaxy, int counter) {
+        this.galaxy = galaxy;
+        this.counter = counter;
     }
 
-    public String getNomeGalassia() {
-        return nomeGalassia;
+    public Galaxy getGalaxy() {
+        return galaxy;
     }
 
-    public Double getRedshift() {
-        return redshift;
+    public void setGalaxy(Galaxy galaxy) {
+        this.galaxy = galaxy;
     }
 
-    public CaratteristicheFisiche getCaratteristicheFisiche() {
-        return caratteristicheFisiche;
-    }
-
-    public CoordinateAngolari getCoordinateAngolari() {
-        return coordinateAngolari;
+    public int getCounter() {
+        return counter;
     }
 }

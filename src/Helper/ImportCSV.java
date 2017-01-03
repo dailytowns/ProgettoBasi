@@ -1,10 +1,15 @@
 package Helper;
 
 /**
- * Created by feder on 21/12/2016.
+ * @author Federico Amici
+ * Classe astratta adibita all'import dei file .csv contenenti dati utili
  */
 public abstract class ImportCSV {
 
+    /**
+     * Importa il file .csv
+     * @param path Percorso del file da importare
+     */
     public abstract void importFile(String path);
 
 }

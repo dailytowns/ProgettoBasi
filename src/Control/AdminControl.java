@@ -3,28 +3,22 @@ package Control;
 
 import Helper.*;
 import Model.Galaxy;
+import Model.GalaxyData;
 import View.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Observable;
-import java.util.StringJoiner;
 
 /**
- * Created by feder on 05/12/2016.
+ * @author Federico Amici
+ * Classe Control che gestisce la View di un utente amministratore
  */
 public class AdminControl extends UserViewControl{
 
@@ -47,9 +41,14 @@ public class AdminControl extends UserViewControl{
     @FXML
     private MenuItem menuRapporti;
 
+    /**
+     * Il metodo inizializza tutti i nodi della view cui deve essere
+     * associato un listener. Vengono inoltre recuperati i dati utili
+     * alla composizione della lista
+     */
     @FXML
     public void initialize() {
-        ObservableList<Galaxy> list = retrieveGalaxies();
+        ObservableList<GalaxyData> list = retrieveGalaxies();
 
         listGalaxies.setItems(list);
         listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
@@ -81,12 +80,12 @@ public class AdminControl extends UserViewControl{
                             case "MRTable3_sample.csv":
                                 importCSV = new ImportCSVGalaxy();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
-                                ObservableList<Galaxy> list = retrieveGalaxies();
+                                ObservableList<GalaxyData> list = retrieveGalaxies();
                                 listGalaxies.setItems(list);
                                 listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
                                 break;
                             case "MRTable4_flux.csv":
-                                importCSV = new ImportCSVFlux();
+                                importCSV = new ImportCSVFluxLineHP();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                                 break;
                             case "MRTable6_cont.csv":
@@ -98,7 +97,7 @@ public class AdminControl extends UserViewControl{
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                                 break;
                             case "MRTable11_C_3x3_5x5_flux.csv":
-                                importCSV = new ImportCSVFlux();
+                                importCSV = new ImportCSVFluxLineHP();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
                                 break;
 
@@ -156,10 +155,10 @@ public class AdminControl extends UserViewControl{
         listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());*/
     }
 
-    private ObservableList<Galaxy> retrieveGalaxies() {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB();
-        psqlDBHelper.closeConnection();
+    private ObservableList<GalaxyData> retrieveGalaxies() {
+        GalaxyDAO galaxyDAO = new GalaxyDAO();
+        ObservableList<GalaxyData> obs = galaxyDAO.retrieveGalaxiesDB();
+        galaxyDAO.closeConnection();
         return obs;
     }
 

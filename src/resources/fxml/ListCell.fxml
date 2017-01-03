@@ -9,6 +9,11 @@
    <children>
       <HBox layoutX="5.0" layoutY="15.0" prefHeight="100.0" prefWidth="590.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="15.0">
          <children>
+            <Label fx:id="lblNumber" prefHeight="24.0" prefWidth="84.0" text="Label">
+               <font>
+                  <Font name="Cambria Bold" size="20.0" />
+               </font>
+            </Label>
             <Label fx:id="lblNome" prefHeight="17.0" prefWidth="205.0" stylesheets="@../../View/style.css" text="Nome">
                <font>
                   <Font name="Cambria Bold" size="20.0" />

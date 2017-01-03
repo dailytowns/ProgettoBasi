@@ -1,6 +1,7 @@
 package Control;
 
 import Helper.PsqlDBHelper;
+import Helper.UserDAO;
 import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,8 @@ public class InsertUserControl {
     private Button btnConferma;
     @FXML
     private Button btnReset;
+    @FXML
+    private CheckBox ckbxAmm;
 
     @FXML
     public void initialize() {
@@ -44,10 +47,26 @@ public class InsertUserControl {
                     alert.setContentText("Il nome utente o la password non rispettano i vincoli predefiniti");
                     alert.showAndWait();
                 } else {
-                    User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
-                    PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-                    psqlDBHelper.insertUser(user);
-                    btnConferma.getScene().getWindow().hide();
+                    /*Questo if implementa la RV9*/
+                    if(!(txtUsername.getText().equals(txtPassword.getText()))) {
+                        if (ckbxAmm.selectedProperty().getValue() == false) {
+                            User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
+                            UserDAO userDAO = new UserDAO();
+                            userDAO.insertUser(user, "registereduser");
+                            btnConferma.getScene().getWindow().hide();
+                        } else {
+                            User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
+                            UserDAO userDAO = new UserDAO();
+                            userDAO.insertUser(user, "amministratore");
+                            btnConferma.getScene().getWindow().hide();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Attenzione!");
+                        alert.setHeaderText(null);
+                        alert.setContentText("La password non può coincidere con lo username");
+                        alert.showAndWait();
+                    }
                 }
             }
         });

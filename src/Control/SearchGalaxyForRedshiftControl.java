@@ -1,7 +1,9 @@
 package Control;
 
+import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
 import Model.Galaxy;
+import Model.GalaxyData;
 import View.GalaxyCell;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,7 +42,7 @@ public class SearchGalaxyForRedshiftControl {
                         lgt = ">=";
                     else if (choiceBox.getSelectionModel().getSelectedIndex() == 1)
                         lgt = "<=";
-                    ObservableList<Galaxy> list = retrieveGalaxiesForRedshift(redshift, lgt);
+                    ObservableList<GalaxyData> list = retrieveGalaxiesForRedshift(redshift, lgt);
 
                     listGalaxies.setItems(list);
                     listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
@@ -49,10 +51,10 @@ public class SearchGalaxyForRedshiftControl {
 
     }
 
-    private ObservableList<Galaxy> retrieveGalaxiesForRedshift(Double redshiftValue, String lgt) {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveGalaxiesDB(redshiftValue, lgt);
-        psqlDBHelper.closeConnection();
+    private ObservableList<GalaxyData> retrieveGalaxiesForRedshift(Double redshiftValue, String lgt) {
+        GalaxyDAO galaxyDAO = new GalaxyDAO();
+        ObservableList<GalaxyData> obs = galaxyDAO.retrieveGalaxiesDB(redshiftValue, lgt);
+        galaxyDAO.closeConnection();
         return obs;
     }
 

@@ -12,12 +12,15 @@ import java.io.IOException;
 import java.sql.*;
 
 /**
- * Created by feder on 23/12/2016.
+ * @author Federico Amici
+ * Classe che gestisce l'import dei file .csv contenenti
+ * dati sulle galassie
  */
 public class ImportCSVGalaxy extends ImportCSV {
 
     /**
-     *
+     * Il metodo si occupa di immportare il file .csv
+     * contenente dati sulle galassie
      * @param path Percorso del file da importare
      */
     @Override

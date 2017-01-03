@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 /**
  * Created by feder on 29/12/2016.
  */
-public class ImportCSVFluxLineSpitzerTest {
+public class ImportCSVFluxLineHPLineSpitzerTest {
     @Test
     public void importFile() throws Exception {
 

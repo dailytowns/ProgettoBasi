@@ -8,9 +8,18 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by feder on 23/12/2016.
+ * @author Federico Amici
+ * Si occupa dell'import dei file .csv contenenti
+ * dati sul flusso continuo registrati dal satellite
+ * Herschel/PACS
  */
-public class ImportCSVFlux extends ImportCSV {
+public class ImportCSVFluxLineHP extends ImportCSV {
+
+    /**
+     * Importa il file contenenti dati sul flusso continuo
+     * registrati dal satellite Herschel/PACS
+     * @param path Percorso del file da importare
+     */
     @Override
     public void importFile(String path) {
 
@@ -104,7 +113,7 @@ public class ImportCSVFlux extends ImportCSV {
     }
 
     public static void main(String[] args) {
-        ImportCSVFlux importCSVFlux = new ImportCSVFlux();
-        importCSVFlux.importFile("C:\\Users\\feder\\Desktop\\MRTable4_flux.csv");
+        ImportCSVFluxLineHP importCSVFluxLineHP = new ImportCSVFluxLineHP();
+        importCSVFluxLineHP.importFile("C:\\Users\\feder\\Desktop\\MRTable4_flux.csv");
     }
 }
