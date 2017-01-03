@@ -26,14 +26,14 @@ public class SearchGalaxyControl {
         btnOK.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-                //Galaxy galaxy = psqlDBHelper.searchGalaxyForName(txtGalaxyName.getText());
                 GalaxyDAO galaxyDAO = new GalaxyDAO();
                 Galaxy galaxy = galaxyDAO.searchGalaxyForName(txtGalaxyName.getText());
 
                 if(galaxy!=null) {
                     new GalaxyFoundView(galaxy);
                 }
+
+                galaxyDAO.closeConnection();
             }
         });
     }

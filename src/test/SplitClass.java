@@ -15,13 +15,11 @@ public class SplitClass {
 
     public static void main(String[] args) {
 
-        ArrayList<Galaxy> list = new ArrayList<>();
-        list.add(new Galaxy("df", "dojn", 33, 23.300));
-        list.add(new Galaxy(null, null, 3, 22.1));
-
-        Collections.sort(list);
-        System.out.println(list.get(0).getRelativeDistance());
-        System.out.println(list.get(1).getRelativeDistance());
+        String s1 = "odinf<doivn";
+        if(s1.contains("<"))
+            System.out.println("dlndldouhfdoufdlj");
+        else
+            System.out.println("no");
 
 
     }

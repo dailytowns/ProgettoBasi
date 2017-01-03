@@ -10,14 +10,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.SearchRatioFluxViewControl">
    <children>
-      <TextField fx:id="txtGalassia" layoutX="54.0" layoutY="44.0" promptText="Nome prima galassia" />
-      <TextField fx:id="txtPrimaRiga" layoutX="234.0" layoutY="44.0" promptText="Prima riga" />
-      <TextField fx:id="txtSecondaRiga" layoutX="234.0" layoutY="90.0" promptText="Seconda riga" />
-      <Button fx:id="btnOK" layoutX="234.0" layoutY="149.0" mnemonicParsing="false" text="OK" />
-      <Label layoutX="54.0" layoutY="252.0" text="Il rapporto tra i due flussi è" />
-      <Label fx:id="lblRapporto" layoutX="366.0" layoutY="252.0" text="ValoreRapporto" />
-      <Label fx:id="lblLimit" layoutX="54.0" layoutY="296.0" prefHeight="17.0" prefWidth="401.0" text="Upper o LowerLimit?" />
-      <ComboBox fx:id="comboFluxType1" layoutX="418.0" layoutY="44.0" prefWidth="150.0" promptText="Tipo flusso">
+      <TextField fx:id="txtGalassia" layoutX="14.0" layoutY="44.0" promptText="Nome prima galassia" />
+      <TextField fx:id="txtPrimaRiga" layoutX="51.0" layoutY="152.0" prefHeight="25.0" prefWidth="149.0" promptText="Prima riga" />
+      <TextField fx:id="txtSecondaRiga" layoutX="388.0" layoutY="152.0" promptText="Seconda riga" />
+      <Button fx:id="btnOK" layoutX="244.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="OK" />
+      <Label fx:id="lblRapporto" layoutX="366.0" layoutY="283.0" text="ValoreRapporto" />
+      <Label fx:id="lblLimit" layoutX="54.0" layoutY="331.0" prefHeight="17.0" prefWidth="401.0" text="Upper o LowerLimit?" />
+      <ComboBox fx:id="comboFluxType1" layoutX="192.0" layoutY="44.0" prefWidth="150.0" promptText="Tipo flusso">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="flusso" />
@@ -26,7 +25,7 @@
             </FXCollections>
          </items>
       </ComboBox>
-      <ComboBox fx:id="comboFluxType2" layoutX="418.0" layoutY="90.0" prefWidth="150.0" promptText="Tipo flusso">
+      <ComboBox fx:id="comboFluxType2" layoutX="192.0" layoutY="92.0" prefWidth="150.0" promptText="Tipo flusso">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="flusso" />
@@ -35,5 +34,8 @@
             </FXCollections>
          </items>
       </ComboBox>
+      <ComboBox fx:id="comboRiga1" layoutX="366.0" layoutY="44.0" prefWidth="150.0" promptText="Righe disponibili" />
+      <ComboBox fx:id="comboRiga2" layoutX="366.0" layoutY="92.0" prefWidth="150.0" promptText="Righe disponibili" />
+      <Label layoutX="54.0" layoutY="283.0" text="Il rapporto tra i due flussi è" />
    </children>
 </AnchorPane>

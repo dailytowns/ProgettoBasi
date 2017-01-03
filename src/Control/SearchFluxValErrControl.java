@@ -1,6 +1,8 @@
 package Control;
 
+import Helper.FluxDAO;
 import Helper.PsqlDBHelper;
+import Model.FluxCellData;
 import Model.Galaxy;
 import View.FluxCell;
 import View.GalaxyCell;
@@ -41,7 +43,7 @@ public class SearchFluxValErrControl {
                 String galaxy = txtGalaxy.getText();
                 String[] atoms = txtAtoms.getText().split(";");
 
-                ObservableList<Galaxy> list = retrieveValErrFlux(galaxy, atoms, "flussorighehp");
+                ObservableList<FluxCellData> list = retrieveValErrFlux(galaxy, atoms, "flussorighehp");
                 listFluxesRHP.setItems(list);
                 listFluxesRHP.setCellFactory(fluxCell -> new FluxCell());
 
@@ -60,9 +62,9 @@ public class SearchFluxValErrControl {
     }
 
     private ObservableList retrieveValErrFlux(String galaxy, String[] atoms, String table) {
-        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        ObservableList<Galaxy> obs = psqlDBHelper.retrieveValErrFluxDB(galaxy, atoms, table);
-        psqlDBHelper.closeConnection();
+        FluxDAO fluxDAO = new FluxDAO();
+        ObservableList<FluxCellData> obs = fluxDAO.retrieveValErrFluxDB(galaxy, atoms, table);
+        fluxDAO.closeConnection();
         return obs;
     }
 

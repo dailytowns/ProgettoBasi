@@ -222,7 +222,7 @@ public class GalaxyDAO {
                             new RightAscension(arHours, arMinutes, arSeconds));
                     relativeDistance = CoordinateAngolari.computeDistanceBetweenCoordinates(acGalaxy, acPoint);
                     if(relativeDistance <= radius){
-                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift, relativeDistance);
+                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, relativeDistance);
                         list.add(galaxy);
                     }
             }
