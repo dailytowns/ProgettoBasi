@@ -16,10 +16,10 @@
       <AnchorPane prefHeight="96.0" prefWidth="600.0">
          <children>
             <Button fx:id="btnOK" layoutX="551.0" layoutY="36.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="OK" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="551.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="36.0" />
-            <ComboBox fx:id="choiceBox" layoutX="200.0" layoutY="36.0" prefWidth="150.0">
+            <ComboBox fx:id="choiceBox" layoutX="200.0" layoutY="36.0" prefWidth="150.0" promptText="&gt;= || &lt;= ?">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="magggiore o uguale di" />
+                        <String fx:value="maggiore o uguale di" />
                         <String fx:value="minore o uguale di" />
                     </FXCollections>
                 </items>
