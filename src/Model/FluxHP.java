@@ -3,7 +3,7 @@ package Model;
 /**
  * Created by feder on 27/12/2016.
  */
-public class FluxHP extends Flux {
+public class FluxHP {
 
     private String nomeGalassia;
     private String atomo;
@@ -14,14 +14,13 @@ public class FluxHP extends Flux {
 
     public FluxHP(String nomeGalassia, String atomo, String valore, String upperLimit,
                   String aperture, String error) {
-        super(nomeGalassia, atomo, valore, upperLimit, error);
         this.nomeGalassia = nomeGalassia;
         this.atomo = atomo;
         this.aperture = aperture;
         controllaValori(valore, upperLimit, error);
     }
 
-    /*protected void controllaValori(String valore, String upperLimit, String error) {
+    protected void controllaValori(String valore, String upperLimit, String error) {
         if(checkValue(valore))
             this.valore = Double.parseDouble(valore);
         else
@@ -49,7 +48,7 @@ public class FluxHP extends Flux {
         }
         return false;
     }
-*/
+
     public Double getError() {
         return error;
     }

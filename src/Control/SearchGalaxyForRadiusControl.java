@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.xml.soap.Text;
@@ -54,6 +51,8 @@ public class SearchGalaxyForRadiusControl {
         btnOK.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                ObservableList<GalaxyDataRadius> list = null;
+
                 /*****Parsing right ascension************/
                 Integer hoursAR = Integer.valueOf(txtHoursAR.getText());
                 Integer minutesAR = Integer.valueOf(txtMinutesAR.getText());
@@ -76,16 +75,33 @@ public class SearchGalaxyForRadiusControl {
                 int numberOfGalaxies = Integer.valueOf(txtNumberOfGalaxies.getText());
                 double radius = Double.valueOf(txtRadius.getText());
 
-                ObservableList<GalaxyDataRadius> list = retrieveGalaxiesForRadius(declination, rightAscension, numberOfGalaxies, radius);
-
-                listGalaxies.setItems(list);
-                listGalaxies.setCellFactory(galaxyCell -> new GalaxyRadiusCell());
+                if(parseInput(rightAscension, declination)) {
+                    list = retrieveGalaxiesForRadius(declination, rightAscension, numberOfGalaxies, radius);
+                    listGalaxies.setItems(list);
+                    listGalaxies.setCellFactory(galaxyCell -> new GalaxyRadiusCell());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Attenzione!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Le coordinate immesse non sono ammissibili");
+                    alert.showAndWait();
+                }
             }
         });
 
     }
 
-    private ObservableList<GalaxyDataRadius> retrieveGalaxiesForRadius(Declination declination, RightAscension rightAscension,
+    /*Implementa le RV11 e RV12. Statica per testing*/
+    public boolean parseInput(RightAscension ra, Declination d) {
+        if(ra.getHour() < 24 && ra.getMinute() < 60 && ra.getSeconds() < 3600 &&
+                d.getDegrees() < 90 && d.getMinute() < 60 && d.getSeconds() < 3600)
+            return true;
+        else
+            return false;
+    }
+
+
+    public ObservableList<GalaxyDataRadius> retrieveGalaxiesForRadius(Declination declination, RightAscension rightAscension,
                                                              int numberOfGalaxies, double radius) {
         GalaxyDAO galaxyDAO = new GalaxyDAO();
         ObservableList<GalaxyDataRadius> obs = galaxyDAO.retrieveGalaxiesDB(declination, rightAscension, numberOfGalaxies, radius);

@@ -83,8 +83,9 @@ public class InsertUserControl {
         });
     }
 
-    /*Il metodo assicura che venga rispettata la RV#*/
-    private boolean checkUserAndPassword(String user, String password) {
+    /*Il metodo assicura che venga rispettata la RV#
+    * Reso statico sia per essere accessibile dalla pagina web sia per testing*/
+    public static boolean checkUserAndPassword(String user, String password) {
         if(user.length() < 6 || password.length() < 6)
             return false;
         int numbers = 0, i=0;

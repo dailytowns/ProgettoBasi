@@ -10,9 +10,9 @@ public class Declination {
     private Integer minute;
     private Double seconds;
 
-    public Declination(String sign, int hour, int minute, double seconds) {
+    public Declination(String sign, int degrees, int minute, Double seconds) {
         this.sign = sign;
-        this.degrees = hour;
+        this.degrees = degrees;
         this.minute = minute;
         this.seconds = seconds;
     }

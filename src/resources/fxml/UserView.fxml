@@ -24,6 +24,7 @@
                     <items>
                         <MenuItem fx:id="menuRicercaValErrFlusso" mnemonicParsing="false" text="Ricerca flussi di una galassia..." />
                         <MenuItem fx:id="menuRapporti" mnemonicParsing="false" text="Rapporti tra flussi..." />
+                  <MenuItem fx:id="menuStatiRatio" mnemonicParsing="false" text="Statistiche sui rapporti fra flussi..." />
                     </items>
                 </Menu>
             </menus>

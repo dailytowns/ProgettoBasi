@@ -24,7 +24,7 @@ public class ImportCSVGalaxy extends ImportCSV {
      * @param path Percorso del file da importare
      */
     @Override
-    public void importFile(String path) {
+    public int importFile(String path) {
 
         resetDB();
 
@@ -33,7 +33,7 @@ public class ImportCSVGalaxy extends ImportCSV {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         String[] headerLine;
 
-        int i = 0;
+        int i = 0; //Contatore delle righe inserite utilizzato per testing
         try {
             reader = new CSVReader(new FileReader(path), '\t');
         } catch (FileNotFoundException e) {
@@ -53,6 +53,8 @@ public class ImportCSVGalaxy extends ImportCSV {
                         + nextLine[0] + "', '" + nextLine[25] + "', " + nextLine[8] + ", '" + nextLine[11] + "');");
                 System.out.println("DOPO GALASSIA");
 
+                i++;
+
                  try {
                      psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg, decmin, decsec) VALUES ('"
                              + nextLine[0] + "'," + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ", '" +
@@ -60,6 +62,8 @@ public class ImportCSVGalaxy extends ImportCSV {
                  } catch (Exception e) {
                      e.printStackTrace();
                  }
+
+                i++;
 
                 Metallicita metallicita = new Metallicita(nextLine[22], nextLine[23], nextLine[24]);
                 Luminosita luminosita = new Luminosita(nextLine[13], nextLine[15]);
@@ -69,6 +73,8 @@ public class ImportCSVGalaxy extends ImportCSV {
                         metallicita.getValore() + ", "+ metallicita.getErrore() + ", " + metallicita.getRiferimento() +
                         ", " + luminosita.getValore() + ", " + luminosita.getRiferimento() + ");");
                 System.out.println("DOPO METALLO");
+
+                i++;
 
                 /*psqlDBHelper.insertRecord("INSERT INTO caratteristichefisiche(nomegalassia, tipologia, valore, errore, "
                         + "riferimento) VALUES('" + nextLine[0] + "', " + "'metallicita', " + nextLine[22] + ", "
@@ -90,6 +96,8 @@ public class ImportCSVGalaxy extends ImportCSV {
         }
 
         psqlDBHelper.closeConnection();
+
+        return i;
     }
 
     private void resetDB() {

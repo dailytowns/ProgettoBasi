@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ImportCSVContFlux extends ImportCSV {
 
     @Override
-    public void importFile(String path) {
+    public int importFile(String path) {
 
         resetDB();
 
@@ -22,7 +22,7 @@ public class ImportCSVContFlux extends ImportCSV {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         String[] headerLine;
 
-        int i = 0;
+        int i = 0; //Contatore delle righe inserite utilizzato per testing
         try {
             reader = new CSVReader(new FileReader(path), '\t');
         } catch (FileNotFoundException e) {
@@ -41,6 +41,7 @@ public class ImportCSVContFlux extends ImportCSV {
                         "aperture, ref160, errore) VALUES ('" + fluxOIII52.getNomeGalassia() + "', '" + fluxOIII52.getUpperLimit() + "', 'OIII52'," +
                         fluxOIII52.getValore() + ", '" + fluxOIII52.getAperture() + "', '" + fluxOIII52.getRef160um() + "'," + fluxOIII52.getError() + ");");
 
+                i++;
 
                 try {
                     ContFluxHP fluxNIII = new ContFluxHP(nextLine[0], "NIII57",
@@ -53,6 +54,8 @@ public class ImportCSVContFlux extends ImportCSV {
                     e.printStackTrace();
                 }
 
+                i++;
+
                 try {
                     ContFluxHP fluxOI = new ContFluxHP(nextLine[0], "OI63",
                             nextLine[6], nextLine[5], nextLine[21], nextLine[20], nextLine[7]);
@@ -63,6 +66,8 @@ public class ImportCSVContFlux extends ImportCSV {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                i++;
 
                 try {
                     ContFluxHP fluxOIII88 = new ContFluxHP(nextLine[0], "OIII88",
@@ -75,6 +80,8 @@ public class ImportCSVContFlux extends ImportCSV {
                     e.printStackTrace();
                 }
 
+                i++;
+
                 try {
                     ContFluxHP fluxNII122 = new ContFluxHP(nextLine[0], "NIII122",
                             nextLine[12], nextLine[11], nextLine[21], nextLine[20], nextLine[13]);
@@ -85,6 +92,8 @@ public class ImportCSVContFlux extends ImportCSV {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                i++;
 
                 try {
                     ContFluxHP fluxOI145 = new ContFluxHP(nextLine[0], "OI145",
@@ -97,6 +106,8 @@ public class ImportCSVContFlux extends ImportCSV {
                     e.printStackTrace();
                 }
 
+                i++;
+
                 try {
                     ContFluxHP fluxCII158 = new ContFluxHP(nextLine[0], "CII158",
                             nextLine[18], nextLine[17], nextLine[21], nextLine[20], nextLine[19]);
@@ -108,6 +119,7 @@ public class ImportCSVContFlux extends ImportCSV {
                     e.printStackTrace();
                 }
 
+                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,7 +127,7 @@ public class ImportCSVContFlux extends ImportCSV {
 
         psqlDBHelper.closeConnection();
 
-        System.out.println("In importFile flux");
+        return i;
 
     }
 

@@ -1,5 +1,7 @@
 package Model;
 
+import com.sun.mail.imap.Rights;
+
 /**
  * Created by feder on 08/12/2016.
  */
@@ -31,4 +33,22 @@ public class CoordinateAngolari {
     public RightAscension getRightAscension() {
         return rightAscension;
     }
+
+    public static void main(String[] args) {
+        Declination d1 = new Declination("-", 12, 6, 276.624);
+        System.out.println(Declination.convertToDegrees(d1));
+        RightAscension ra1 = new RightAscension(0, 11, 65.412);
+        System.out.println(RightAscension.convertToDegrees(ra1));
+
+        Declination d2 = new Declination("+", 21, 57, 368.064);
+        System.out.println(Declination.convertToDegrees(d2));
+        RightAscension ra2 = new RightAscension(0, 3, 96.038);
+        System.out.println(RightAscension.convertToDegrees(ra2));
+
+        CoordinateAngolari c1 = new CoordinateAngolari(d1, ra1);
+        CoordinateAngolari c2 = new CoordinateAngolari(d2, ra2);
+
+        System.out.println(CoordinateAngolari.computeDistanceBetweenCoordinates(c1, c2));
+    }
+
 }

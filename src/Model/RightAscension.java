@@ -19,24 +19,12 @@ public class RightAscension {
         return hour;
     }
 
-    public void setHour(Integer hour) {
-        this.hour = hour;
-    }
-
     public Integer getMinute() {
         return minute;
     }
 
-    public void setMinute(Integer minute) {
-        this.minute = minute;
-    }
-
     public Double getSeconds() {
         return seconds;
-    }
-
-    public void setSeconds(Double seconds) {
-        this.seconds = seconds;
     }
 
     public static double convertToDegrees(RightAscension r) {

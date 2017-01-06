@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -42,6 +43,68 @@ public class FluxDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Double> retrieveValLineDB(String fluxType, String lineSelected, String aperture) {
+
+        ArrayList<Double> list = new ArrayList<>();
+        Statement stmt = null;
+        int i = 0;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully")
+            stmt = conn.createStatement();
+            ResultSet rs = null;
+
+            rs = stmt.executeQuery("SELECT valore FROM " + fluxType + " WHERE (valore IS NOT null) AND " +
+                    "atomo LIKE '"+ lineSelected + "' AND aperture LIKE '%"+ aperture +"%';");
+
+            while(rs.next()){
+                list.add(rs.getDouble("valore"));
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return list;
+
+    }
+
+    public ArrayList<Double> retrieveValLineDB(String fluxType, String lineSelected) {
+
+        ArrayList<Double> list = new ArrayList<>();
+        Statement stmt = null;
+        int i = 0;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully")
+            stmt = conn.createStatement();
+            ResultSet rs = null;
+
+            rs = stmt.executeQuery("SELECT valore FROM " + fluxType + " WHERE (valore IS NOT null) AND " +
+                    "atomo LIKE '"+ lineSelected + "';");
+
+            while(rs.next()){
+                list.add(rs.getDouble("valore"));
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return list;
+
     }
 
     public Flux retrieveValFluxDB (String galaxy, String atom, String table) {
@@ -129,6 +192,16 @@ public class FluxDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        FluxDAO fluxDAO = new FluxDAO();
+        ArrayList<Double> list = fluxDAO.retrieveValLineDB("flussorighehp", "OI63");
+        int i = 0;
+        while(i<list.size()) {
+            System.out.println(list.get(i));
+            i++;
         }
     }
 }

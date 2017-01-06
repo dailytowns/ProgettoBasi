@@ -1,6 +1,7 @@
 package test;
 
 import Helper.PsqlDBHelper;
+import Helper.UserDAO;
 import org.junit.*;
 
 /**
@@ -10,22 +11,31 @@ public class TestLogin {
 
     @Test
     public void testLogin(){
-/*        PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
-        *//*true*//*
-        boolean result = psqlDBHelper.checkUser("usermario", "passmario");
+        UserDAO userDAO = new UserDAO();
+        //*true*//
+        boolean result = userDAO.checkUser("usermario", "passmario80");
         Assert.assertEquals(result, true);
 
-        psqlDBHelper = new PsqlDBHelper();
-        *//*false*//*
-        result = psqlDBHelper.checkUser("oiopo", "passmape");
-        Assert.assertEquals(result, false);*/
+        //*true*//
+        userDAO = new UserDAO();
+        result = userDAO.checkUser("pippobaudo", "pippobaudo73");
+        Assert.assertEquals(result, false);
+
+        //*false*//
+        userDAO = new UserDAO();
+        result = userDAO.checkUser("usermarione", "passmario80");
+        Assert.assertEquals(result, false);
+
+        userDAO.closeConnection();
+
+        System.err.println("INFO TestLogin: Il test non ha individuato errori");
     }
 
     /*Eccezione se il dbms è chiuso*/
-    public static void main(String[] args) {
+    @Test
+    public void main() throws Exception {
         TestLogin testLogin = new TestLogin();
         testLogin.testLogin();
-        System.err.println("INFO: Il test non ha individuato errori");
     }
 
 }

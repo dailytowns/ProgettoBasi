@@ -37,6 +37,8 @@ public class UserViewControl {
     private MenuItem menuRicercaValErrFlusso;
     @FXML
     private MenuItem menuRapporti;
+    @FXML
+    private MenuItem menuStatiRatio;
 
     @FXML
     public void initialize() {
@@ -77,6 +79,13 @@ public class UserViewControl {
             @Override
             public void handle(ActionEvent event) {
                 SearchRatioFluxView searchRatioFluxView = new SearchRatioFluxView();
+            }
+        });
+
+        menuStatiRatio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new StatiRatioFluxView();
             }
         });
 

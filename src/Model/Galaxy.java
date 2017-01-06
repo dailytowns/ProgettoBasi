@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 /**
  * @author Federico Amici
  * Classe Model di una galassia. Implementa l'interfaccia Comparable
@@ -70,4 +72,5 @@ public class Galaxy implements Comparable<Galaxy>{
     public int compareTo(Galaxy o) {
         return (this.relativeDistance).compareTo(o.relativeDistance);
     }
+
 }

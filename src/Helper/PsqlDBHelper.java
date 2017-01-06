@@ -45,27 +45,6 @@ public class PsqlDBHelper {
         }
     }
 
-    private void insertRecordsHibernate(UserHib user) {
-        // A SessionFactory is set up once for an application!
-        SessionFactory sessionFactory;
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure("/resources/hibernate.cfg.xml") // configures settings from hibernate.cfg.xml
-                .build();
-        try {
-            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
-            session.close();
-        }
-        catch (Exception e) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy( registry );
-        }
-    }
-
     public void createTableGalassia() {
         Statement stmt = null;
         try {
@@ -288,6 +267,33 @@ public class PsqlDBHelper {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
+    }
+
+    public int countRowsTable(String table) {
+
+        Statement stmt = null;
+        int count = 0;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT COUNT(*) as numerorighe FROM " + table + ";" );
+            while ( rs.next() ) {
+                count = rs.getInt("numerorighe");
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return count;
+
     }
 
     public static void main(String[] args) {

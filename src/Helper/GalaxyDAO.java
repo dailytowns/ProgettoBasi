@@ -113,6 +113,11 @@ public class GalaxyDAO {
         return obs;
     }
 
+    /**
+     * Ricerca nel database una galassia per nome
+     * @param nameGalaxy Nome della galassia da ricercare
+     * @return Un oggetto di tipo Galassia, altrimenti null
+     */
     public Galaxy searchGalaxyForName(String nameGalaxy) {
 
         Statement stmt = null;
@@ -137,6 +142,9 @@ public class GalaxyDAO {
                 nomeAlt = rs.getString("nomealt");
                 redshift  = rs.getDouble("redshift");
             }
+            if(nome == null)
+                return null;
+
             rs = stmt.executeQuery("SELECT * FROM coordinateangolari WHERE nomegalassia LIKE '"+nameGalaxy+"%';");
             while(rs.next()) {
                 arh = rs.getInt("ARh");
@@ -192,6 +200,7 @@ public class GalaxyDAO {
         CoordinateAngolari acPoint = new CoordinateAngolari(declination, rightAscension);
         double relativeDistance;
         int i = 0; //Il contatore serve per limitarci alle prime number galassie trovate
+        ArrayList<Galaxy> list = null;
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -204,7 +213,7 @@ public class GalaxyDAO {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * " +
                     " FROM galassia INNER JOIN coordinateangolari ON galassia.nome = coordinateangolari.nomegalassia" );
-            ArrayList<Galaxy> list = new ArrayList<>();
+            list = new ArrayList<>();
             while ( rs.next() ) {
                     String nomeGalassia = rs.getString("nome");
                     String nomealt = rs.getString("nomealt");
@@ -222,7 +231,7 @@ public class GalaxyDAO {
                             new RightAscension(arHours, arMinutes, arSeconds));
                     relativeDistance = CoordinateAngolari.computeDistanceBetweenCoordinates(acGalaxy, acPoint);
                     if(relativeDistance <= radius){
-                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, relativeDistance);
+                        Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift, relativeDistance);
                         list.add(galaxy);
                     }
             }
@@ -231,7 +240,7 @@ public class GalaxyDAO {
             System.out.println(list);
 
             while(i < number && i<list.size()) {
-                GalaxyDataRadius galaxyData = new GalaxyDataRadius(list.get(i), i, list.get(i).getRelativeDistance());
+                GalaxyDataRadius galaxyData = new GalaxyDataRadius(list.get(i), i+1, list.get(i).getRelativeDistance());
                 obs.add(galaxyData);
                 i++;
             }

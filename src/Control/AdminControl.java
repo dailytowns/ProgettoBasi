@@ -40,6 +40,12 @@ public class AdminControl extends UserViewControl{
     private MenuItem menuRicercaValErrFlusso;
     @FXML
     private MenuItem menuRapporti;
+    @FXML
+    private MenuItem menuStatiRatio;
+    @FXML
+    private Button btnDump;
+    @FXML
+    private Button btnResetUtenti;
 
     /**
      * Il metodo inizializza tutti i nodi della view cui deve essere
@@ -142,6 +148,13 @@ public class AdminControl extends UserViewControl{
             @Override
             public void handle(ActionEvent event) {
                 SearchRatioFluxView searchRatioFluxView = new SearchRatioFluxView();
+            }
+        });
+
+        menuStatiRatio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new StatiRatioFluxView();
             }
         });
 

@@ -21,7 +21,7 @@ public class ImportCSVFluxLineHP extends ImportCSV {
      * @param path Percorso del file da importare
      */
     @Override
-    public void importFile(String path) {
+    public int importFile(String path) {
 
         resetDB();
 
@@ -30,7 +30,7 @@ public class ImportCSVFluxLineHP extends ImportCSV {
         PsqlDBHelper psqlDBHelper = new PsqlDBHelper();
         String[] headerLine;
 
-        int i = 0;
+        int i = 0; //Contatore delle righe inserite utilizzato per testing
         try {
             reader = new CSVReader(new FileReader(path), '\t');
         } catch (FileNotFoundException e) {
@@ -50,12 +50,16 @@ public class ImportCSVFluxLineHP extends ImportCSV {
                         fluxHPOIII52.getUpperLimit() + "', 'OIII52'," + fluxHPOIII52.getValore() + ", '" +
                         fluxHPOIII52.getAperture() + "', " + fluxHPOIII52.getError() + ");");
 
+                i++;
+
                 FluxHP fluxHPNIII = new FluxHP(nextLine[0], "NIII57",
                         nextLine[5], nextLine[4], nextLine[22], nextLine[6]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
                         "aperture, errore) " + "VALUES ('" + fluxHPNIII.getNomeGalassia() + "', '" + fluxHPNIII.getUpperLimit() +
                         "'" + ", 'NIII57', " + fluxHPNIII.getValore() + ", '" + fluxHPNIII.getAperture() + "'," +
                         fluxHPNIII.getError() + ");");
+
+                i++;
 
                 FluxHP fluxHPOI = new FluxHP(nextLine[0], "OI63",
                         nextLine[8], nextLine[7], nextLine[22], nextLine[9]);
@@ -64,12 +68,16 @@ public class ImportCSVFluxLineHP extends ImportCSV {
                         "'" + ", 'OI63', " + fluxHPOI.getValore() + ", '" + fluxHPOI.getAperture() + "'," +
                         fluxHPOI.getError() + ");");
 
+                i++;
+
                 FluxHP fluxHPOIII88 = new FluxHP(nextLine[0], "OIII88",
                         nextLine[11], nextLine[10], nextLine[22], nextLine[12]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
                         "aperture, errore) VALUES ('" + fluxHPOIII88.getNomeGalassia() + "', '" + fluxHPOIII88.getUpperLimit() +
                         "', 'OIII88', " + fluxHPOIII88.getValore() + ", '" + fluxHPOIII88.getAperture() + "'," +
                         fluxHPOIII88.getError() + ");");
+
+                i++;
 
                 FluxHP fluxHPNII122 = new FluxHP(nextLine[0], "NIII122",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[15]);
@@ -78,12 +86,16 @@ public class ImportCSVFluxLineHP extends ImportCSV {
                         "', 'NIII122', " + fluxHPNII122.getValore() + ", '" + fluxHPNII122.getAperture() + "'," +
                         fluxHPNII122.getError() + ");");
 
+                i++;
+
                 FluxHP fluxHPOI145 = new FluxHP(nextLine[0], "OI145",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[18]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore," +
                         "aperture, errore) VALUES ('" + fluxHPOI145.getNomeGalassia() + "', '" +
                         fluxHPOI145.getUpperLimit() + "', 'OI145', " + fluxHPOI145.getValore() + ", '" + fluxHPOI145.getAperture() +
                         "', " + fluxHPOI145.getError() + ");");
+
+                i++;
 
                 FluxHP fluxHPCII158 = new FluxHP(nextLine[0], "CII158",
                         nextLine[14], nextLine[13], nextLine[22], nextLine[21]);
@@ -92,7 +104,7 @@ public class ImportCSVFluxLineHP extends ImportCSV {
                         "', 'CII158', " + fluxHPCII158.getValore() + ", '" + fluxHPCII158.getAperture() + "'," + fluxHPCII158.getError() + ");");
                 System.out.println("DOPO GALASSIA");
 
-
+                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,7 +112,7 @@ public class ImportCSVFluxLineHP extends ImportCSV {
 
         psqlDBHelper.closeConnection();
 
-        System.out.println("In importFile flux");
+        return i;
     }
 
     private void resetDB() {

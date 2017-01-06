@@ -10,6 +10,6 @@ public abstract class ImportCSV {
      * Importa il file .csv
      * @param path Percorso del file da importare
      */
-    public abstract void importFile(String path);
+    public abstract int importFile(String path);
 
 }
