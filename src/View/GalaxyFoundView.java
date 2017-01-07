@@ -28,6 +28,7 @@ public class GalaxyFoundView {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+
         GalaxyFoundControl controller = fxmlLoader.getController();
         controller.setLblGalaxyName(galaxy.getName());
         controller.setLblRedshift(galaxy.getRedshift());

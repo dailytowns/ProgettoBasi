@@ -44,14 +44,22 @@ public class SearchGalaxyForRedshiftControl {
                         lgt = "<=";
                     ObservableList<GalaxyData> list = retrieveGalaxiesForRedshift(redshift, lgt);
 
-                    listGalaxies.setItems(list);
-                    listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                    if(list.size() != 0) {
+                        listGalaxies.setItems(list);
+                        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Info");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Non sono state galassie corrispondenti ai criteri di ricerca");
+                        alert.showAndWait();
+                    }
             }
         });
 
     }
 
-    private ObservableList<GalaxyData> retrieveGalaxiesForRedshift(Double redshiftValue, String lgt) {
+    public ObservableList<GalaxyData> retrieveGalaxiesForRedshift(Double redshiftValue, String lgt) {
         GalaxyDAO galaxyDAO = new GalaxyDAO();
         ObservableList<GalaxyData> obs = galaxyDAO.retrieveGalaxiesDB(redshiftValue, lgt);
         galaxyDAO.closeConnection();

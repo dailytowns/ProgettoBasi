@@ -1,8 +1,10 @@
 package Helper;
 
+import Control.ErrorMessageControl;
 import Model.Flux;
 import Model.FluxCellData;
 import Model.Galaxy;
+import View.ErrorMessageView;
 import View.FluxCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -158,11 +160,7 @@ public class FluxDAO {
                 parseRow(rs, obs);
 
                 if(obs.size() == 0){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Info");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Nessuna riga trovata in " + table);
-                    alert.showAndWait();
+                    new ErrorMessageView(table, atoms[i]);
                 }
 
                 i++;

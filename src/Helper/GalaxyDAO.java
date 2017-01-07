@@ -78,6 +78,12 @@ public class GalaxyDAO {
         return obs;
     }
 
+    /**
+     *
+     * @param redshiftValue Valore soglia del redhift
+     * @param lgt Stringa che indica il verso della query
+     * @return Viene ritornata una lista di Galassie corrispondente ai criteri di ricerca
+     */
     public ObservableList<GalaxyData> retrieveGalaxiesDB(Double redshiftValue, String lgt) {
         ObservableList<GalaxyData> obs = FXCollections.observableArrayList();
         Statement stmt = null;
