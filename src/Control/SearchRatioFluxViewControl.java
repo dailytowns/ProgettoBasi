@@ -1,6 +1,8 @@
 package Control;
 
+import Helper.ComboUtil;
 import Helper.FluxDAO;
+import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
 import Model.Flux;
 import View.FluxCell;
@@ -9,6 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import javax.smartcardio.CommandAPDU;
+import java.util.ArrayList;
 
 /**
  * @author Federico Amici
@@ -22,10 +27,6 @@ public class SearchRatioFluxViewControl {
     @FXML
     private TextField txtGalassia;
     @FXML
-    private TextField txtPrimaRiga;
-    @FXML
-    private TextField txtSecondaRiga;
-    @FXML
     private Label lblRapporto;
     @FXML
     private Label lblLimit;
@@ -34,156 +35,174 @@ public class SearchRatioFluxViewControl {
     @FXML
     private ComboBox comboFluxType2;
     @FXML
-    private ComboBox comboRiga1;
+    private ComboBox comboRigheHP1;
     @FXML
-    private ComboBox comboRiga2;
+    private ComboBox comboContinuo1;
+    @FXML
+    private ComboBox comboRigheSp1;
+    @FXML
+    private ComboBox comboRigheHP2;
+    @FXML
+    private ComboBox comboContinuo2;
+    @FXML
+    private ComboBox comboRigheSp2;
+    @FXML
+    private Button btnCerca;
+
+    private String primaRiga;
+    private String secondaRiga;
+    private String fluxType1;
+    private String fluxType2;
 
     @FXML
     public void initialize() {
+
         btnOK.setDefaultButton(true);
         btnOK.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String galassia = txtGalassia.getText();
-                String[] primaRiga = txtPrimaRiga.getText().split(";");
-                String[] secondaRiga = txtSecondaRiga.getText().split(";");
 
-                String tipoFlusso1 = parseCombo(comboFluxType1);
-                String tipoFlusso2 = parseCombo(comboFluxType2);
+                String tipoFlusso1 = ComboUtil.parseCombo(comboFluxType1);
+                String tipoFlusso2 = ComboUtil.parseCombo(comboFluxType2);
 
-                Flux val1 = retrieveValueDB(galassia, primaRiga[0], tipoFlusso1);
-                Flux val2 = retrieveValueDB(galassia, secondaRiga[0], tipoFlusso2);
+                if (tipoFlusso1 != null && tipoFlusso2 != null && primaRiga != null && secondaRiga != null &&
+                        fluxType1.equals(tipoFlusso1) && fluxType2.equals(tipoFlusso2)) {
+                    Flux val1 = retrieveValueDB(galassia, primaRiga, tipoFlusso1);
+                    Flux val2 = retrieveValueDB(galassia, secondaRiga, tipoFlusso2);
 
-                if(val1!=null && val2!=null) {
-                    if (val1.getUpperLimit().contains("<") && !val2.getUpperLimit().contains("<"))
-                        lblLimit.setText("UpperLimit");
-                    else if (!val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
-                        lblLimit.setText("LowerLimit");
-                    else if (val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
-                        lblLimit.setText("Entrambi upperlimit (?)");
-                    else
-                        lblLimit.setText("Nessuno dei due è un upperLimit");
+                    if (val1 != null && val2 != null) {
+                        if (val1.getUpperLimit().contains("<") && !val2.getUpperLimit().contains("<"))
+                            lblLimit.setText("UpperLimit");
+                        else if (!val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
+                            lblLimit.setText("LowerLimit");
+                        else if (val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
+                            lblLimit.setText("Entrambi upperlimit (?)");
+                        else
+                            lblLimit.setText("Nessuno dei due è un upperLimit");
 
-                    Double res = val1.getValore() / val2.getValore();
-                    lblRapporto.setText(String.valueOf(res));
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Info");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Non sono state trovate corrispondenze");
-                    alert.showAndWait();
+                        Double res = val1.getValore() / val2.getValore();
+                        lblRapporto.setText(String.valueOf(res));
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Info");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Non sono state trovate corrispondenze rispetto ai criteri immessi");
+                        alert.showAndWait();
+                    }
+                }
+            }
+        });
+        btnCerca.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (txtGalassia.getText() != null) {
+                    updateCombo(comboFluxType1, comboRigheHP1, comboContinuo1, comboRigheSp1);
+                    updateCombo(comboFluxType2, comboRigheHP2, comboContinuo2, comboRigheSp2);
                 }
             }
         });
         comboFluxType1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(comboFluxType1.getSelectionModel().getSelectedIndex() == 0) {
-                    if(comboRiga1.getItems().size() != 0)
-                        comboRiga1.getItems().removeAll(comboRiga1.getItems());
-                    comboRiga1.getItems().addAll(
-                            "OIII52",
-                            "NIII57",
-                            "OI63",
-                            "OIII88",
-                            "NII122",
-                            "OI145",
-                            "CII158");
-                }
-                else if(comboFluxType1.getSelectionModel().getSelectedIndex() == 1) {
-                    if(comboRiga1.getItems().size() != 0)
-                        comboRiga1.getItems().removeAll(comboRiga1.getItems());
-                    comboRiga1.getItems().addAll(
-                            "OIII52",
-                            "OI63",
-                            "OIII88",
-                            "NII122",
-                            "OI145",
-                            "CII158"
-                    );
-                }
-                else if(comboFluxType1.getSelectionModel().getSelectedIndex() == 2) {
-                    if(comboRiga1.getItems().size() != 0)
-                        comboRiga1.getItems().removeAll(comboRiga1.getItems());
-                    comboRiga1.getItems().addAll(
-                            "SIV",
-                            "NeII",
-                            "NeV14.3",
-                            "NeIII",
-                            "SIII18.7",
-                            "Nev24.3",
-                            "OIV",
-                            "SIII33.5",
-                            "SiII"
-                    );
-                }
+                fluxType1 = (String)comboFluxType1.getSelectionModel().getSelectedItem();
             }
         });
         comboFluxType2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(comboFluxType2.getSelectionModel().getSelectedIndex() == 0) {
-                    if(comboRiga2.getItems().size() != 0)
-                        comboRiga2.getItems().removeAll(comboRiga2.getItems());
-                    comboRiga2.getItems().addAll(
-                            "OIII52",
-                            "NIII57",
-                            "OI63",
-                            "OIII88",
-                            "NII122",
-                            "OI145",
-                            "CII158");
-                }
-                else if(comboFluxType2.getSelectionModel().getSelectedIndex() == 1) {
-                    if(comboRiga2.getItems().size() != 0)
-                        comboRiga2.getItems().removeAll(comboRiga2.getItems());
-                    comboRiga2.getItems().addAll(
-                            "OIII52",
-                            "OI63",
-                            "OIII88",
-                            "NII122",
-                            "OI145",
-                            "CII158"
-                    );
-                }
-                else if(comboFluxType2.getSelectionModel().getSelectedIndex() == 2) {
-                    if(comboRiga2.getItems().size() != 0)
-                        comboRiga2.getItems().removeAll(comboRiga2.getItems());
-                    comboRiga2.getItems().addAll(
-                            "SIV",
-                            "NeII",
-                            "NeV14.3",
-                            "NeIII",
-                            "SIII18.7",
-                            "Nev24.3",
-                            "OIV",
-                            "SIII33.5",
-                            "SiII"
-                    );
-                }
+                fluxType2 = (String)comboFluxType2.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboRigheHP1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaRiga = (String)comboRigheHP1.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboContinuo1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaRiga = (String)comboContinuo1.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboRigheSp1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                primaRiga = (String)comboRigheSp1.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboRigheHP2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                secondaRiga = (String)comboRigheHP2.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboContinuo2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                secondaRiga = (String)comboContinuo2.getSelectionModel().getSelectedItem();
+            }
+        });
+        comboRigheSp2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                secondaRiga = (String)comboRigheSp2.getSelectionModel().getSelectedItem();
             }
         });
     }
 
-    private Flux retrieveValueDB(String galaxy, String atom, String table) {
+
+    private void updateCombo(ComboBox comboFluxType, ComboBox comboRigheHP, ComboBox comboContinuo, ComboBox comboRigheSp) {
+        FluxDAO fluxDAO = new FluxDAO();
+
+        if (comboFluxType.getItems().size() != 0)
+            comboFluxType.getItems().removeAll(comboFluxType.getItems());
+        ArrayList<Flux> list = fluxDAO.retrieveAllFluxForGalaxyName(txtGalassia.getText(), "flussorighehp");
+        int i = 0;
+        if (comboRigheHP.getItems().size() != 0)
+            comboRigheHP.getItems().removeAll(comboRigheHP.getItems());
+
+        if (list.size() != 0) {
+            comboFluxType.getItems().add("flussorighehp");
+            while (i < list.size()) {
+                comboRigheHP.getItems().add(list.get(i).getAtomo());
+                //listAtomLineHP.add(list.get(i).getAtomo());
+                i++;
+            }
+        }
+        i = 0;
+        list = fluxDAO.retrieveAllFluxForGalaxyName(txtGalassia.getText(), "flussocontinuo");
+        if (comboContinuo.getItems().size() != 0)
+            comboContinuo.getItems().removeAll(comboContinuo.getItems());
+        if (list.size() != 0) {
+            comboFluxType.getItems().add("flussocontinuo");
+            while (i < list.size()) {
+                comboContinuo.getItems().add(list.get(i).getAtomo());
+                //listAtomLineHP.add(list.get(i).getAtomo());
+                i++;
+            }
+        }
+        i = 0;
+        list = fluxDAO.retrieveAllFluxForGalaxyName(txtGalassia.getText(), "flussorighesp");
+        if (comboRigheSp.getItems().size() != 0)
+            comboRigheSp.getItems().removeAll(comboRigheSp.getItems());
+        if (list.size() != 0) {
+            comboFluxType.getItems().add("flussorighesp");
+            while (i < list.size()) {
+                //comboRiga1.getItems().add(list.get(i).getAtomo());
+                comboRigheSp.getItems().add(list.get(i).getAtomo());
+                i++;
+            }
+        }
+    }
+
+    public Flux retrieveValueDB(String galaxy, String atom, String table) {
         FluxDAO fluxDAO = new FluxDAO();
         Flux result = fluxDAO.retrieveValFluxDB(galaxy, atom, table);
         fluxDAO.closeConnection();
         return result;
     }
 
-    private String parseCombo(ComboBox combo) {
 
-        if(combo.getSelectionModel().getSelectedIndex() == 0) {
-            return "flussorighehp";
-        }
-        else if(combo.getSelectionModel().getSelectedIndex() == 1) {
-            return "flussocontinuo";
-        }
-        else if(combo.getSelectionModel().getSelectedIndex() == 2) {
-            return "flussorighesp";
-        }
-        else
-            return null;
-    }
 }

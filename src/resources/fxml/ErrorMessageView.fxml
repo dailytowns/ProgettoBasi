@@ -4,15 +4,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Control.ErrorMessageControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.ErrorMessageControl">
    <children>
-      <Label layoutX="39.0" layoutY="24.0" text="Non sono stati recuperati nella tabella " />
-      <Label fx:id="lblTable" layoutX="272.0" layoutY="24.0" text="Label" />
-      <Label layoutX="364.0" layoutY="24.0" text="per la riga" />
-      <Label fx:id="lblAtom" layoutX="466.0" layoutY="24.0" text="Label" />
-      <Button fx:id="btnOK" layoutX="246.0" layoutY="135.0" mnemonicParsing="false" text="Button" />
+      <Button fx:id="btnOK" layoutX="248.0" layoutY="175.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="171.0" text="OK" />
+      <Label fx:id="label" layoutX="58.0" layoutY="69.0" text="Non sono state recuperate righe dalla tabella " textAlignment="CENTER" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="58.0" AnchorPane.rightAnchor="348.0" AnchorPane.topAnchor="69.0" />
    </children>
 </AnchorPane>

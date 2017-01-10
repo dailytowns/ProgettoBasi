@@ -176,6 +176,37 @@ public class FluxDAO {
         return obs;
     }
 
+    public ArrayList<Flux> retrieveAllFluxForGalaxyName(String galaxyName, String table) {
+
+        ArrayList<Flux> list = new ArrayList<>();
+        Statement stmt = null;
+        Flux flux = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn.setAutoCommit(false);
+            //System.out.println("Opened database successfully")
+            stmt = conn.createStatement();
+            int i = 0;
+            ResultSet rs = stmt.executeQuery("SELECT atomo,valore FROM " + table + " WHERE nomegalassia LIKE '" + galaxyName + "%' AND" +
+                                                                                            "(valore IS NOT NULL);");
+            while(rs.next()) {
+                String atomo = rs.getString("atomo");
+                Double valore = rs.getDouble("valore");
+                flux = new Flux(atomo, valore);
+                list.add(flux);
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Operation done successfully");
+
+        return list;
+    }
+
     private void parseRow(ResultSet rs, ObservableList<FluxCellData> obs) {
 
         try {

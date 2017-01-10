@@ -14,9 +14,7 @@ public class ErrorMessageControl {
     @FXML
     private Button btnOK;
     @FXML
-    private Label lblAtom;
-    @FXML
-    private Label lblTable;
+    private Label label;
 
     @FXML
     public void initialize() {
@@ -29,8 +27,6 @@ public class ErrorMessageControl {
         });
     }
 
-    public void setLblAtom (String atom) {this.lblAtom.setText(atom);}
-
-    public void setLblTable (String table) {this.lblTable.setText(table);}
+    public void setLabel (String atom) {this.label.setText(atom);}
 
 }

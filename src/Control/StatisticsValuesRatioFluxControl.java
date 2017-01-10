@@ -1,7 +1,9 @@
 package Control;
 
+import Helper.ComboUtil;
 import Helper.FluxDAO;
 import Model.Flux;
+import View.ErrorMessageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +36,7 @@ public class StatisticsValuesRatioFluxControl {
     @FXML
     private Button btnOK;
 
+    private String aperture = null;
 
     @FXML
     public void initialize() {
@@ -42,26 +45,28 @@ public class StatisticsValuesRatioFluxControl {
             @Override
             public void handle(ActionEvent event) {
 
-                String fluxType = parseCombo(comboFlusso);
+                String fluxType = ComboUtil.parseCombo(comboFlusso);
                 String lineSelected = (String)comboGruppoSpettrale.getSelectionModel().getSelectedItem();
                 FluxDAO fluxDAO = new FluxDAO();
                 ArrayList<Double> list;
+                ArrayList<Double> listRet = new ArrayList<>();
 
-                if(comboAperture.getSelectionModel().getSelectedItem() != null) {
-                    list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, (String)comboAperture.getSelectionModel().getSelectedItem());
+                if(aperture != null) {
+                    list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, aperture);
                 } else {
                     list = fluxDAO.retrieveValLineDB(fluxType, lineSelected);
                 }
 
-                Double meanValue = computeMeanValue(list);
-                Double median = computeMedian(list);
-                Double devStand = computeDevStand(list, meanValue);
-                Double devMedAss = computeDevMedAss(list, meanValue);
+                if(list.size() != 0) {
+                   listRet = computeAllValues(list);
+                } else {
+                    new ErrorMessageView(fluxType, lineSelected);
+                }
 
-                lblValorMedio.setText(String.valueOf(meanValue));
-                lblMediana.setText(String.valueOf(median));
-                lblDevStand.setText(String.valueOf(devStand));
-                lblDevMediaAss.setText(String.valueOf(devMedAss));
+                lblValorMedio.setText(String.valueOf(listRet.get(0)));
+                lblMediana.setText(String.valueOf(listRet.get(1)));
+                lblDevStand.setText(String.valueOf(listRet.get(2)));
+                lblDevMediaAss.setText(String.valueOf(listRet.get(3)));
             }
         });
 
@@ -116,22 +121,42 @@ public class StatisticsValuesRatioFluxControl {
                             "NeV14.3",
                             "NeIII",
                             "SIII18.7",
-                            "Nev24.3",
+                            "NeV24.3",
                             "OIV",
                             "SIII33.5",
                             "SiII"
                     );
                     if(comboAperture.getItems().size() != 0)
                         comboAperture.getItems().removeAll(comboAperture.getItems());
+                    aperture = null;
                 }
             }
         });
 
     }
 
+    public ArrayList<Double> computeAllValues(ArrayList<Double> list) {
+        ArrayList<Double> list1 = new ArrayList<>(); //Per testing
+
+        Double meanValue = computeMeanValue(list);
+        Double median = computeMedian(list);
+        Double devStand = computeDevStand(list, meanValue);
+        Double devMedAss = computeDevMedAss(list, meanValue);
+
+        list1.add(meanValue);
+        list1.add(devStand);
+        list1.add(median);
+        list1.add(devMedAss);
+
+        return list1;
+    }
+
     private Double computeDevMedAss(ArrayList<Double> list, Double meanValue) {
         int i;
         Double x, y, sum=0.0, res;
+
+        if(list.size() == 0)
+            return 0.0;
 
         for(i=0; i<list.size(); i++) {
             x = list.get(i) - meanValue;
@@ -148,6 +173,9 @@ public class StatisticsValuesRatioFluxControl {
 
         int i;
         Double x, y, sum=0.0, res;
+
+        if(list.size() == 0.0)
+            return 0.0;
 
         for(i=0; i<list.size(); i++) {
             x = list.get(i) - meanValue;
@@ -167,6 +195,9 @@ public class StatisticsValuesRatioFluxControl {
         Double listSize = Double.valueOf(list.size());
         int i, j, k=0;
 
+        if(listSize == 0.0)
+            return 0.0;
+
         for(i=0; i<list.size(); i++) {
             Double val1 = list.get(i);
             for(j=i+1; j<list.size(); j++) {
@@ -183,21 +214,6 @@ public class StatisticsValuesRatioFluxControl {
         Collections.sort(list);
         return list.get(list.size()/2);
 
-    }
-
-    private String parseCombo(ComboBox combo) {
-
-        if(combo.getSelectionModel().getSelectedItem().equals("flussorighehp")) {
-            return "flussorighehp";
-        }
-        else if(combo.getSelectionModel().getSelectedItem().equals("flussocontinuo")) {
-            return "flussocontinuo";
-        }
-        else if(combo.getSelectionModel().getSelectedItem().equals("flussorighesp")) {
-            return "flussorighesp";
-        }
-        else
-            return null;
     }
 
 }

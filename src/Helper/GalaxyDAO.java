@@ -58,11 +58,6 @@ public class GalaxyDAO {
                 String nome = rs.getString("nome");
                 String nomeAlternativo = rs.getString("nomealt");
                 double redshift  = rs.getDouble("redshift");
-                String classeSpettrale = rs.getString("classespettrale");
-                System.out.println( "NOME = " + nome );
-                System.out.println( "NOMEALTERNATIVO = " + nomeAlternativo );
-                System.out.println( "REDSHIFT = " + redshift );
-                System.out.println( "CLASSESPETTRALE = " + classeSpettrale);
                 Galaxy galaxy = new Galaxy(nome, nomeAlternativo, redshift);
                 GalaxyData galaxyData = new GalaxyData(galaxy, i++);
                 obs.add(galaxyData);

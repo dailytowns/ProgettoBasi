@@ -13,6 +13,11 @@ public class Flux {
     private String aperture;
     private Double error;
 
+    public Flux(String atomo, Double valore) {
+        this.atomo = atomo;
+        this.valore = valore;
+    }
+
     public Flux(String nomeGalassia, String atomo, String valore, String upperLimit, String error) {
         this.nomeGalassia = nomeGalassia;
         this.atomo = atomo;

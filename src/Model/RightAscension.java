@@ -5,29 +5,35 @@ package Model;
  */
 public class RightAscension {
 
-    private Integer hour;
-    private Integer minute;
+    private Integer hours;
+    private Integer minutes;
     private Double seconds;
+    private Double degAR;
 
     public RightAscension(Integer hours, Integer minutes, Double seconds) {
-        this.hour = hours;
-        this.minute = minutes;
+        this.hours = hours;
+        this.minutes = minutes;
         this.seconds = seconds;
+        this.degAR = convertToDegrees(hours, minutes, seconds);
     }
 
     public Integer getHour() {
-        return hour;
+        return hours;
     }
 
     public Integer getMinute() {
-        return minute;
+        return minutes;
     }
 
     public Double getSeconds() {
         return seconds;
     }
 
-    public static double convertToDegrees(RightAscension r) {
-        return 15*(r.getHour() + r.getMinute()/60 + r.getSeconds()/3600);
+    public Double getDegAR() {
+        return degAR;
+    }
+
+    public static Double convertToDegrees(Integer hours, Integer minutes, Double seconds) {
+        return 15*(hours + minutes/60 + seconds/3600);
     }
 }

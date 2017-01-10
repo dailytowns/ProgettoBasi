@@ -20,7 +20,7 @@ public class SearchRatioFluxView {
             e.printStackTrace();
         }
         Stage primaryStage = new Stage();
-        Scene scene = new Scene(root, 640, 640);
+        Scene scene = new Scene(root, 800, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

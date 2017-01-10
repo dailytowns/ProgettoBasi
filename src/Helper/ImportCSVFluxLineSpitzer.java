@@ -52,11 +52,11 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
 
                 i++;
 
-                FluxSp fluxSpNeV14 = new FluxSp(nextLine[0], "NeV14",
+                FluxSp fluxSpNeV14 = new FluxSp(nextLine[0], "NeV14.3",
                         nextLine[8], nextLine[7], nextLine[9], nextLine[28]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
                         "errore, irsmode) VALUES ('" + fluxSpNeV14.getNomeGalassia() + "', '" +
-                        fluxSpNeV14.getUpperLimit() + "', 'NeV14', " +fluxSpNeV14.getValore() + ", "
+                        fluxSpNeV14.getUpperLimit() + "', 'NeV14.3', " +fluxSpNeV14.getValore() + ", "
                         + fluxSpNeV14.getError() + ", '" + fluxSpNeV14.getIRSMode() + "');");
 
                 i++;
@@ -70,20 +70,20 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
 
                 i++;
 
-                FluxSp fluxSpSIII = new FluxSp(nextLine[0],"SIII",
+                FluxSp fluxSpSIII = new FluxSp(nextLine[0],"SIII18.7",
                         nextLine[14], nextLine[13], nextLine[15], nextLine[28]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
                         "errore, irsmode) VALUES ('" + fluxSpSIII.getNomeGalassia() + "', '" +
-                        fluxSpSIII.getUpperLimit() + "', 'SIII', " +fluxSpSIII.getValore() + ", "
+                        fluxSpSIII.getUpperLimit() + "', 'SIII18.7', " +fluxSpSIII.getValore() + ", "
                         + fluxSpSIII.getError() + ", '" + fluxSpSIII.getIRSMode() + "');");
 
                 i++;
 
-                FluxSp fluxSpNeV24 = new FluxSp(nextLine[0], "NeV24",
+                FluxSp fluxSpNeV24 = new FluxSp(nextLine[0], "NeV24.3",
                         nextLine[17], nextLine[16], nextLine[18], nextLine[28]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
                         "errore, irsmode) VALUES ('" + fluxSpNeV24.getNomeGalassia() + "', '" +
-                        fluxSpNeV24.getUpperLimit() + "', 'NeV24', " +fluxSpNeV24.getValore() + ", "
+                        fluxSpNeV24.getUpperLimit() + "', 'NeV24.3', " +fluxSpNeV24.getValore() + ", "
                         + fluxSpNeV24.getError() + ", '" + fluxSpNeV24.getIRSMode() + "');");
 
                 i++;
@@ -98,11 +98,11 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
 
                 i++;
 
-                FluxSp fluxSpSIII33 = new FluxSp(nextLine[0],"SIII33",
+                FluxSp fluxSpSIII33 = new FluxSp(nextLine[0],"SIII33.5",
                         nextLine[23], nextLine[22], nextLine[24], nextLine[28]);
                 psqlDBHelper.insertRecord("INSERT INTO flussorighesp(nomegalassia, upperlimit, atomo, valore, " +
                         "errore, irsmode) VALUES ('" + fluxSpSIII33.getNomeGalassia() + "', '" +
-                        fluxSpSIII33.getUpperLimit() + "', 'SIII33', " +fluxSpSIII33.getValore() + ", "
+                        fluxSpSIII33.getUpperLimit() + "', 'SIII33.5', " +fluxSpSIII33.getValore() + ", "
                         + fluxSpSIII33.getError() + ", '" + fluxSpSIII33.getIRSMode() + "');");
 
                 i++;

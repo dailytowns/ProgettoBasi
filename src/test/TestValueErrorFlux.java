@@ -51,7 +51,6 @@ public class TestValueErrorFlux {
         Assert.assertEquals(obs.get(0).getError(), error);
         fluxDAO.closeConnection();
 
-
     }
 
 }

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.control.Accordion?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.StatisticsValuesRatioFluxControl">
    <children>
       <ComboBox fx:id="comboGruppoSpettrale" layoutX="237.0" layoutY="29.0" prefWidth="150.0" promptText="Gruppo spettrale">
@@ -27,10 +26,10 @@
       <Label layoutX="98.0" layoutY="279.0" text="Mediana" />
       <Label layoutX="98.0" layoutY="312.0" text="Deviazione media assoluta" />
       <ComboBox fx:id="comboAperture" layoutX="421.0" layoutY="29.0" prefWidth="150.0" promptText="Aperture?" />
-      <Label fx:id="lblValorMedio" layoutX="499.0" layoutY="211.0" text="Label" />
-      <Label fx:id="lblDevStand" layoutX="499.0" layoutY="246.0" text="Label" />
-      <Label fx:id="lblMediana" layoutX="499.0" layoutY="279.0" text="Label" />
-      <Label fx:id="lblDevMediaAss" layoutX="499.0" layoutY="312.0" text="Label" />
+      <Label fx:id="lblValorMedio" layoutX="499.0" layoutY="211.0" />
+      <Label fx:id="lblDevStand" layoutX="499.0" layoutY="246.0" />
+      <Label fx:id="lblMediana" layoutX="499.0" layoutY="279.0" />
+      <Label fx:id="lblDevMediaAss" layoutX="499.0" layoutY="312.0" />
       <Button fx:id="btnOK" layoutX="198.0" layoutY="87.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="203.0" text="OK" />
    </children>
 </AnchorPane>

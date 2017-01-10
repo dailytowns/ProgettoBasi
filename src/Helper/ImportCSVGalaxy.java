@@ -1,9 +1,6 @@
 package Helper;
 
-import Model.CaratteristicheFisiche;
-import Model.Distanza;
-import Model.Luminosita;
-import Model.Metallicita;
+import Model.*;
 import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
@@ -55,10 +52,15 @@ public class ImportCSVGalaxy extends ImportCSV {
 
                 i++;
 
+                Double decdeg = Declination.convertToDegrees(Integer.valueOf(nextLine[5]), Integer.valueOf(nextLine[6]), Double.valueOf(nextLine[7]), nextLine[4]);
+                Double decar = RightAscension.convertToDegrees(Integer.valueOf(nextLine[1]), Integer.valueOf(nextLine[2]), Double.valueOf(nextLine[3]));
+
                  try {
-                     psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg, decmin, decsec) VALUES ('"
+                     psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg," +
+                             " decmin, decsec, gradidec, gradiar) VALUES ('"
                              + nextLine[0] + "'," + nextLine[1] + ", " + nextLine[2] + ", " + nextLine[3] + ", '" +
-                             nextLine[4] + "', " + nextLine[5] + ", " + nextLine[6] + ", " + nextLine[7] + ");");
+                             nextLine[4] + "', " + nextLine[5] + ", " + nextLine[6] + ", " + nextLine[7] + ", " +
+                             decdeg+ ", " + decar + ");");
                  } catch (Exception e) {
                      e.printStackTrace();
                  }

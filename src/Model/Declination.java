@@ -7,51 +7,38 @@ public class Declination {
 
     private String sign;
     private Integer degrees;
-    private Integer minute;
+    private Integer minutes;
     private Double seconds;
-
-    public Declination(String sign, int degrees, int minute, Double seconds) {
+    private Double degDec;
+    public Declination(String sign, int degrees, int minutes, Double seconds) {
         this.sign = sign;
         this.degrees = degrees;
-        this.minute = minute;
+        this.minutes = minutes;
         this.seconds = seconds;
+        this.degDec = convertToDegrees(degrees, minutes, seconds, sign);
     }
 
     public String getSign() {
         return sign;
     }
 
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-
     public int getDegrees() {
         return degrees;
     }
 
-    public void setDegrees(int degrees) {
-        this.degrees = degrees;
-    }
-
     public int getMinute() {
-        return minute;
+        return minutes;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
-    public double getSeconds() {
+    public Double getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(double seconds) {
-        this.seconds = seconds;
-    }
+    public Double getDegDec() {return degDec;}
 
-    public static Double convertToDegrees(Declination d) {
-        double res = d.getDegrees() + d.getMinute()/60 + d.getSeconds()/3600;
-        if(d.getSign() == "-")
+    public static Double convertToDegrees(Integer degrees, Integer minutes, Double seconds, String sign) {
+        double res = degrees + minutes/60 + seconds/3600;
+        if(sign == "-")
             return res*(-1);
         return res;
     }

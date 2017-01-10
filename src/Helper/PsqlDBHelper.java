@@ -83,6 +83,8 @@ public class PsqlDBHelper {
                     "decdeg INTEGER," +
                     "decmin INTEGER," +
                     "decsec DOUBLE PRECISION," +
+                    "gradidec DOUBLE PRECISION," +
+                    "gradiar DOUBLE PRECISION," +
                     "PRIMARY KEY (nomegalassia));";
             stmt.execute(sql);
             stmt.close();
