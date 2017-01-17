@@ -127,6 +127,8 @@ public class ImportCSVContFlux extends ImportCSV {
 
         psqlDBHelper.closeConnection();
 
+        System.err.println("Importato file flusso continuo");
+
         return i;
 
     }

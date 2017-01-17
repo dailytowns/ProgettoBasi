@@ -48,7 +48,6 @@ public class ImportCSVGalaxy extends ImportCSV {
 
                 psqlDBHelper.insertRecord("INSERT INTO galassia(nome, nomealt, redshift, classespettrale) VALUES ('"
                         + nextLine[0] + "', '" + nextLine[25] + "', " + nextLine[8] + ", '" + nextLine[11] + "');");
-                System.out.println("DOPO GALASSIA");
 
                 i++;
 
@@ -74,7 +73,6 @@ public class ImportCSVGalaxy extends ImportCSV {
                         + "riferimentomet, valorelum, riferimentolum) VALUES('" + nextLine[0] + "', " +
                         metallicita.getValore() + ", "+ metallicita.getErrore() + ", " + metallicita.getRiferimento() +
                         ", " + luminosita.getValore() + ", " + luminosita.getRiferimento() + ");");
-                System.out.println("DOPO METALLO");
 
                 i++;
 
@@ -97,6 +95,7 @@ public class ImportCSVGalaxy extends ImportCSV {
             e.printStackTrace();
         }
 
+        System.err.println("Importato il file delle galassie");
         psqlDBHelper.closeConnection();
 
         return i;

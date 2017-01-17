@@ -1,5 +1,7 @@
 package Model;
 
+import com.sun.mail.imap.Rights;
+
 /**
  * Created by feder on 08/12/2016.
  */
@@ -15,6 +17,10 @@ public class RightAscension {
         this.minutes = minutes;
         this.seconds = seconds;
         this.degAR = convertToDegrees(hours, minutes, seconds);
+    }
+
+    public RightAscension () {
+
     }
 
     public Integer getHour() {

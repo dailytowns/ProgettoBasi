@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 /**
  * Created by feder on 08/12/2016.
  */
-public class GalaxyFoundControl {
+public class GalaxySelectedControl {
 
     @FXML
     private Label lblNomeGalassia;

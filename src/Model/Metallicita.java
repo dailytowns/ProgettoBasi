@@ -27,12 +27,14 @@ public class Metallicita {
         if(checkValue(riferimento))
             this.riferimento = Integer.parseInt(riferimento);
         else
-            this.riferimento = null;
+            this.riferimento = 0;
 
     }
 
     private boolean checkValue(String value) {
         int i = 0;
+        if(value == null)
+            return false;
 
         while(i < value.length()) {
             if(value.charAt(i) != ' ') {

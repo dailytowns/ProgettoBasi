@@ -3,8 +3,10 @@ package Control;
 import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
 import Model.*;
+import View.ErrorGenericView;
 import View.GalaxyCell;
 import View.GalaxyRadiusCell;
+import com.sun.corba.se.impl.util.RepositoryIdCache;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,16 +50,24 @@ public class SearchGalaxyForRadiusControl {
     @FXML
     public void initialize() {
         btnOK.setDefaultButton(true);
+        choiceBox.getSelectionModel().selectFirst();
         btnOK.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 ObservableList<GalaxyDataRadius> list = null;
+                Declination declination = new Declination();
+                RightAscension rightAscension = new RightAscension();
 
                 /*****Parsing right ascension************/
-                Integer hoursAR = Integer.valueOf(txtHoursAR.getText());
-                Integer minutesAR = Integer.valueOf(txtMinutesAR.getText());
-                Double secondsAR = Double.valueOf(txtSecondsAR.getText());
-                RightAscension rightAscension = new RightAscension(hoursAR, minutesAR, secondsAR);
+                if(txtHoursAR.getText().equals("") || txtMinutesAR.getText().equals("")
+                        || txtSecondsAR.getText().equals(""))
+                    new ErrorGenericView("Immetti tutti i dati relativi all'ascensione retta");
+                else {
+                    Integer hoursAR = Integer.valueOf(txtHoursAR.getText());
+                    Integer minutesAR = Integer.valueOf(txtMinutesAR.getText());
+                    Double secondsAR = Double.valueOf(txtSecondsAR.getText());
+                    rightAscension = new RightAscension(hoursAR, minutesAR, secondsAR);
+                }
                 /***************************************/
 
                 /*****Parsing declination****************/
@@ -66,10 +76,15 @@ public class SearchGalaxyForRadiusControl {
                     sign = "+";
                 else if(choiceBox.getSelectionModel().getSelectedIndex() == 1)
                     sign = "-";
-                Integer degreesDec = Integer.valueOf(txtDegreesDec.getText());
-                Integer minutesDec = Integer.valueOf((txtMinutesDec.getText()));
-                Double secondsDec = Double.valueOf(txtSecondsDec.getText());
-                Declination declination = new Declination(sign, degreesDec, minutesDec, secondsDec);
+                if(txtDegreesDec.getText().equals("") || txtMinutesDec.getText().equals("") ||
+                        txtSecondsDec.getText().equals(""))
+                    new ErrorGenericView("Immetti tutti i dati relativi alla declinazione");
+                else {
+                    Integer degreesDec = Integer.valueOf(txtDegreesDec.getText());
+                    Integer minutesDec = Integer.valueOf((txtMinutesDec.getText()));
+                    Double secondsDec = Double.valueOf(txtSecondsDec.getText());
+                    declination = new Declination(sign, degreesDec, minutesDec, secondsDec);
+                }
                 /*****************************************/
 
                 int numberOfGalaxies = Integer.valueOf(txtNumberOfGalaxies.getText());

@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.GalaxyFoundControl">
+            xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.GalaxySelectedControl">
    <children>
       <Label layoutX="24.0" layoutY="99.0" prefHeight="17.0" prefWidth="42.0" text="Nome">
          <font>

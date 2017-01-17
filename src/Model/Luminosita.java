@@ -26,6 +26,8 @@ public class Luminosita {
 
     private boolean checkValue(String value) {
         int i = 0;
+        if(value == null)
+            return false;
 
         while(i < value.length()) {
             if(value.charAt(i) != ' ') {

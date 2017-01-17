@@ -20,7 +20,7 @@ public class SearchGalaxyForNameView {
             e.printStackTrace();
         }
         Stage primaryStage = new Stage();
-        Scene scene = new Scene(root, 640, 480);
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

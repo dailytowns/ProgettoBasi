@@ -4,6 +4,7 @@ package Control;
 import Helper.*;
 import Model.Galaxy;
 import Model.GalaxyData;
+import Model.User;
 import View.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -155,6 +156,27 @@ public class AdminControl extends UserViewControl{
             @Override
             public void handle(ActionEvent event) {
                 new StatiRatioFluxView();
+            }
+        });
+
+        btnDump.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                (new ImportCSVGalaxy()).importFile("C:\\Users\\feder\\Desktop\\MRTable3_Sample.csv");
+                (new ImportCSVContFlux()).importFile("C:\\Users\\feder\\Desktop\\MRTable6_cont.csv");
+                (new ImportCSVFluxLineHP()).importFile("C:\\Users\\feder\\Desktop\\MRTable4_flux.csv");
+                (new ImportCSVFluxLineSpitzer()).importFile("C:\\Users\\feder\\Desktop\\MRTable8_irs.csv");
+            }
+        });
+
+        btnResetUtenti.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                UserDAO userDAO = new UserDAO();
+                int i;
+                for(i=0; i<150; i++) {
+
+                }
             }
         });
 

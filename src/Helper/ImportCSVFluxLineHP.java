@@ -102,7 +102,6 @@ public class ImportCSVFluxLineHP extends ImportCSV {
                 psqlDBHelper.insertRecord("INSERT INTO flussorighehp(nomegalassia, upperlimit, atomo, valore, " +
                         "aperture, errore) VALUES ('" + fluxHPCII158.getNomeGalassia() + "', '" + fluxHPCII158.getUpperLimit() +
                         "', 'CII158', " + fluxHPCII158.getValore() + ", '" + fluxHPCII158.getAperture() + "'," + fluxHPCII158.getError() + ");");
-                System.out.println("DOPO GALASSIA");
 
                 i++;
             }
@@ -110,6 +109,7 @@ public class ImportCSVFluxLineHP extends ImportCSV {
             e.printStackTrace();
         }
 
+        System.err.println("Importato file flusso HP");
         psqlDBHelper.closeConnection();
 
         return i;

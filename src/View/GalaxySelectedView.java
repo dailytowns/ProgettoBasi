@@ -1,13 +1,10 @@
 package View;
 
-import Control.GalaxyFoundControl;
+import Control.GalaxySelectedControl;
 import Model.Galaxy;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,9 +14,9 @@ import java.io.IOException;
  * La classe costituisce la View con i dati della galassia recuperati
  * dalla base di dati
  */
-public class GalaxyFoundView {
+public class GalaxySelectedView {
 
-    public GalaxyFoundView (Galaxy galaxy) {
+    public GalaxySelectedView(Galaxy galaxy) {
         Parent root = null;
         FXMLLoader fxmlLoader = null;
         try {
@@ -29,7 +26,7 @@ public class GalaxyFoundView {
             e1.printStackTrace();
         }
 
-        GalaxyFoundControl controller = fxmlLoader.getController();
+        GalaxySelectedControl controller = fxmlLoader.getController();
         controller.setLblGalaxyName(galaxy.getName());
         controller.setLblRedshift(galaxy.getRedshift());
 
@@ -57,6 +54,7 @@ public class GalaxyFoundView {
         Scene newScene = new Scene(root, 640, 480);
         Stage newStage = new Stage();
         newStage.setScene(newScene);
+        newStage.isAlwaysOnTop();
         newStage.show();
     }
 

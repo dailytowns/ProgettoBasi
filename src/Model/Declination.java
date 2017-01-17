@@ -10,6 +10,11 @@ public class Declination {
     private Integer minutes;
     private Double seconds;
     private Double degDec;
+
+    public Declination () {
+
+    }
+
     public Declination(String sign, int degrees, int minutes, Double seconds) {
         this.sign = sign;
         this.degrees = degrees;

@@ -16,6 +16,16 @@ public class Galaxy implements Comparable<Galaxy>{
     private CaratteristicheFisiche caratteristicheFisiche;
     private CoordinateAngolari coordinateAngolari;
 
+    public Galaxy () {
+
+    }
+
+    public void setCaratteristicheFisiche(CaratteristicheFisiche caratteristicheFisiche) {this.caratteristicheFisiche = caratteristicheFisiche;}
+
+    public void setCoordinateAngolari(CoordinateAngolari coordinateAngolari) {this.coordinateAngolari = coordinateAngolari;}
+
+    public void setAltName(String altName) {this.altName = altName;}
+
     public Double getRelativeDistance() {return relativeDistance;}
 
     public String getName() {

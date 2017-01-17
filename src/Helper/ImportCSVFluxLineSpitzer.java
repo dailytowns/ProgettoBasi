@@ -119,6 +119,10 @@ public class ImportCSVFluxLineSpitzer extends ImportCSV {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.err.println("Importato file flusso spitzer");
+        psqlDBHelper.closeConnection();
+
         return i;
     }
 

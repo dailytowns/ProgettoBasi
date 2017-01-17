@@ -3,6 +3,7 @@ package Control;
 import Helper.ComboUtil;
 import Helper.FluxDAO;
 import Model.Flux;
+import View.ErrorGenericView;
 import View.ErrorMessageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,28 +46,37 @@ public class StatisticsValuesRatioFluxControl {
             @Override
             public void handle(ActionEvent event) {
 
-                String fluxType = ComboUtil.parseCombo(comboFlusso);
-                String lineSelected = (String)comboGruppoSpettrale.getSelectionModel().getSelectedItem();
-                FluxDAO fluxDAO = new FluxDAO();
-                ArrayList<Double> list;
-                ArrayList<Double> listRet = new ArrayList<>();
+                    String fluxType = ComboUtil.parseCombo(comboFlusso);
+                    if(fluxType != null) {
+                    String lineSelected = (String) comboGruppoSpettrale.getSelectionModel().getSelectedItem();
+                    FluxDAO fluxDAO = new FluxDAO();
+                    ArrayList<Double> list;
+                    ArrayList<Double> listRet = new ArrayList<>();
 
-                if(aperture != null) {
-                    list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, aperture);
+                    if (comboGruppoSpettrale.getItems().size() == 0)
+                        new ErrorGenericView("Seleziona prima un tipo di flusso");
+                    else {
+
+                        if (aperture != null) {
+                            list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, aperture);
+                        } else {
+                            list = fluxDAO.retrieveValLineDB(fluxType, lineSelected);
+                        }
+
+                        if (list.size() != 0) {
+                            listRet = computeAllValues(list);
+                        } else {
+                            new ErrorMessageView(fluxType, lineSelected);
+                        }
+
+                        lblValorMedio.setText(String.valueOf(listRet.get(0)));
+                        lblMediana.setText(String.valueOf(listRet.get(1)));
+                        lblDevStand.setText(String.valueOf(listRet.get(2)));
+                        lblDevMediaAss.setText(String.valueOf(listRet.get(3)));
+                    }
                 } else {
-                    list = fluxDAO.retrieveValLineDB(fluxType, lineSelected);
+                    new ErrorGenericView("Immetti tutti i dati richiesti");
                 }
-
-                if(list.size() != 0) {
-                   listRet = computeAllValues(list);
-                } else {
-                    new ErrorMessageView(fluxType, lineSelected);
-                }
-
-                lblValorMedio.setText(String.valueOf(listRet.get(0)));
-                lblMediana.setText(String.valueOf(listRet.get(1)));
-                lblDevStand.setText(String.valueOf(listRet.get(2)));
-                lblDevMediaAss.setText(String.valueOf(listRet.get(3)));
             }
         });
 
@@ -74,7 +84,7 @@ public class StatisticsValuesRatioFluxControl {
             @Override
             public void handle(ActionEvent event) {
                 if(comboFlusso.getSelectionModel().getSelectedIndex() == 0) {
-                    if(comboGruppoSpettrale.getItems().size() != 0)
+                    if(comboGruppoSpettrale.getItems().size() > 0)
                         comboGruppoSpettrale.getItems().removeAll(comboGruppoSpettrale.getItems());
                     comboGruppoSpettrale.getItems().addAll(
                             "OIII52",
@@ -85,13 +95,16 @@ public class StatisticsValuesRatioFluxControl {
                             "OI145",
                             "CII158");
 
-                    if(comboAperture.getItems().size() != 0)
+                    if(comboAperture.getItems().size() > 0)
                         comboAperture.getItems().removeAll(comboAperture.getItems());
                     comboAperture.getItems().addAll(
                             "c",
                             "3x3",
                             "5x5"
                     );
+
+                    comboAperture.getSelectionModel().selectFirst();
+                    comboGruppoSpettrale.getSelectionModel().selectFirst();
                 }
                 else if(comboFlusso.getSelectionModel().getSelectedIndex() == 1) {
                     if(comboGruppoSpettrale.getItems().size() != 0)
@@ -111,6 +124,8 @@ public class StatisticsValuesRatioFluxControl {
                             "3x3",
                             "5x5"
                     );
+                    comboAperture.getSelectionModel().selectFirst();
+                    comboGruppoSpettrale.getSelectionModel().selectFirst();
                 }
                 else if(comboFlusso.getSelectionModel().getSelectedIndex() == 2) {
                     if(comboGruppoSpettrale.getItems().size() != 0)
@@ -129,10 +144,10 @@ public class StatisticsValuesRatioFluxControl {
                     if(comboAperture.getItems().size() != 0)
                         comboAperture.getItems().removeAll(comboAperture.getItems());
                     aperture = null;
+                    comboGruppoSpettrale.getSelectionModel().selectFirst();
                 }
             }
         });
-
     }
 
     public ArrayList<Double> computeAllValues(ArrayList<Double> list) {

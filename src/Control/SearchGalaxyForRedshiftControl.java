@@ -4,6 +4,7 @@ import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
 import Model.Galaxy;
 import Model.GalaxyData;
+import View.ErrorGenericView;
 import View.GalaxyCell;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,27 +37,31 @@ public class SearchGalaxyForRedshiftControl {
         btnOK.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                    Double redshift = Double.valueOf(txtRedshift.getText());
-                    String lgt = new String();
-                    if(choiceBox.getSelectionModel().getSelectedIndex() == 0)
-                        lgt = ">=";
-                    else if (choiceBox.getSelectionModel().getSelectedIndex() == 1)
-                        lgt = "<=";
-                    ObservableList<GalaxyData> list = retrieveGalaxiesForRedshift(redshift, lgt);
+                    if(txtRedshift.getText().equals(""))
+                        new ErrorGenericView("Immetti un valore di redshift");
+                    else {
+                        Double redshift = Double.valueOf(txtRedshift.getText());
+                        String lgt = new String();
+                        if (choiceBox.getSelectionModel().getSelectedIndex() == 0)
+                            lgt = ">=";
+                        else if (choiceBox.getSelectionModel().getSelectedIndex() == 1)
+                            lgt = "<=";
+                        ObservableList<GalaxyData> list = retrieveGalaxiesForRedshift(redshift, lgt);
 
-                    if(list.size() != 0) {
-                        listGalaxies.setItems(list);
-                        listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Info");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Non sono state galassie corrispondenti ai criteri di ricerca");
-                        alert.showAndWait();
+                        if (list.size() != 0) {
+                            listGalaxies.setItems(list);
+                            listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Info");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Non sono state galassie corrispondenti ai criteri di ricerca");
+                            alert.showAndWait();
+                        }
                     }
             }
         });
-
+        choiceBox.getSelectionModel().selectFirst();
     }
 
     public ObservableList<GalaxyData> retrieveGalaxiesForRedshift(Double redshiftValue, String lgt) {

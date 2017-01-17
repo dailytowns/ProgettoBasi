@@ -62,17 +62,13 @@
                            <children>
                               <BorderPane prefHeight="200.0" prefWidth="200.0">
                                  <center>
-                                    <Button fx:id="btnDump" mnemonicParsing="false" text="Dump" BorderPane.alignment="CENTER" />
+                                    <Button fx:id="btnDump" mnemonicParsing="false" stylesheets="@../../View/style.css" text="Dump" BorderPane.alignment="CENTER" />
                                  </center>
                               </BorderPane>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                 <center>
-                                    <Button fx:id="btnResetUtenti" mnemonicParsing="false" text="Reset Utenti" BorderPane.alignment="CENTER" />
-                                 </center>
-                              </BorderPane>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
                               <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                                  <center>
-                                    <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                                    <Button fx:id="btnResetUtenti" mnemonicParsing="false" prefHeight="62.0" prefWidth="230.0" styleClass="buttonadmin" stylesheets="@../../View/style.css" text="Reset Utenti" BorderPane.alignment="CENTER" />
                                  </center>
                               </BorderPane>
                            </children>

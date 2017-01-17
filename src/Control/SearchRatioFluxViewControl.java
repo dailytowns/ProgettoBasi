@@ -5,6 +5,7 @@ import Helper.FluxDAO;
 import Helper.GalaxyDAO;
 import Helper.PsqlDBHelper;
 import Model.Flux;
+import View.ErrorGenericView;
 import View.FluxCell;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -63,32 +64,36 @@ public class SearchRatioFluxViewControl {
             public void handle(ActionEvent event) {
                 String galassia = txtGalassia.getText();
 
-                String tipoFlusso1 = ComboUtil.parseCombo(comboFluxType1);
-                String tipoFlusso2 = ComboUtil.parseCombo(comboFluxType2);
+                if (txtGalassia.getText().equals(""))
+                    new ErrorGenericView("Ricerca il nome della galassia da analizzare");
+                else {
+                    String tipoFlusso1 = ComboUtil.parseCombo(comboFluxType1);
+                    String tipoFlusso2 = ComboUtil.parseCombo(comboFluxType2);
 
-                if (tipoFlusso1 != null && tipoFlusso2 != null && primaRiga != null && secondaRiga != null &&
-                        fluxType1.equals(tipoFlusso1) && fluxType2.equals(tipoFlusso2)) {
-                    Flux val1 = retrieveValueDB(galassia, primaRiga, tipoFlusso1);
-                    Flux val2 = retrieveValueDB(galassia, secondaRiga, tipoFlusso2);
+                    if (tipoFlusso1 != null && tipoFlusso2 != null && primaRiga != null && secondaRiga != null &&
+                            fluxType1.equals(tipoFlusso1) && fluxType2.equals(tipoFlusso2)) {
+                        Flux val1 = retrieveValueDB(galassia, primaRiga, tipoFlusso1);
+                        Flux val2 = retrieveValueDB(galassia, secondaRiga, tipoFlusso2);
 
-                    if (val1 != null && val2 != null) {
-                        if (val1.getUpperLimit().contains("<") && !val2.getUpperLimit().contains("<"))
-                            lblLimit.setText("UpperLimit");
-                        else if (!val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
-                            lblLimit.setText("LowerLimit");
-                        else if (val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
-                            lblLimit.setText("Entrambi upperlimit (?)");
-                        else
-                            lblLimit.setText("Nessuno dei due è un upperLimit");
+                        if (val1 != null && val2 != null) {
+                            if (val1.getUpperLimit().contains("<") && !val2.getUpperLimit().contains("<"))
+                                lblLimit.setText("UpperLimit");
+                            else if (!val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
+                                lblLimit.setText("LowerLimit");
+                            else if (val1.getUpperLimit().contains("<") && val2.getUpperLimit().contains("<"))
+                                lblLimit.setText("Entrambi upperlimit (?)");
+                            else
+                                lblLimit.setText("Nessuno dei due è un upperLimit");
 
-                        Double res = val1.getValore() / val2.getValore();
-                        lblRapporto.setText(String.valueOf(res));
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Info");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Non sono state trovate corrispondenze rispetto ai criteri immessi");
-                        alert.showAndWait();
+                            Double res = val1.getValore() / val2.getValore();
+                            lblRapporto.setText(String.valueOf(res));
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Info");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Non sono state trovate corrispondenze rispetto ai criteri immessi");
+                            alert.showAndWait();
+                        }
                     }
                 }
             }

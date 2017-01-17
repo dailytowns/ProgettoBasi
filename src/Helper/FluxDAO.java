@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * @author Federico Amici
- * Classe che gestisce il CRUD di Flusso
+ * Classe che gestisce il recupero dei dati di Flusso
  */
 public class FluxDAO {
 

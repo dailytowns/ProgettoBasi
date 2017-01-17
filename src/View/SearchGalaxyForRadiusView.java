@@ -20,7 +20,7 @@ public class SearchGalaxyForRadiusView {
             e.printStackTrace();
         }
         Stage primaryStage = new Stage();
-        Scene scene = new Scene(root, 640, 400);
+        Scene scene = new Scene(root, 660, 660);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

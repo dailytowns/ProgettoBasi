@@ -30,6 +30,7 @@ public class PsqlDBHelper {
         props.setProperty("password", "portento123");
 
         try {
+            Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://localhost:5432/postgres";
             conn = DriverManager.getConnection(url, props);
         } catch (Exception e) {
@@ -173,13 +174,10 @@ public class PsqlDBHelper {
     public void insertRecord(String sql) {
         Statement st = null;
         try {
-            Class.forName("org.postgresql.Driver");
             st = conn.createStatement();
             st.executeUpdate(sql);
             st.close();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -201,7 +199,6 @@ public class PsqlDBHelper {
     public void createTableFlussoRigheHP() {
         Statement stmt = null;
         try {
-            Class.forName("org.postgresql.Driver");
             conn.setAutoCommit(true);
             System.out.println("Opened database successfully");
 
@@ -225,7 +222,6 @@ public class PsqlDBHelper {
     public void createTableFlussoContinuoHP() {
         Statement stmt = null;
         try {
-            Class.forName("org.postgresql.Driver");
             conn.setAutoCommit(true);
             System.out.println("Opened database successfully");
 
@@ -250,7 +246,6 @@ public class PsqlDBHelper {
     public void createTableFlussoSp() {
         Statement stmt = null;
         try {
-            Class.forName("org.postgresql.Driver");
             conn.setAutoCommit(true);
             System.out.println("Opened database successfully");
 
@@ -277,7 +272,6 @@ public class PsqlDBHelper {
         int count = 0;
 
         try {
-            Class.forName("org.postgresql.Driver");
             conn.setAutoCommit(false);
             //System.out.println("Opened database successfully");
 

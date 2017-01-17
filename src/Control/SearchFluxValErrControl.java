@@ -4,6 +4,7 @@ import Helper.FluxDAO;
 import Helper.PsqlDBHelper;
 import Model.FluxCellData;
 import Model.Galaxy;
+import View.ErrorGenericView;
 import View.FluxCell;
 import View.GalaxyCell;
 import javafx.collections.ObservableList;
@@ -41,20 +42,26 @@ public class SearchFluxValErrControl {
             @Override
             public void handle(ActionEvent event) {
                 String galaxy = txtGalaxy.getText();
-                String[] atoms = txtAtoms.getText().split(";");
+                if(galaxy.equals(""))
+                    new ErrorGenericView("Immetti il nome della galassia di cui vuoi fare la ricerca");
+                else {
+                    String[] atoms = txtAtoms.getText().split(";");
+                    if(atoms[0].equals(""))
+                        new ErrorGenericView("Immetti le righe di cui vuoi fare la ricerca");
+                    else {
+                        ObservableList<FluxCellData> list = retrieveValErrFlux(galaxy, atoms, "flussorighehp");
+                        listFluxesRHP.setItems(list);
+                        listFluxesRHP.setCellFactory(fluxCell -> new FluxCell());
 
-                ObservableList<FluxCellData> list = retrieveValErrFlux(galaxy, atoms, "flussorighehp");
-                listFluxesRHP.setItems(list);
-                listFluxesRHP.setCellFactory(fluxCell -> new FluxCell());
+                        list = retrieveValErrFlux(galaxy, atoms, "flussocontinuo");
+                        listFluxesCont.setItems(list);
+                        listFluxesCont.setCellFactory(fluxCell -> new FluxCell());
 
-                list = retrieveValErrFlux(galaxy, atoms, "flussocontinuo");
-                listFluxesCont.setItems(list);
-                listFluxesCont.setCellFactory(fluxCell -> new FluxCell());
-
-                list = retrieveValErrFlux(galaxy, atoms, "flussorighesp");
-                listFluxesSpitzer.setItems(list);
-                listFluxesSpitzer.setCellFactory(fluxCell -> new FluxCell());
-
+                        list = retrieveValErrFlux(galaxy, atoms, "flussorighesp");
+                        listFluxesSpitzer.setItems(list);
+                        listFluxesSpitzer.setCellFactory(fluxCell -> new FluxCell());
+                    }
+                }
             }
         });
 
