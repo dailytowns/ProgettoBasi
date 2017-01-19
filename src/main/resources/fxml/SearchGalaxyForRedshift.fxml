@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Control.SearchGalaxyForRedshiftControl">
+   <children>
+      <AnchorPane prefHeight="96.0" prefWidth="600.0">
+         <children>
+            <Button fx:id="btnOK" layoutX="551.0" layoutY="36.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="OK" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="551.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="36.0" />
+            <ComboBox fx:id="choiceBox" layoutX="200.0" layoutY="36.0" prefWidth="150.0" promptText="&gt;= || &lt;= ?">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="maggiore o uguale di" />
+                        <String fx:value="minore o uguale di" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Label fx:id="lblRicerca" text="Ricerca per redshift" textAlignment="CENTER" AnchorPane.bottomAnchor="291.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="306.0" AnchorPane.topAnchor="32.0">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtRedshift" layoutX="417.0" layoutY="36.0" prefHeight="25.0" prefWidth="120.0" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="417.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="36.0" />
+            <Label layoutX="388.0" layoutY="35.0" text="di">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="23.0" layoutY="96.0" prefHeight="231.0" prefWidth="558.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="96.0">
+               <children>
+                  <ScrollPane prefHeight="231.0" prefWidth="558.0">
+                     <content>
+                        <ListView fx:id="listGalaxies" prefHeight="229.0" prefWidth="555.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
