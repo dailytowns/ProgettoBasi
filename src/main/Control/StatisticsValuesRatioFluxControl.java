@@ -53,12 +53,12 @@ public class StatisticsValuesRatioFluxControl {
                     FluxDAO fluxDAO = new FluxDAO();
                     ArrayList<Double> list;
                     ArrayList<Double> listRet = new ArrayList<>();
+                    aperture = (String)comboAperture.getSelectionModel().getSelectedItem();
 
                     if (comboGruppoSpettrale.getItems().size() == 0)
                         new ErrorGenericView("Seleziona prima un tipo di flusso");
                     else {
                         if (comboAperture.getSelectionModel().getSelectedIndex() != 0 && aperture != null) {
-                            aperture = (String)comboAperture.getSelectionModel().getSelectedItem();
                             list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, aperture);
                         } else {
                             list = fluxDAO.retrieveValLineDB(fluxType, lineSelected);
@@ -99,7 +99,6 @@ public class StatisticsValuesRatioFluxControl {
                     if(comboAperture.getItems().size() > 0)
                         comboAperture.getItems().removeAll(comboAperture.getItems());
                     comboAperture.getItems().addAll(
-                            "",
                             "c",
                             "3x3",
                             "5x5"
@@ -122,7 +121,6 @@ public class StatisticsValuesRatioFluxControl {
                     if(comboAperture.getItems().size() != 0)
                         comboAperture.getItems().removeAll(comboAperture.getItems());
                     comboAperture.getItems().addAll(
-                            "",
                             "c",
                             "3x3",
                             "5x5"
