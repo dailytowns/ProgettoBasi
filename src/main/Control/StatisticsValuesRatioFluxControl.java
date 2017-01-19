@@ -57,7 +57,7 @@ public class StatisticsValuesRatioFluxControl {
                     if (comboGruppoSpettrale.getItems().size() == 0)
                         new ErrorGenericView("Seleziona prima un tipo di flusso");
                     else {
-                        if (comboAperture.getSelectionModel().getSelectedIndex() != 0) {
+                        if (comboAperture.getSelectionModel().getSelectedIndex() != 0 && aperture != null) {
                             aperture = (String)comboAperture.getSelectionModel().getSelectedItem();
                             list = fluxDAO.retrieveValLineDB(fluxType, lineSelected, aperture);
                         } else {
