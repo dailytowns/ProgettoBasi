@@ -1,9 +1,9 @@
 package test;
 
-import Control.InsertUserControl;
-import Helper.PsqlDBHelper;
-import Helper.UserDAO;
-import Model.User;
+import main.Control.InsertUserControl;
+import main.Helper.PsqlDBHelper;
+import main.Helper.UserDAO;
+import main.Model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.postgresql.util.PSQLException;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by feder on 06/01/2017.

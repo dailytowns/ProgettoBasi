@@ -23,6 +23,7 @@
 \usepackage{hyperref}
 \usepackage{framed}
 \usepackage{wrapfig}
+\usepackage{chronosys}
 
 %Intestazione 
 \usepackage{fancyhdr}
@@ -115,13 +116,19 @@
 \tableofcontents
 \listoftables
 \listoffigures
+\vspace{50mm}
+\begin{flushleft}
+	Il progetto è stato sviluppato tramite l'IDE Intellij IDEA di JetBrains, scaricato gratuitamente tramite l'account mail dell'Università di Tor Vergata. Per motivi legati alla presunta facilitazione nell'import, il progetto è stato trasferito in ambiente Eclipse.
+\end{flushleft}
+
 \newpage
 
-% minimondo, universo del discorso
-% Indipendenza dal programma: Si utilizza un DBMS rispetto ai file poichè cambiare la struttura di un file
-% comporterebbe il dover cambiare tutti i programmi che vi accedono. Utilizzando un DBMS invece la struttura del
-% file è salvata nel catalogo del DBMS stesso e viene gestita autonomamente. Questa proprietà viene chiamata indipendenza dai dati del programma (a livello fisico?)
 \section{Introduzione}
+		La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonchè delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta. È stata aggiunta inoltre una presentazione utile per una eventuale esposizione orale del progetto stesso.\newline
+				
+		Una \textit{base di dati} è una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, il che rende necessario l'utilizzo dei livelli inferiori della gerarchia di memoria sia per memorizzare ciò che non possiamo salvare in RAM, sia per salvare i dati una volta spenta la macchina. Infatti questa mole di informazione deve essere salvata su supporti di memoria di massa poichè la memoria primaria non mantiene i dati in essa contenuti una volta che l'alimentazione sia interrotta. Partendo quindi dal presupposto che la memoria secondaria è indispensabile nel campo delle basi di dati, dobbiamo considerare anche la problematica legata ai tempi di accesso, decisamente più alti rispetto ai livelli superiori della gerarchia di memoria. Un \textit{DBMS} è quel software che si occupa della gestione di una tale collezione di dati, ovvero proprio colui che mette a disposizione tutte quelle funzionalità indispensabili per l'utilizzo efficace di questa mole di informazioni.
+		A questo proposito, i DBMS mettono a disposizione una collezione di moduli che lavorano per ammortizzare i tempi di accesso a memoria secondaria, come ad esempio il \textit{Gestore del buffer} o il \textit{Gestore delle query}.\newline
+		
 		\begin{wrapfigure}[20]{r}{9cm}
 			\begin{flushright}
 				\begin{tikzpicture}[node distance = 3cm, auto]
@@ -141,43 +148,53 @@
 				\caption{Primo approccio di sviluppo}
 			\end{flushright}
 		\end{wrapfigure}
-		La relazione qui presentata fornisce la documentazione del progetto relativo al corso di Basi di Dati nonchè delle digressioni sulle soluzioni adottate nella stesura della soluzione proposta. È stata aggiunta inoltre una presentazione utile per una eventuale esposizione orale del progetto stesso.\newline		
-		Una \textit{base di dati} è una collezione di dati, tipicamente di dimensioni elevate, che descrive l'attivit\'{a} di un'organizzazione. Le dimensioni di questa collezione di dati sono di gran lunga maggiori di quelle relative alla memoria primaria, fatto che porta ad una gestione pi\'{u} attenta dei meccanismi di accesso alle informazioni ivi contenute.\newline
+		
 		Come spesso accade in ambito ingegneristico, anche la progettazione di una base di dati viene realizzata mediante l'adozione del modello \textit{"a strati"}. \newline
 		La progettazione di una base di dati fa molto spesso parte dello sviluppo di un sistema software più complesso. Essendo tuttavia una parte importante nella realizzazione del progetto, nonchè dotata anch'essa di un certo grado di complessità viene spesso trattata come una componente disgiunta.\newline		
-		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati \'{e} utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato, n\'{e} tanto meno al modello fisico.\newline	
-		La possibili\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali di un DBMS, ovvero il fatto che realizza l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello \textit{Entity-Relationship}.\newline		
-		Altro approccio che è risultato vincente nel corso del tempo è quello dei processi di sviluppo di tipo iterativo che, a differenza dei genitori "a cascata", permettono di tornare ciclicamente all'inizio del processo di sviluppo per correggere il tiro a partire dalla fase di analisi dei requisiti in poi. Nel caso dello sviluppo di questo progetto non ci si avvale completamente delle tecniche dell'ingegneria del software, tuttavia per quanto possibile si adotterà il modello di sviluppo iterativo.
+		Come si evince dalla figura, cominceremo a progettare la base di dati ad alto livello mediante la fase di progettazione concettuale, durante la quale verrà redatto lo schema ER, un modello che ci permette di descrivere il sistema in termini di oggetti e delle relazioni che intercorrono fra gli stessi. Questa rappresentazione della base di dati è utile in quanto si possono  esprimere le relazioni fra gli oggetti nella base di dati senza dover badare al modello logico adottato né tanto meno al modello fisico dal momento che i DBMS sono indipendenti dal modello concettuale. Presentando il sistema indipendentemente da tutti i dettagli implementativi sottostanti, la progettazione concettuale si pone come mezzo di presentazione efficace e ristretta del sistema da realizzare, fatto che ne semplifica la modifica ad alto livello. \newline	
 		
-		\begin{wrapfigure}[20]{l}{10cm}
-			\begin{tikzpicture}[node distance = 3cm, auto]
-			\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-			text width=4.5em, node distance=3cm, inner sep=0pt]
-			\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-			text width=20em, text centered, rounded corners, minimum height=4em]
-			\tikzstyle{line} = [draw, -latex']
-			% Place nodes
-			\node [block] (init) {Progettazione concettuale};
-			\node [block, below of=init] (identify) {Progettazione logica};
-			\node [block, below of=identify] (evaluate) {Progettazione fisica};
-			% Draw edges
-			\path [line] (init) -- (identify);
-			\path [line] (identify) -- (evaluate);
-			
-			\draw[->>] (evaluate) to [bend left=45] (identify);
-			\draw[->>] (identify) to [bend left=45] (init);
-			\end{tikzpicture}
-			\caption{Approccio iterativo}
-		\end{wrapfigure}
-		Lo schema di sviluppo deve dunque essere aggiornato a quello riportato a lato.	
-\clearpage
-%da integrare nell'introduzione
-\subsection{Il Modello Entit\'{a}-Relazione}
-	\begin{flushleft}
-		Anno modello relazionale, anno modello er, perchè er?
-	\end{flushleft}
+		La possibilit\'{a} di progettare la base di dati a strati viene offerta da una delle caratteristiche fondamentali dei DBMS, ovvero il fatto che realizzino l'\textit{indipendenza dei dati}. Infatti, a meno di correzioni di piccola entità, \'{e} possibile scegliere il modello dei dati che pi\'{u} ci risulta consono ad ogni livello di progettazione, fatto che sulla carta rende questo processo molto flessibile. Tuttavia, con il maturare dell'esperienza in questo ambito, si sono consolidate alcune pratiche che sono risultate vincenti nel corso degli anni. Un esempio fra tutti \'{e} l'adozione in fase di progettazione concettuale del modello \textit{Entity-Relationship}.\newline
+		
+		Mentre al giorno d'oggi la progettazione muove da un livello di astrazione più alto verso il più basso, la scoperta dei vari modelli dei dati si è mossa nel verso contrario nel corso degli anni. Infatti nonostante si ponga ad un livello di astrazione superiore a quello della progettazione logica, il modello concettuale \textit{Entity-Relationship} è stato sviluppato successivamente a quello relazionale, di livello logico per l'appunto.\newline
+		
+		\begin{figure}
+			\startchronology[startyear=1960, stopyear=1980, width=19cm]
+				\chronoperiode[]{1960}{1969}{CODASYL e IMS}
+				\chronoperiode{1970}{1972}{Codd e il modello relazionale}
+				\chronoevent[textwidth=2cm]{1976}{Chen e il modello concettuale}
+				\chronoevent[textwidth=2cm]{1979}{Prima versione commerciale di SQL}
+			\stopchronology
+			\caption{Cronologia delle maggiori scoperte nel campo delle basi di dati}
+		\end{figure}	
 
-\subsection{Manuale d'uso}
+		
+			
+		\begin{flushleft}
+			Altro approccio che è risultato vincente nel corso del tempo è quello dei processi di sviluppo di tipo iterativo che, a differenza dei genitori "a cascata", permettono di tornare ciclicamente all'inizio del processo di sviluppo per correggere il tiro a partire dalla fase di analisi dei requisiti in poi. Nel caso dello sviluppo di questo progetto non ci si avvale completamente delle tecniche dell'ingegneria del software, tuttavia per quanto possibile si adotterà il modello di sviluppo iterativo.\newline
+			
+			
+			\begin{wrapfigure}[20]{l}{10cm}
+				\begin{tikzpicture}[node distance = 3cm, auto]
+				\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+				text width=4.5em, node distance=3cm, inner sep=0pt]
+				\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+				text width=20em, text centered, rounded corners, minimum height=4em]
+				\tikzstyle{line} = [draw, -latex']
+				% Place nodes
+				\node [block] (init) {Progettazione concettuale};
+				\node [block, below of=init] (identify) {Progettazione logica};
+				\node [block, below of=identify] (evaluate) {Progettazione fisica};
+				% Draw edges
+				\path [line] (init) -- (identify);
+				\path [line] (identify) -- (evaluate);
+				
+				\draw[->>] (evaluate) to [bend left=45] (identify);
+				\draw[->>] (identify) to [bend left=45] (init);
+				\end{tikzpicture}
+				\caption{Approccio iterativo}
+			\end{wrapfigure}
+			Lo schema di sviluppo deve dunque essere aggiornato a quello riportato di seguito.
+		\end{flushleft}	
 \clearpage
 
 \section{Progettazione concettuale}
@@ -231,28 +248,6 @@
 		\textit{File 5) File dei flussi delle righe di Herschel/PACS per tutti i valori di aperture size}
 		L’ultimo file contiene gli stessi campi del file 3, ma riporta i valori dei flussi per tutte e tre le differenti aperture size.\newline
 	\end{flushleft}
-
-	\begin{table}[h]
-		\centering
-		\caption{Glossario dei termini}
-		\begin{tabular}{lllll}
-			\hline
-			\rowcolor[HTML]{66CC99}Termine & Descrizione & Sinonimi & Collegamenti				  \\ \hline
-			
-			\textit{Galassia}			&	Un grande insieme di stelle					&	-	 &\\
-										&												&		 &\\
-			\textit{Linea spettrale}	&	Effetto dell'interazione tra un sistema		&  		 &\\
-										&   quantistico e singoli fotoni				&	- 	 &\\
-										&  					                     		&        &\\
-			\textit{Satellite}			& 	Oggetto orbitante intorno ad un corpo		&		 &\\
-										& 	celeste che ha dimensioni molto maggiori	&		 &\\
-										&												&		 &\\
-			\textit{Redshift} 			& 	Fenomeno secondo il quale la frequenza 		&		 &\\
-										& 	di luce osservata differisce da quella		&		 &\\
-										& 	emessa 										&		 &\\
-			\textit{Flusso spettrale}	&												&		 &\\	
-		\end{tabular}
-	\end{table}
 
 	\begin{flushleft}
 		Una volta esaminato a fondo il documento di presentazione, viene effettuato un lavoro di rimodellazione che porta ad uniformare il testo dei requisiti, rendendoli non ambigui dal punto di vista degli sviluppatori ed ancora corrispondenti alle esigenze del committente. Il documento di presentazione viene dunque ristrutturato, suddividendo il testo in gruppi di frasi che trattano lo stesso concetto e riscrivendo secondo il pattern \textit{Per $<$dato$>$ rappresentiamo $<$insieme di proprietà$>$}.\newline
@@ -325,7 +320,8 @@
 			\textbf{Operazione 4:} Ricerca di una galassia per nome\newline\newline
 			\textbf{Operazione 5:} Ricerca di un insieme di galassie all'interno di un raggio data la posizione spaziale\newline\newline
 			\textbf{Operazione 6:} Ricerca di un insieme di galassie in base al parametro di redshift\newline\newline
-			\textbf{Operazione 7:} Ricerca di valori dei flussi ed il relativo errore di una o più righe spettrali di una specifica galassia
+			\textbf{Operazione 7:} Ricerca di valori dei flussi ed il relativo errore di una o più righe spettrali di una specifica galassia\newline\newline
+			\textbf{Operazione 8:} Ricerca di tutti i valori di flussi appartenenti ad un fissato gruppo spettrale
 		\end{flushleft}
 	
 	\subsection{Regole di vincolo}
@@ -342,6 +338,8 @@
 			\textbf{RV7} Il file contenente dati sui flussi delle righe calcolati dal satellite Spitzer dovrà essere salvato con il nome \textit{MRTable8\_irs.csv}\newline
 			\textbf{RV8} Il file contenente dati sui flussi delle righe per tutti i valori di aperture dovrà essere salvato con il nome \textit{MRTable11\_C\_3x3\_5x5\_flux.csv}\newline
 			\textbf{RV9} Lo \textit{userid} di un utente del sistema non può coincidere con la \textit{password}\newline
+			\textbf{RV10} I valori relativi alle coordinate della \textit{declinazione}, gradi, minuti e secondi, dovranno essere minori rispettivamente di 90, 60 e 3600.\newline
+			\textbf{RV11} I valori relativi alle coordinate dell'\textit{ascensione retta}, ore, minuti e secondi, dovranno essere rispettivamente minori di 24, 60, e 3600. 
 		\end{flushleft}
 
 %	\begin{table}[h]
@@ -375,67 +373,51 @@
 			
 			Il software in questione è \textit{ERWin} Community Edition, reperibile presso l'indirizzo \url{http://erwin.com/products/data-modeler/community-edition}.\newline
 			
-			Nonostante la velocità di stesura offerta dal programma CASE, si è preferito stilare lo schema di progettazione concettuale su carta in prima battuta e, solo in secondo tempo, riportato in un file, in modo da avere anche una copia di backup disponibile.
-			
-			%Il programma potrebbe sempre smettere di funzionare -.-
+			Nonostante la velocità di stesura offerta dal programma CASE, si è preferito stilare lo schema di progettazione concettuale su carta in prima battuta e, solo in secondo tempo, riportato nel file della relazione stessa, in modo da avere anche una copia di backup disponibile.
 		\end{flushleft}
 
 		\begin{table}[h!]
-			\centering
 			\caption{Dizionario dei dati}
 			\begin{tabular}{lllll}
 				\hline
-				\rowcolor[HTML]{66CC99}Termine & Descrizione & Attributi & Identificatore				  \\ \hline
+				\rowcolor[HTML]{66CC99}Termine	&Descrizione					&Attributi		 			& Identificatore				  \\ \hline
 				
-				\textit{Galassia}	&Un grande insieme di stelle					&Classificazione spettrale, & Nome Galassia\\
-									&												&Redshift, \\
-									&												&NomeAlternativo	 &\\
-									&												&NomeGalassia		 &\\
-									&												&					 &\\
-				\textit{Coordinate}	& Dati utili alla localizzazione & AscensioneRetta\_ore,	& NomeGalassia \\
-				\textit{angolari} & della galassia	& ascensioneretta\_min, & \textit{(esterno)} \\
-									&				& ascensioneretta\_sec, &			\\
-									&				& declinazione\_sign, &				\\
-									&				& declinazione\_ore, &				\\
-									&				& declinazione\_min, &				\\
-									&				& declinazione\_sec &				\\
-				\textit{Caratteristiche} &	Caratteristiche proprie & Distanza, & NomeGalassia \\
-				\textit{Galassia}		&	della galassia			& luminosità, & \textit{(esterno)}\\
-										&							& metallicità &					  \\
-										&							&			  &					  \\
-				\textit{Errore}			& Insieme degli errori &	ErroreDistanza, &	NomeGalassia  \\
-										& commessi sulle misure &	ErroreMetallicità, & \textit{(esterno)} \\
-										& relative alla galassia &  FlagLuminosità &				\\
-										&						&				&					\\
-					
-	%		\end{tabular}
-	%	\end{table}
-	%
-	%	\begin{table}
-	%		\centering
-	%		\begin{tabular}{lllll}
-				\textit{Riferimento bibliografico}	& Insieme di riferimenti  & Autore,		&	Codice				\\
-					& bibliografici delle misure  & titolo,		&					\\
-				&effettuate su una galassia & anno		&					\\
-				&						&				&					\\
-				\textit{Flusso}			& Informazione sulle sostanze & Errore, 		& NomeGalassia \\
-				& presenti nella galassia	&	valore,		& \textit{(esterno)}\\
-				&							& atomo,		&					\\
-				&							& satellite	&						\\
-				&							&			&						\\
-			\end{tabular}
-		\end{table}
-			
-		\begin{table}
-		\centering
-			\begin{tabular}{lllll}
-			\textit{Riga Flusso}	& Insieme di dati relativi alla  & Errore, & NomeGalassia (esterno),\\
-			& misura di una riga spettrale & Valore,		&		Atomo (esterno)	\\
-			&  & Riferimento		&				\\ 
+				\textit{Galassia}				&Un grande insieme di stelle	&Classificazione spettrale, & NomeGalassia						\\
+				&								&Redshift, \\
+				&								&NomeAlternativo			&\\
+				&								&NomeGalassia				&\\
+				&								&					 		&\\
+				\textit{Coordinate}				& Dati utili alla localizzazione& AscensioneRetta\_ore,		& NomeGalassia \\
+				\textit{angolari} 				& della galassia				& ascensioneretta\_min,		& \textit{(esterno)} \\
+				&								& ascensioneretta\_sec, 	&			\\
+				&								& declinazione\_sign, 		&				\\
+				&								& declinazione\_ore,		&				\\
+				&								& declinazione\_min, 		&				\\
+				&								& declinazione\_sec 		&				\\
+				&								&							&				\\
+				\textit{Misura} 				& Un dato attinente alla	& Valore, 				& NomeGalassia \\
+												& galassia, sia relativo 	  & Errore, 				& \textit{(esterno)}\\
+												&ai flussi, sia a caratte-	  & Riferimento				&				\\
+												&ristiche fisiche della stessa						 &							&					  \\
+				&								&							&				\\
+				\textit{Caratteristiche}		& Una quantità misurata 	&	Tipologia			& NomeGalassia	\\
+				\textit{fisiche}				& attinente ad una galassia				&							& \textit{esterno} \\
+												&								&							&				\\
+				\textit{Flusso}					& Flusso associato ad una		&	Tipologia,				& (NomeGalassia \\
+												& galassia						&	Atomo					& \textit{esterno},\\
+												&								&							& Tipologia, Atomo)\\
+												&								&							&					\\
+				\textit{Misura Flusso}			& Insieme di informazioni		&	Apertura,				& (NomeGalassia,	\\
+												& attinenti alla misura di		&	Upperlimit,				&  Tipologia,	\\		
+												& flussi						&	Riferimento160$\mu$m,	&	Atomo) \textit{esterno}	\\
+												&								&	IRSMode					&							  \\
+												&								&							&					\\
 			\end{tabular}
 		\end{table}
 	
 		\begin{flushleft}
+			A margine viene aggiunto che un sinonimo per \textit{Galassia} è \textit{oggetto}, utilizzato all'interno della definizione dei requisiti funzionali.
+			
 			Di seguito viene riportato la prima stesura dello schema ER relativo al progetto. Come sottolineato in precedenza, il processo di sviluppo adottato è iterativo e quindi, ogni volta che si presenterà una miglioria possibile o ci si accorgerà di un errore si potrà tornare indietro e correggere.\newline
 			Un esempio di correzione che è stata apportata allo schema ER è l'elliminazione delle generalizzazioni relative all'entità \textit{Flusso} poichè nelle operazioni richieste dai requisiti non figura una distinzione tra le tipologie di flusso.
 		\end{flushleft}
@@ -533,11 +515,9 @@
 		%Per eventuale seconda stesura togliere attributi luminosità, non sono richiesti dalla app. Sia in CatteristicheGalassia che in Flusso l'identificatore è composto
 	\end{flushleft}
 	
-		\newpage
+		\clearpage
 
 \section{Progettazione logica}
-
-\subsection{Il modello relazionale}
 
 \subsection{Definizione del carico di lavoro}
 
@@ -851,7 +831,7 @@
 			\node[relationship, below right=20mm and 140mm](CoordDec) [below right of = Galassia] {CoordDec};
 			\draw (CoordDec) |- (Galassia);
 			
-			\node[entity, below=30mm] (declinazione)[label={[right, xshift=-10mm, yshift=3mm](1,1)}] [below of=CoordDec] {Declinazione} edge (CoordDec);
+			\node[entity, below=30mm] (declinazione)[label={[right, xshift=-10mm, yshift=3mm](1,1)}] [below of=CoordDec] {CoordinateAngolari} edge (CoordDec);
 			\node[attribute, left=20mm](DecSig) [below of=declinazione] {DecSig} edge (declinazione);
 			\node[attribute, left=20mm](DecH) [below left of=declinazione] {Dech} edge (declinazione);
 			\node[attribute, left=20mm](DecM) [left of=declinazione] {Decm} edge (declinazione);
@@ -874,7 +854,7 @@
 			
 			\node[relationship, below =30mm](relazioneFlussoContHP) [below of = Galassia, label={[right](1,n)}] {continuoHP} edge (Galassia);
 			
-			\node[entity, below=100mm] (FlussoContHP) [below of = relazioneFlussoContHP] {FlussoRigheHP}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlussoContHP);
+			\node[entity, below=100mm] (FlussoContHP) [below of = relazioneFlussoContHP] {FlussoContHP}  edge[label={[above right, yshift=10mm](1,1)}] (relazioneFlussoContHP);
 			\node[attribute, left=20mm] (atomo) [above left of=FlussoContHP] {Atomo} edge (FlussoContHP);
 			\node[attribute, left=20mm](NomeGalassiaFl) [left of = FlussoContHP] {\key{NomeGalassia}} edge (FlussoContHP);		
 			\node[attribute, left=25mm](upperLimitHP) [below of = FlussoContHP] {UpperLimit} edge (FlussoContHP);
@@ -926,31 +906,141 @@
 		\caption{Schema E-R alla luce delle modifiche suggerite dalle fasi successive}
 	\end{figure}
 \newpage
+	\subsection{Analisi delle ridondanze, ripresa}
+	\begin{flushleft}
+		A titolo di esempio, viene riportata una ulteriore modifica suggerita durante lo sviluppo del codice relativo al progetto, ovvero l'aggiunta degli attributi \textit{GradiDeclinazione} e \textit{GradiAscensione} all'entità \textit{CoordinateAngolari}in modo da rendere più veloce l'\textit{Operazione 5} richiesta dal \textit{Requisito 6}, la ricerca di una galassia all'interno di un raggio.\newline
+		Con la tavola dei volumi e delle operazioni alla mano, procediamo all'analisi di questo caso di ridondanza.
+	\end{flushleft}
+		\subsubsection{Schema dell'operazione}
+			\begin{flushleft}
+				Estrapoliamo dallo schema ER quel sottoinsieme di entità che vengono effettivamente utilizzate per portare a compimento l'operazione:
+			\end{flushleft}
+			\begin{figure}[h!]
+				\begin{tikzpicture}
+				\tikzset{multi attribute/.style={attribute,distance=1.5pt}}
+				\tikzset{derived attribute/.style={attribute,dashed}} 
+				\tikzset{total/.style={distance=1.5pt}}
+				\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+				\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+				\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+				
+				% for double arrows a la chef
+				% adapt line thickness and line width, if needed
+				\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+					1 with {\arrow[semithick]{open triangle 60}}},
+				double relativeDistance=1.4pt, shorten >= 5.5pt,
+				preaction = {decorate},
+				postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+				\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+				
+				\node[entity] (Galassia)[label={[right, xshift=15mm, yshift=-3mm](1,1)}] {Galassia};
+					\node[attribute, above=20mm] (nomeAlternativo) [above right of=Galassia] {NomeAlter} edge (Galassia); 
+					\node[attribute, above left=10mm and 20mm] (redshift) [above left of=Galassia] {Redshift} edge (Galassia);
+					\node[attribute, left=20mm] (nomeGalassia) [left of=Galassia] {\key{Nome}} edge (Galassia);
+					\node[attribute, below left=10mm and 10mm] (CS) [below of = Galassia] {ClasseSpettrale} edge (Galassia);
+					
+				\node[relationship, right=35mm](coordAng) [right of = Galassia] {coordDec} edge (Galassia);
+				
+				\node[entity, right=40mm] (CoordinateAngolari)[label={[right, xshift=-35mm, yshift=-10mm](1,1)}] [right of=coordAng] {CoordinateAngolari} edge (coordAng);
+					\node[attribute, above=20mm](DecSig) [above of=CoordinateAngolari] {DecSig} edge (CoordinateAngolari);
+					\node[attribute, below=20mm](DecH) [below left of=CoordinateAngolari] {Dech} edge (CoordinateAngolari);
+					\node[attribute, below left=20mm and 20mm](DecM) [left of=CoordinateAngolari] {Decm} edge (CoordinateAngolari);
+					\node[attribute, above left=20mm and 20mm](DecS) [above left of=CoordinateAngolari] {Decs} edge (CoordinateAngolari);
+					\node[attribute, above right=20mm and 15mm](NomeGalassiaCA)[right of=CoordinateAngolari] {\key{NomeGalassia}} edge (CoordinateAngolari);
+					\node[attribute, right=30mm](ARh) [above right of = CoordinateAngolari] {ARh} edge (CoordinateAngolari);
+					\node[attribute, right=30mm](ARm) [below of = CoordinateAngolari] {ARm} edge (CoordinateAngolari);
+					\node[attribute, below right= 20mm and 20mm](ARs) [below right of = CoordinateAngolari] {ARs} edge (CoordinateAngolari);
+					
+				\draw[->, ultra thick] (2,2) -- (6,2);
+				\end{tikzpicture}
+				\caption{Schema dell'operazione 5}
+			\end{figure}			
 
+	\begin{table}[h!]
+		\caption{Tavola degli accessi per l'operazione 5}
+		\begin{tabular}{llll}
+			\hline
+			\rowcolor[HTML]{66CC99}Concetto	& Costrutto	&Accessi & Tipo\\ \hline
+			\textit{Galassia}				& Entità & 1		& L		\\
+			\textit{CoordinateAngolari}		& Entità & 1		& L
+		\end{tabular}
+	\end{table}
+	\begin{flushleft}
+		Nonostante recuperiamo sette colonne dalla tabella \textit{CoordinateAngolari}, contiamo un solo accesso all'entità poichè una volta recuperata la tupla completa dal database non abbiamo più necessità di accedervi nuovamente. Tuttavia, l'operazione richiede di inserire la tupla fra i risultati soltanto se la distanza calcolata tramite questi attributi rientra nei criteri immessi.\newline
+		Assumiamo che per memorizzare gli attributi \textit{GradiDeclinazione} e \textit{GradiAscensione} siano necessari 8 byte ognuno. Disponendo in questo caso di circa 240 galassie, lo spazio aggiuntivo di memoria richiesto ammonterebbe a 1920 byte. Dunque a fronte di un piccolo spazio di memoria aggiuntivo, che peraltro non avrebbe bisogno di essere aggiornato, risparmieremmo le due operazioni necessarie per il calcolo del dato. Anche in presenza di un numero di galassie decisamente più alto, ad esempio dieci volte più alto di quello relativo a questo progetto, avremmo un overhead di memoria decisamente accettabile.\newline
+		Aggiorniamo dunque lo schema ER dell'entità \textit{CoordinateAngolari} aggiungendo i due attributi ed aggiorniamo anche la lista delle business rules con le due nuove \textit{regole di derivazione}:
+	\end{flushleft}
+	\begin{center}
+		\begin{figure}[h!]
+			\centering
+			\begin{tikzpicture}
+			\tikzset{multi attribute/.style={attribute,distance=1.5pt}}
+			\tikzset{derived attribute/.style={attribute,dashed}} 
+			\tikzset{total/.style={distance=1.5pt}}
+			\tikzset{every entity/.style={draw=orange, fill=orange!20}} 
+			\tikzset{every attribute/.style={draw=MediumPurple1, fill=MediumPurple1!20}} 
+			\tikzset{every relationship/.style={draw=Chartreuse2, fill=Chartreuse2!20}}
+			
+			% for double arrows a la chef
+			% adapt line thickness and line width, if needed
+			\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+				1 with {\arrow[semithick]{open triangle 60}}},
+			double relativeDistance=1.4pt, shorten >= 5.5pt,
+			preaction = {decorate},
+			postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+			\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
+			
+			\node[entity, right=40mm] (CoordinateAngolari){CoordinateAngolari};
+			\node[attribute, above=20mm](DecSig) [above of=CoordinateAngolari] {DecSig} edge (CoordinateAngolari);
+			\node[attribute, below=20mm](DecH) [below left of=CoordinateAngolari] {Dech} edge (CoordinateAngolari);
+			\node[attribute, below left=20mm and 20mm](DecM) [left of=CoordinateAngolari] {Decm} edge (CoordinateAngolari);
+			\node[attribute, above left=20mm and 20mm](DecS) [above left of=CoordinateAngolari] {Decs} edge (CoordinateAngolari);
+			\node[attribute, above right=20mm and 15mm](NomeGalassiaCA)[right of=CoordinateAngolari] {\key{NomeGalassia}} edge (CoordinateAngolari);
+			\node[attribute, right=30mm](ARh) [above right of = CoordinateAngolari] {ARh} edge (CoordinateAngolari);
+			\node[attribute, right=30mm](ARm) [below of = CoordinateAngolari] {ARm} edge (CoordinateAngolari);
+			\node[attribute, below right= 20mm and 20mm](ARs) [below right of = CoordinateAngolari] {ARs} edge (CoordinateAngolari);
+			\node[attribute, above left=10mm and 40mm](GradiDec) [above left of = CoordinateAngolari] {GradiDec} edge (CoordinateAngolari);
+			\node[attribute, left=40mm](GradiAR) [left of = CoordinateAngolari] {GradiAR} edge (CoordinateAngolari);
+			\end{tikzpicture}
+			\caption{Schema dell'operazione 5}
+		\end{figure}		
+	\end{center}
+	\begin{framed}
+		\begin{flushleft}
+			\textbf{RD1} La conversione della declinazione tra formato (+/-, HH, MM, SS) a gradi si effettua tramite la formula $Dec[gradi] = +or-(gradi + minuti/60 + secondi/3600)$\newline
+			\textbf{RD2} La conversione dell'ascensione retta tra formato (HH, MM, SS) si effettua tramite la formula $Asc[gradi] = 15*(ore + minuti/60 + secondi/3600)$\newline
+		\end{flushleft}
+	\end{framed}
+
+			
+
+		
 \subsection{Traduzione dello schema ER}
 
 	\begin{flushleft}
-		La traduzione di uno schema ER ristrutturato è una fase della progettazione molto più algoritmica rispetto alla stesura dello schema ER stesso. Infatti vi sono un insieme di traduzioni standard a cui è possibile attenersi e che verranno utilizzate anche in questo contesto.\newline\newline		
-		\textsf{\textit{Galassia}(\underline{Nome}, Redshift, NomeAlternativo, ClasseSpettrale)}\newline
-		\textsf{\textit{Declinazione}(DecSig, Dech, Decm, Decs, NomeGalassia)}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textit{AscensioneRetta}(ARh, ARm, ARs, NomeGalassia)}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textit{Flusso}(\underline{Atomo, Tipologia, NomeGalassia})}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textit{MisuraFlusso(Valore, Errore, Riferimento, IRSMode, Riferimento160$\mu$m, UpperLimit)}}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textit{CaratteristicheFisiche}(Valore, Errore, Riferimento, \underline{Tipologia, NomeGalassia})}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline		
-		\textsf{\textit{FlussoGalassia}(NomeGalassia, Tipologia, Atomo)}\newline
-		\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
-		\textsf{\textbf{FK}: Tipo, Atomo \textbf{REFERENCES} \textit{Flusso} NOT NULL}
+		Si è discusso precedentemente della redazione dello schema ER nell'ambito della progettazione concettuale. Si vuole qui richiamare l'attenzione sul fatto che il modello \textit{Entity-Relationship} costituisca un \textit{modello dei dati}, ovvero un insieme di concetti che vengono utilizzati per modellare una base di dati, al fine di realizzare meccanismi di astrazione, analogamente a quanto accade per le strutture dati nei linguaggi di programmazione.\newline
+		Nel caso del modello \textit{Entity-Relationship}, l'universo di interesse viene modellato tramite entità e relazioni fra entità, dando luogo ad uno schema che deve riportare fedelmente la connessione che intercorre fra i dati di interesse per l'applicazione da sviluppare.\newline
+		Nel caso della progettazione logica, avremo bisogno di un modello dei dati che abbassi il livello di astrazione e si avvicini a quella che sarà l'effettiva rappresentazione dei dati in memoria. Utilizzeremo l'arcinoto \textit{modello relazionale}, presentato da Edgar Codd nel 1970 e che rispetto ai suoi predecessori gerarchico e reticolare aveva una marcia in più: \textit{è basato su valori}. Questo fatto implica che la connessione fra le tabelle (o meglio relazioni, con ovvia traduzione conflittuale) sia dettata non da puntatori ai nodi o dalla posizione all'interno dell'albero delle tabelle del sistema, piuttosto dai valori contenuti nella tabella stessa. Ammettendo il caso di due tabelle, \textsf{AUTOMOBILISTA} ed \textsf{INFRAZIONI}, munite di opportune colonne, potremo scoprire quante infrazioni siano state comminate ad un dato automobilista semplicemente confrontando i valori contenuti in entrambe le tabelle. Ovviamente la realizzazione di un particolare DBMS può fare ugualmente uso di puntatori, ma costituiranno soltanto il mezzo e non l'oggetto dell'implementazione.\newline\newline
+		La traduzione di uno schema ER ristrutturato è una fase della progettazione molto più algoritmica rispetto alla stesura dello schema ER stesso. Infatti vi sono un insieme di traduzioni standard a cui è possibile attenersi e che verranno utilizzate anche in questo contesto.\newline
+		Nonostante la natura metodica del procedimento di traduzione, esso si inserisce nel più volte citato processo di sviluppo iterativo, rendendosi perciò oggetto di modifiche nel corso dello sviluppo della applicazione. Nel caso in cui le modifiche nello schema ER siano importanti, anche nello schema logico sarà necessario un aggiornamento consistente con le modifiche apportate. Con i dovuti adattamenti, la stessa argomentazione si può applicare alla fase di implementazione.\newline
+		Di seguito viene riportata la traduzione nel modello logico dell'ultimo schema ER stilato, ovvero quello effettivamente oggetto dell'implementazione.\newline\newline
+		\begin{framed}
+			\textsf{\textit{Galassia}(\underline{Nome}, Redshift, NomeAlternativo, ClasseSpettrale)}\newline\newline
+			\textsf{\textit{CoordinateAngolari}(NomeGalassia, DecSig, Dech, Decm, Decs, ARh, ARm, ARs, GradiDeclinazione, GradiAscensione)}\newline
+			\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline
+			\textsf{\textit{FlussoRigheHP}(\underline{Atomo, NomeGalassia}, Upperlimit, Aperture, Valore, Errore)}\newline
+			\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline
+			\textsf{\textit{FlussoContHP}(\underline{Atomo, NomeGalassia}, Upperlimit, Aperture, Valore, Errore)}\newline
+			\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline
+			\textsf{\textit{FlussoRigheSp}(\underline{Atomo, NomeGalassia}, Upperlimit, Aperture, Valore, Errore, IRSMode)}\newline
+			\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline\newline
+			\textsf{\textit{CaratteristicheFisiche}(Valore, Errore, Riferimento, \underline{Tipologia, NomeGalassia})}\newline
+			\textsf{\textbf{FK}: NomeGalassia \textbf{REFERENCES} Galassia}\newline
+		\end{framed}	
 	\end{flushleft}
 
 \newpage
 \section{Implementazione}
-
 	\subsection{Class diagram}
 	\begin{flushleft}
 		Come ricordiamo dai principi di ingegneria del software, la fase di \textit{analisi} definisce l'ambito di lavoro del sistema da realizzare, ovvero quali sono i compiti che deve effettivamente svolgere. La fase di \textit{progettazione} per converso si occupa di definire in che modo questi compiti verranno portati a termine dal sistema.\newline
@@ -1081,9 +1171,10 @@
 		\end{class}
 		
 		\begin{class}[text width=6cm] {AdminControl}{3,0}
-		\attribute {-menuImportFile : Menu}
-		\operation{+initialize() : void}
-		\operation{+handleEventImportFile() : String}
+			\attribute {-menuImportFile : Menu}
+			\attribute{-listGalaxies : ListView}
+			\operation{+initialize() : void}
+			\operation{+handleEventImportFile() : String}
 		\end{class}
 		
 		\association{AdminView}{}{}{AdminControl}{}{}
@@ -1174,6 +1265,7 @@
 				\attribute{-redshift : Double}
 				\attribute{-coordinateAngolari : CoordinateAngolari}
 				\attribute{-caratteristicheFisiche : CaratteristicheFisiche}
+				\operation{+Galaxy(String name, String altName, CaratteristicheFisiche cf, CoordinateAngolari ca) : Galaxy}
 			\end{class}
 			
 			\draw[dashed, ->] (GalaxyDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Galaxy.north);
@@ -1203,17 +1295,17 @@
 		\end{class}
 		
 		\begin{class}[text width=7cm]{SearchGalaxyForRadiusControl}{0,-9}
-		\attribute{-txtARh : TextField}
-		\attribute{-txtARm : TextField}
-		\attribute{-txtARs : TextField}
-		\attribute{-txtDecSign : TextField}
-		\attribute{-txtDech : TextField}
-		\attribute{-txtDecm : TextField}
-		\attribute{-txtDecs : TextField}
-		\attribute{-numberGalaxies : TextField}
-		\attribute{-listGalaxies : List}
-		\attribute{-btnOK : Button}
-		\operation{+initialize() : void}
+			\attribute{-txtARh : TextField}
+			\attribute{-txtARm : TextField}
+			\attribute{-txtARs : TextField}
+			\attribute{-txtDecSign : TextField}
+			\attribute{-txtDech : TextField}
+			\attribute{-txtDecm : TextField}
+			\attribute{-txtDecs : TextField}
+			\attribute{-numberGalaxies : TextField}
+			\attribute{-listGalaxies : ListView}
+			\attribute{-btnOK : Button}
+			\operation{+initialize() : void}
 		\end{class}
 		
 		\association{SearchGalaxyForNameControl}{}{}{SearchGalaxyForNameView}{}{}
@@ -1221,7 +1313,60 @@
 		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchGalaxyForNameView.east);
 		
 		\begin{class}[text width = 8cm]{GalaxyDAO}{10, -10}
-		\operation{+searchGalaxyForRadius(Declination d, RightAscension ra, int n, double radius) : Galaxy}
+			\operation{+searchGalaxyForRadius(Declination d, RightAscension ra, int n, double radius) : List$<$Galaxy$>$}
+		\end{class}
+		
+		\association{SearchGalaxyForNameControl}{}{}{GalaxyDAO}{}{}
+		
+		\begin{class}[text width = 10cm]{Galaxy}{10, -14}
+			\attribute{-nome : String}
+			\attribute{-nomeAlt : String}
+			\attribute{-redshift : Double}
+			\attribute{-coordinateAngolari : CoordinateAngolari}
+			\attribute{-caratteristicheFisiche : CaratteristicheFisiche}
+			\operation{+Galaxy(String name, String altName, Double dist) : Galaxy}
+		\end{class}
+		
+		\draw[dashed, ->] (GalaxyDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Galaxy.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}6 - Ricerca le prime \textit{n} galassie all'interno di un raggio}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+		\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+		\operation{+AdminView() : AdminView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+		\attribute {-menuSearchGalaxyForRedshift : Menu}
+		\operation{+initialize() : void}
+		\operation{+handleEventMenuSearchGalaxyForredshift() : void}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {SearchGalaxyForRedshiftView}{0,-5}
+		\operation{+SearchGalaxyForRedshiftView() : SearchGalaxyForRedshiftView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=7cm]{SearchGalaxyForRedshiftControl}{0,-9}
+			\attribute{-txtRedshiftValue : TextField}
+			\attribute{-choiceGreaterLess : bool}
+			\attribute{-listGalaxies : ListView}
+			\attribute{-btnOK : Button}
+			\operation{+initialize() : void}
+		\end{class}
+		
+		\association{SearchGalaxyForNameControl}{}{}{SearchGalaxyForNameView}{}{}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchGalaxyForNameView.east);
+		
+		\begin{class}[text width = 8cm]{GalaxyDAO}{10, -10}
+		\operation{+searchGalaxyForRedshift(double value, bool lgt) : List$<$Galaxy$>$}
 		\end{class}
 		
 		\association{SearchGalaxyForNameControl}{}{}{GalaxyDAO}{}{}
@@ -1232,70 +1377,237 @@
 		\attribute{-redshift : Double}
 		\attribute{-coordinateAngolari : CoordinateAngolari}
 		\attribute{-caratteristicheFisiche : CaratteristicheFisiche}
+		\operation{+Galaxy(String name, String altName, Double redshift) : Galaxy}
 		\end{class}
 		
 		\draw[dashed, ->] (GalaxyDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Galaxy.north);
 		\end{tikzpicture}
-		\caption{Vista requisito funzionale \texttt{\#}6 - Ricerca le prime \textit{n} galassie all'interno di un raggio}
+		\caption{Vista requisito funzionale \texttt{\#}7 - Ricerca le prime \textit{n} galassie secondo \textit{redshift}}
 	\end{figure}
-
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+		\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+		\operation{+AdminView() : AdminView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+			\attribute {-menuSearchFluxValErr : Menu}
+			\operation{+initialize() : void}
+			\operation{+handleEventMenuSearchFluxValErr() : void}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {SearchFluxValErrView}{0,-5}
+			\operation{+SearchFluxValErrView() : SearchFluxValErrView}
+			\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=7cm]{SearchFluxValErrControl}{0,-9}
+			\attribute{-txtGalaxyName : TextField}
+			\attribute{-listAtoms : List}
+			\attribute{-listFluxLineHP : ListView}
+			\attribute{-listFluxContHP : ListView}
+			\attribute{-listFluxLineSp : ListView}
+			\attribute{-btnOK : Button}
+			\operation{+initialize() : void}
+		\end{class}
+		
+		\association{SearchFluxValErrControl}{}{}{SearchFluxValErrView}{}{}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchGalaxyForNameView.east);
+		
+		\begin{class}[text width = 8cm]{FluxDAO}{10, -10}
+			\operation{+searchFluxValErr(String galaxyName, String[] atoms, String table) : List$<$Flux$>$}
+		\end{class}
+		
+		\association{SearchFluxValErrControl}{}{}{FluxDAO}{}{}
+		
+		\begin{class}[text width = 10cm]{Flux}{10, -14}
+			\attribute{-galaxyName : String}
+			\attribute{-atom : String}
+			\attribute{-upperLimit : String}
+			\attribute{-value : Double}
+			\attribute{-error : Double}
+			\operation{+Flux(String galaxyName, String atom, String upperLimit, Double value, Double error) : Flux}
+		\end{class}
+		
+		\draw[dashed, ->] (FluxDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Flux.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}8 - Valori delle linee spettrali}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+		\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+		\operation{+AdminView() : AdminView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+		\attribute {-menuSearchFluxRatio : Menu}
+		\operation{+initialize() : void}
+		\operation{+handleEventMenuSearchFluxRatio() : void}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {SearchFluxRatioView}{0,-5}
+			\operation{+SearchFluxRatioView() : SearchFluxRatioView}
+			\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=7cm]{SearchFluxRatioControl}{0,-9}
+			\attribute{-txtGalaxyName : TextField}
+			\attribute{-firstLine : String[]}
+			\attribute{-secondLine : String[]}
+			\attribute{-ratioValue : double}
+			\attribute{-isUpperlimit : bool}
+			\attribute{-btnOK : Button}
+			\operation{+initialize() : void}
+			\operation{-retrieveFluxValueDB(String galaxyName, String atom, String table) : Flux}
+		\end{class}
+		
+		\association{SearchFluxRatioControl}{}{}{SearchFluxRatioView}{}{}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchFluxRatioView.east);
+		
+		\begin{class}[text width = 8cm]{FluxDAO}{10, -10}
+			\operation{+searchFluxVal(String galaxyName, String[] atoms, String table) : Flux}
+		\end{class}
+		
+		\association{SearchFluxRatioControl}{}{}{FluxDAO}{}{}
+		
+		\begin{class}[text width = 10cm]{Flux}{10, -14}
+		\attribute{-galaxyName : String}
+		\attribute{-atom : String}
+		\attribute{-upperLimit : String}
+		\attribute{-value : Double}
+		\attribute{-error : Double}
+		\operation{+Flux(String galaxyName, String atom, String upperLimit, Double value, Double error) : Flux}
+		\end{class}
+		
+		\draw[dashed, ->] (FluxDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Flux.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}9 - Valori dei rapporti delle righe e \texttt{\#}11 - Rapporto tra flusso e continuo}
+	\end{figure}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+		\umlnote at(12,-5){In questo caso le classi \textit{AdminView} e\newline \textit{AdminControl} sono sovrapponibili rispettivamente a \textit{UserView} e \textit{UserViewControl}};
+		
+		\begin{class}[text width=4cm]{AdminView}{-1,-0.35}
+		\operation{+AdminView() : AdminView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=9.5cm] {AdminControl}{8,0}
+		\attribute {-menuSearchFluxRatio : Menu}
+		\operation{+initialize() : void}
+		\operation{+handleEventMenuSearchFluxRatio() : void}
+		\end{class}
+		
+		\association{AdminView}{}{}{AdminControl}{}{}
+		
+		\begin{class}[text width=7cm] {StatisticsValueRatioView}{0,-5}
+		\operation{+StatisticsValueRatioView() : StatisticsValueRatioView}
+		\operation{-startView() : void}
+		\end{class}
+		
+		\begin{class}[text width=7cm]{StatisticsValueRatioControl}{0,-9}
+			\attribute{-median : Double}
+			\attribute{-meanValue : Double}
+			\attribute{-devStd : Double}
+			\attribute{-devMeanabs : Double}
+			\attribute{-specGroup : String[]}
+			\attribute{-aperture : String[]}
+			\attribute{-fluxType : String[]}
+			\attribute{-btnOK : Button}
+			\operation{+initialize() : void}
+			\operation{-retrieveFluxValueDB(String galaxyName, String atom, String table) : Flux}
+		\end{class}
+		
+		\association{StatisticsValueRatioView}{}{}{StatisticsValueRatioControl}{}{}
+		
+		\draw[dashed, ->] (AdminControl.south) |- node[xshift=-18mm, yshift=3mm]{<<istanzia>>} (SearchFluxRatioView.east);
+		
+		\begin{class}[text width = 8cm]{FluxDAO}{10, -10}
+		\operation{+searchFluxVal(String galaxyName, String[] atoms, String table) : Flux}
+		\end{class}
+		
+		\association{StatisticsValueRatioControl}{}{}{FluxDAO}{}{}
+		
+		\begin{class}[text width = 10cm]{Flux}{10, -14}
+		\attribute{-galaxyName : String}
+		\attribute{-atom : String}
+		\attribute{-upperLimit : String}
+		\attribute{-value : Double}
+		\attribute{-error : Double}
+		\operation{+Flux(String galaxyName, String atom, String upperLimit, Double value, Double error) : Flux}
+		\end{class}
+		
+		\draw[dashed, ->] (FluxDAO.south) to node[xshift=-12mm, yshift=-5mm]{<<recupera>>} (Flux.north);
+		\end{tikzpicture}
+		\caption{Vista requisito funzionale \texttt{\#}10 - Valori dei rapporti delle righe per gruppo spettrale}
+	\end{figure}
 \clearpage
-	\subsection{Scelta dell'ambiente}
-	\begin{flushleft}
-		Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline
-		Di certo c'è il linguaggio SQL non offre funzioni di interazione con i file n\'{e} tanto meno la possibilità di c interfacce utente, quindi le funzioni SQL che comunicano con il database vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che SQL non mette a disposizione.\newline
-		
-		L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessità sintetizzabili in tre punti:
-	\end{flushleft}
-	\begin{enumerate}
-		\item SQL integrato nei linguaggi di programmazione
-		\item Librerie sviluppate a partire dalle istruzioni SQL
-		\item Object Relational Mapping
-	\end{enumerate}
-	\begin{flushleft}
-		Il problema principale che si \'{e} risolto al fine di  integrare le query SQL in un altro linguaggio di programmazione \'{e} stato senz'altro lo sviluppo di software che fungesse da tramite tra i due linguaggi.\newline
-		
-	\subsubsection{ECPG}
-		A titolo di esempio viene riportato il caso di \textit{ecpg}, un applicativo presente nell'installazione del DBMS Postgresql, che si occupa di tradurre un sorgente in linguaggio C il cui file ha estensione \textsf{.pgc}, fornendo in output un nuovo sorgente, stavolta con estensione \textsf{.c}, che si serve delle particolari funzioni di libreria del DBMS. Questo sorgente verr\'{a} poi compilato come un normale programma in linguaggio C. Questo processo viene riassunto nell'immagine qui di seguito:
+\subsection{Scelta dell'ambiente}
+		\begin{flushleft}
+			Dopo aver passato i tre livelli di progettazione del sistema informatico, possiamo passare alla fase di implementazione. La scelta del linguaggio di programmazione o dell'ambiente su cui sviluppare il progetto non \'{e} ovvia vista la moltitudine di alternative presenti. \newline
+			Di certo c'è che il linguaggio SQL non offre funzioni di interazione con i file né tanto meno la possibilità di creare interfacce utente, requisito fondamentale per la realizzazione di un'applicazione che sia semplice da utilizzare. Le query SQL vanno necessariamente inserite in un linguaggio di programmazione che metta a disposizione tutte quelle funzioni che ad SQL non sono state fornite.\newline
 			
-		\begin{center}
+			L'adozione di SQL all'interno di linguaggi di programmazione che fossero completi dal punto di vista operazionale ha attraversato varie fasi di complessità sintetizzabili in tre punti:
+		\end{flushleft}
+		\begin{enumerate}
+			\item SQL integrato nei linguaggi di programmazione
+			\item Librerie sviluppate a partire dalle istruzioni SQL, ovvero le CLI (\textit{Call Level Interface})
+			\item Object Relational Mapping
+		\end{enumerate}
+		\begin{flushleft}
+			La prima soluzione, definita anche \textit{SQL embedded}, integra le query SQL all'interno del codice separandole dal resto tramite opportune istruzioni. Come si vedrà nel seguito, nel caso di \textit{ECPG} l'istruzione in questione è \texttt{EXEC SQL} terminata dal carattere ;.\newline
+			Nel caso delle CLI, Call Level Interface, sono state sviluppate librerie che permettessero di eseguire query SQL nel linguaggio di programmazione ospite tramite opportune funzioni e metodi sviluppati allo scopo. Tra i principali vantaggi offerti da queste librerie possiamo notare la mappatura automatica tra i tipi di dato del linguaggio ospitante ed SQL, oltre ad una maggiore semplicità nella gestione dei dati recuperati dalla base di dati. \textit{JDBC} rientra proprio in questa categoria di soluzioni ed è quella che è stata ampiamente sfruttata per l'implementazione del progetto.\newline
+			Tuttavia, nonostante il grado di complessità dello sviluppo di applicazioni che interagissero con database sia stato notevolmente abbassato, si sono compiuti ulteriori passi in avanti. A questo proposito, notiamo che generalmente c'è una stretta correlazione tra i dati che utilizziamo nel codice del programma e le tabelle che vengono effettivamente utilizzate all'interno del database. La soluzione a mappatura di oggetti \textit{ORM} si muove proprio in questa direzione, creando una connessione tra le classi insieme gli attributi in esse contenuti e le tabelle salvate durante l'esecuzione. I framework \textit{JPA} ed \textit{Hibernate} appartengono a questa categoria di soluzioni.
+			
+			\subsubsection{ECPG}
+			A titolo di esempio viene riportato il caso di \textit{ecpg}, un applicativo presente nell'installazione del DBMS Postgresql. Questo applicativo si occupa di tradurre un sorgente in linguaggio C il cui file ha estensione \textsf{.pgc}, fornendo in output un nuovo sorgente, stavolta con estensione \textsf{.c}, che si serve delle particolari funzioni di libreria del DBMS. Ad esempio, si occupa tradurre il codice preceduto da \texttt{EXEC SQL} in modo che interagisca con la console PSQL. Infatti eseguendo le stesse istruzioni direttamente da console otterremo gli stessi risultati, salvo i valori delle variabili nel programma.\newline 
+			Questo sorgente verr\'{a} poi compilato come un normale programma in linguaggio C. Questo processo viene riassunto nell'immagine qui di seguito:
+		
+			\newcommand{\gear}[5]{
+				\begin{tikzpicture}
+					foreach \i in {1,...,#1} [rotate=(\i-1)*360/#1] (0:#2)  arc (0:#4:#2) {[rounded corners=1.5pt] -- (#4+#5:#3)  arc (#4+#5:360/#1-#5:#3)} --  (360/#1:#2)
+				\end{tikzpicture}
+			}%
+			
+			\begin{center}
+				\begin{figure}
 				\begin{tikzpicture}[scale= 0.7, every node/.style = {shape=rectangle, rounded corners,
-				draw, align=center,
-				top color=white, bottom color=blue!20}]]
-			
-				% #1 number of teeths
-				% #2 radius intern
-				% #3 radius extern
-				% #4 angle from start to end of the first arc
-				% #5 angle to decale the second arc from the first 
+					draw, align=center,
+					top color=white, bottom color=blue!20}]		
 				
-				\newcommand{\gear}[5]{%
-					\foreach \i in {1,...,#1} {%
-						[rotate=(\i-1)*360/#1]  (0:#2)  arc (0:#4:#2) {[rounded corners=1.5pt]
-							-- (#4+#5:#3)  arc (#4+#5:360/#1-#5:#3)} --  (360/#1:#2)
-					
-				}}  
-			
-
 				\draw  (0,12) node(testPGC){testECPG.pgc}				
-						(0,10) node(preproc) {aosdifh} \gear{18}{2}{2.4}{10}{2}
-							(0,8) node(testC){testECPG.c}
-							(0,6) node (comp){Compilatore C}
-							(-5,4) node (ecpglib){Liberia ECPG}
-							(0,4) node (testO){testECPG.o}
-							(5,4) node (alLib){Altre librerie}
-							(0,2) node (linker){Linker}
-							(0,0) node (test){testECPG};
+				(0,10) node(preproc) {Preprocessore ecpg}
+				(0,8) node(testC){testECPG.c}
+				(0,6) node (comp){Compilatore C}
+				(-5,4) node (ecpglib){Liberia ECPG}
+				(0,4) node (testO){testECPG.o}
+				(5,4) node (alLib){Altre librerie}
+				(0,2) node (linker){Linker}
+				(0,0) node (test){testECPG};
 				\foreach \from/\to in {testPGC/preproc, preproc/testC, testC/comp, comp/testO, testO/linker, ecpglib/linker, alLib/linker, linker/test}
 				\draw [->, thick] (\from) -- (\to);
 				\end{tikzpicture}
+				\caption{Processo di compilazione di un programma \textit{.pgc}}
+			\end{figure}
 			\end{center}
-		
-		Al fine di avere un'idea chiara di come si procede lavorando con questi strumenti, il processo \'{e} stato ripetuto in ambiente Ubuntu con dei sorgenti di test. Si parte dunque da un sorgente \textit{testECPG.pgc}:
 			
-	\end{flushleft}
-	
-	\begin{lstlisting}[language=C, caption=testECPG.pgc]
+			Al fine di avere un'idea chiara di come si procede lavorando con questi strumenti, il processo \'{e} stato ripetuto in ambiente Ubuntu con dei sorgenti di test. Si parte dunque da un sorgente \textit{testECPG.pgc}:
+			
+		\end{flushleft}
+		
+		\begin{lstlisting}[language=C, caption=testECPG.pgc]
 		#include <stdio.h>
 		#include <sys/types.h>
 		#include <libpq-fe.h>
@@ -1306,38 +1618,38 @@
 		
 		int main (int argc, char **argv)
 		{
-			/* 2 - Comando che realizza la connessione al database */
-			EXEC SQL CONNECT TO testDB@localhost:5432 USER user/password;
-			
-			/*Come succede molto spesso nella gestione degli errori in linguaggio C, il valore ritornato da una funzione viene utilizzato anche come codice di errore, considerando lo 0 come esecuzione andata a buon fine */
-			if (sqlca.sqlcode != 0)	{
-				printf("Errore di connessione al DB\n");
-				printf("Errore %d\n", (int)sqlca.sqlcode);
-			}
-			
-			/* 3 - Esegui un'operazione di test */
-			EXEC SQL CREATE TABLE TableTest (number integer, ascii char(16));
-			fprintf (stdout, "Created table TestTable\n");
-			
-			/* 4 - Esegui le operazioni */
-			EXEC SQL COMMIT;
-			
-			/* 5 - Disconnessione dal database */
-			EXEC SQL DISCONNECT ALL;
-			
-			return EXIT_SUCCESS;
+		/* 2 - Comando che realizza la connessione al database */
+		EXEC SQL CONNECT TO testDB@localhost:5432 USER user/password;
+		
+		/*Come succede molto spesso nella gestione degli errori in linguaggio C, il valore ritornato da una funzione viene utilizzato anche come codice di errore, considerando lo 0 come esecuzione andata a buon fine */
+		if (sqlca.sqlcode != 0)	{
+		printf("Errore di connessione al DB\n");
+		printf("Errore %d\n", (int)sqlca.sqlcode);
 		}
-	\end{lstlisting}
-
-	che viene preprocessato dal comando \textit{ecpg}:
-	
-	\begin{center}
-		\textit{username@host:./\$ ecpg ecpg\_sample.pgc}
-	\end{center}
-	
-	Il file risultante con estensione \textsf{.c} utilizza le particolari funzioni di libreria offerte dal DBMS PostgreSQL:
-	
-	\begin{lstlisting}[language=C, caption=testECPG.c]
+		
+		/* 3 - Esegui un'operazione di test */
+		EXEC SQL CREATE TABLE TableTest (number integer, ascii char(16));
+		fprintf (stdout, "Created table TestTable\n");
+		
+		/* 4 - Esegui le operazioni */
+		EXEC SQL COMMIT;
+		
+		/* 5 - Disconnessione dal database */
+		EXEC SQL DISCONNECT ALL;
+		
+		return EXIT_SUCCESS;
+		}
+		\end{lstlisting}
+		
+		che viene preprocessato dal comando \textit{ecpg}:
+		
+		\begin{center}
+			\textit{username@host:./\$ ecpg ecpg\_sample.pgc}
+		\end{center}
+		
+		Il file risultante con estensione \textsf{.c} utilizza le particolari funzioni di libreria offerte dal DBMS PostgreSQL:
+		
+		\begin{lstlisting}[language=C, caption=testECPG.c]
 		/* Processed by ecpg (4.11.0) */
 		/* These include files are added by the preprocessor */
 		#include <ecpglib.h>
@@ -1397,27 +1709,27 @@
 			/* 1: if 'W' at least one character string		*/
 			/* value was truncated when it was			*/
 			/* stored into a host variable.             */
-		
+			
 			/*
-			 * 2: if 'W' a (hopefully) non-fatal notice occurred
-			 */	/* 3: empty */
+			* 2: if 'W' a (hopefully) non-fatal notice occurred
+			*/	/* 3: empty */
 			/* 4: empty						*/
 			/* 5: empty						*/
 			/* 6: empty						*/
 			/* 7: empty						*/
-		
+			
 			char		sqlstate[5];
-		};
+			};
 		
-		struct sqlca_t *ECPGget_sqlca(void);
-		
-		#ifndef POSTGRES_ECPG_INTERNAL
-		#define sqlca (*ECPGget_sqlca())
-		#endif
-		
-		#ifdef __cplusplus
-		}
-		#endif
+			struct sqlca_t *ECPGget_sqlca(void);
+			
+			#ifndef POSTGRES_ECPG_INTERNAL
+			#define sqlca (*ECPGget_sqlca())
+			#endif
+			
+			#ifdef __cplusplus
+			}
+			#endif
 		
 		#endif
 		
@@ -1427,96 +1739,151 @@
 		{
 			/* 2 - Comando che realizza la connessione al database */
 			{ ECPGconnect(__LINE__, 0, "testDB@localhost:5432" , "postgres" , "portento123" , NULL, 0); }
-		#line 12 "ecpg_sample.pgc"
+			#line 12 "ecpg_sample.pgc"
 			
 			/*Come succede molto spesso nella gestione degli errori in linguaggio C, il valore ritornato da una funzione viene utilizzato anche come codice di errore, considerando lo 0 come esecuzione andata a buon fine */
 			if (sqlca.sqlcode != 0)	{
-				printf("Errore di connessione al DB\n");
-				printf("Errore %d\n", (int)sqlca.sqlcode);
-			}
-			
-			/* 3 - Esegui un'operazione di test */
-			{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "create table TableTest ( number integer , ascii char ( 16 ) )", ECPGt_EOIT, ECPGt_EORT);}
+			printf("Errore di connessione al DB\n");
+			printf("Errore %d\n", (int)sqlca.sqlcode);
+		}
+		
+		/* 3 - Esegui un'operazione di test */
+		{ ECPGdo(__LINE__, 0, 1, NULL, 0, ECPGst_normal, "create table TableTest ( number integer , ascii char ( 16 ) )", ECPGt_EOIT, ECPGt_EORT);}
 		#line 21 "ecpg_sample.pgc"
 		
-			fprintf (stdout, "Created table TestTable\n");
-			
-			/* 4 - Esegui le operazioni */
-			{ ECPGtrans(__LINE__, NULL, "commit");}
+		fprintf (stdout, "Created table TestTable\n");
+		
+		/* 4 - Esegui le operazioni */
+		{ ECPGtrans(__LINE__, NULL, "commit");}
 		#line 25 "ecpg_sample.pgc"
 		
-			/* 5 - Disconnessione dal database */
-			{ ECPGdisconnect(__LINE__, "ALL");}
+		/* 5 - Disconnessione dal database */
+		{ ECPGdisconnect(__LINE__, "ALL");}
 		#line 28 "ecpg_sample.pgc"
-			
-			return EXIT_SUCCESS;
+		
+		return EXIT_SUCCESS;
 		}
-	\end{lstlisting}
-	\begin{flushleft}
-		Questo file pu\'{o} essere compilato tramite GCC, avendo l'accortezza di linkare le librerie di cui il programma ha bisogno. Il procedimento va eseguito manualmente nel caso in cui esse non siano presenti nella stessa directory del sorgente o nelle directory predefinite di GCC.
-	\end{flushleft}
-	\begin{center}
-	\textit{gcc -I /usr/include/postgresql ecpg\_sample.c -o ecpg\_sample -L /usr/lib/x86\_64-linux-gnu/libecpg.a /usr/lib/x86\_64-linux-gnu/libecpg.so /usr/lib/x86\_64-linux-gnu/libecpg.so.6 /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so.3}
-	\end{center}
-	\begin{flushleft}
-	Il risultato che otterremo sar\'{a} il seguente:
-	\end{flushleft}
-	\begin{center}
-	\includegraphics[scale=0.35]{./screenshot}
-	\end{center}
-	
-	\begin{flushleft}
-	Nel procedimento riportato, l'utilizzo del linguaggio C come ospitante l'SQL non risulta efficiente in quanto, oltre alla complessit\'{a} del processo di compilazione, ad ogni modifica del codice si pone la necessit\'{a} di ripetere l'iter. Un makefile potrebbe tornare utile allo scopo, ma in ogni caso andrebbe mantenuto a seguito dell'aggiornamento del codice.\newline
-	
-	Non abbiamo significativi miglioramenti utilizzando la Call Level Interface offerta dal DBMS PostgreSQL relativamente al linguaggio C, ovvero una serie di librerie che rendono meno distaccato il codice relativo alle interrogazioni sul database rispetto al resto del codice.\newline
-	Il codice risulta pi\'{u} omogeneo, ma non abbiamo risolto il problema del constant recompiling:\newline
-	
-	\end{flushleft}
-	
-	\begin{lstlisting}[language=C, caption=testPGSQL.c]
+		\end{lstlisting}
+		\begin{flushleft}
+			Possiamo notare che l'istruzione \textsf{EXEC SQL INCLUDE sqlca;} è stata tradotta con un \textsf{\#include $<$sqlca.h$>$}, quindi effettivamente con l'inclusione di una libreria esterna, così come il comando di \textsf{CREATE TABLE} è stato inserito tra i parametri della funzione \textsf{ECPGdo()}.\newline
+			Il file risultante dalla preprocessazione pu\'{o} dunque essere compilato tramite \textit{GCC}, avendo l'accortezza di linkare tutte le librerie di cui il programma ha bisogno. Il procedimento va eseguito manualmente nel caso in cui, come spesso accade, esse non siano presenti nella stessa directory del sorgente o nelle directory predefinite di GCC.
+		\end{flushleft}
+		\begin{center}
+			\textit{gcc -I /usr/include/postgresql ecpg\_sample.c -o ecpg\_sample -L /usr/lib/x86\_64-linux-gnu/libecpg.a /usr/lib/x86\_64-linux-gnu/libecpg.so /usr/lib/x86\_64-linux-gnu/libecpg.so.6 /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so /usr/lib/x86\_64-linux-gnu/libecpg\_compat.so.3}
+		\end{center}
+		\begin{flushleft}
+			Il risultato che otterremo sar\'{a} il seguente:
+		\end{flushleft}
+		\begin{center}
+			\includegraphics[scale=0.35]{./screenshot}
+		\end{center}
+		
+		\begin{flushleft}
+			Nel procedimento riportato, l'utilizzo del linguaggio C come ospitante l'SQL non risulta efficiente in quanto, oltre alla complessit\'{a} del processo di compilazione, ad ogni modifica del codice si porrebbe la necessit\'{a} di ripetere l'iter. Un makefile potrebbe tornare utile allo scopo, ma in ogni caso andrebbe mantenuto a seguito dell'aggiornamento del codice.\newline
+			
+			Non abbiamo significativi miglioramenti utilizzando la Call Level Interface offerta dal DBMS PostgreSQL relativamente al linguaggio C, ovvero una serie di librerie che rendono meno distaccato il codice relativo alle interrogazioni sul database rispetto al resto del codice.\newline
+			Il codice risulta pi\'{u} omogeneo, ma non abbiamo risolto il problema del constant recompiling:\newline
+			
+		\end{flushleft}
+		
+		\begin{lstlisting}[language=C, caption=testPGSQL.c]
 		#include <stdio.h>
 		#include <stdlib.h>
 		#include <libpq-fe.h>
 		
 		void do_exit(PGconn *conn) {
-		    
-		    PQfinish(conn);
-		    exit(1);
+			PQfinish(conn);
+			exit(1);
 		}
 		
 		int main() {
-		    
-		    PGconn *conn = PQconnectdb("user=user password=password dbname=testDB");
 		
-		    if (PQstatus(conn) == CONNECTION_BAD) {
-		         
-		        fprintf(stderr, "Connection to database failed: %s\n",
-		            PQerrorMessage(conn));
-		        do_exit(conn);
-		    }
-		    
-		    char *user = PQuser(conn);
-		    char *db_name = PQdb(conn);
-		    char *pswd = PQpass(conn);
-		    
-		    printf("User: %s\n", user);
-		    printf("Database name: %s\n", db_name);
-		    printf("Password: %s\n", pswd);
-		    
-		    PQfinish(conn);
-		
-		    return 0;
+			PGconn *conn = PQconnectdb("user=user password=password dbname=testDB");
+			
+			if (PQstatus(conn) == CONNECTION_BAD) {
+				fprintf(stderr, "Connection to database failed: %s\n",
+				PQerrorMessage(conn));
+				do_exit(conn);
+			}
+			
+			char *user = PQuser(conn);
+			char *db_name = PQdb(conn);
+			char *pswd = PQpass(conn);
+			
+			printf("User: %s\n", user);
+			printf("Database name: %s\n", db_name);
+			printf("Password: %s\n", pswd);
+			
+			PQfinish(conn);
+			
+			return 0;
 		}
-	\end{lstlisting}
-
-	\begin{flushleft}
-		Un linguaggio che si propone come soluzione sia al constant recompiling sia alla difficolt\'{a} della compilazione stessa \'{e} Java.
-	
-	\end{flushleft}
-	
+		\end{lstlisting}
+		
+		\begin{flushleft}
+			Notiamo una maggiore coesione delle istruzioni SQL all'interno del linguaggio ospitante, tuttavia realizzare l'intero progetto in linguaggio C, munendolo di un'interfaccia grafica che fosse accettabile per un utente qualsiasi, sarebbe stata impresa non poco ardua.\newline
+			Un linguaggio che si propone come soluzione sia al constant recompiling, sia alla difficolt\'{a} della compilazione stessa, sia alla realizzazione di un'interfaccia grafica gradevole \'{e} proprio Java.\newline
+			Oltre ad essere uno dei più diffusi linguaggi di programmazione ad oggetti a livello mondiale, Java offre un insieme di librerie che realizzano la Call Level Interface, aggiungendo uno strato di astrazione tra programma applicativo e codice eseguito dal DBMS. Questo strato di astrazione viene realizzato come previsto dalla libreria JDBC, la quale realizza la connessione tra programma e DBMS tramite più tipi di architettura. Nel caso di questo progetto, l'architettura si poggia sul Driver specifico per il DBMS adottato, Postgresql. Nella figura di seguito viene riassunta la catena di chiamate effettuate durante l'esecuzione:		
+		\end{flushleft}
+		\begin{figure}[h]
+				\centering\begin{tikzpicture}[node distance = 3cm, auto]
+					\tikzstyle{block} = [rectangle, draw, fill=black!20, 
+					text width=20em, text centered, rounded corners, minimum height=3em]
+					\tikzstyle{line} = [draw, -latex']
+					%http://tex.stackexchange.com/questions/175393/tikz-stacked-disks-3d
+					\tikzset{pics/.cd,
+						disc/.style={
+							code={
+								\fill [white] ellipse [x radius=2, y radius=2/3];
+								\path [left color=black!50, right color=black!50, middle color=black!25] 
+								(-2+.05,-1.1) arc (180:360:2-.05 and 2/3-.05*2/3) -- cycle;
+								\path [top color=black!25, bottom color=white] 
+								(0,.05*2/3) ellipse [x radius=2-.05, y radius=2/3-.05*2/3];
+								\path [left color=black!25, right color=black!25, middle color=white] 
+								(-2,0) -- (-2,-1) arc (180:360:2 and 2/3) -- (2,0) arc (360:180:2 and 2/3);
+								\foreach \r in {225,315}
+								\foreach \i [evaluate={\s=30;}] in {0,2,...,30}
+								\fill [black, fill opacity=1/50] 
+								(0,0) -- (\r+\s-\i:2 and 2/3) -- ++(0,-1) 
+								arc (\r+\s-\i:\r-\s+\i:2 and 2/3) -- ++(0,1) -- cycle;
+								\foreach \r in {45,135}
+								\foreach \i [evaluate={\s=30;}] in {0,2,...,30}
+								\fill [black, fill opacity=1/50] 
+								(0,0) -- (\r+\s-\i:2 and 2/3) 
+								arc (\r+\s-\i:\r-\s+\i:2 and 2/3)  -- cycle;
+							}
+						},
+						disc bottom/.style={
+							code={
+								\foreach \i in {0,2,...,30}
+								\fill [black, fill opacity=1/60] (0,-1.1) ellipse [x radius=2+\i/40, y radius=2/3+\i/60];
+								\path pic {disc};
+							}
+						}
+					}
+					
+					% Place nodes
+					\node [block] (app) {Applicazione};
+					\node [block, below of=app, above=5mm] (JDBCApi) {JDBC API};
+					\node [block, below of=JDBCApi, above=5mm] (JDBCDriverM) {JDBC DriverManager};
+					\node[block, below of=JDBCDriverM, above=5mm](Driver) {JDBC Driver Postgresql};
+					% Draw edges
+					\path [line] (app) -- (JDBCApi);
+					\path [line] (JDBCApi) -- (JDBCDriverM);
+					\path [line] (JDBCDriverM) -- (Driver);
+					\draw [<->, ultra thick] (0, -6.3) -- (0, -7.7);
+					\node[draw] at (4,-8.5) {Disco fisso};
+					\path (0,-8.5) pic {disc bottom};
+					
+					\draw[->>] (JDBCApi) to [bend left=45] (app);
+					\draw[->>] (JDBCDriverM) to [bend left=45] (JDBCApi);
+					\draw[->>]  (Driver) to [bend left=45] (JDBCDriverM);
+				\end{tikzpicture}
+				\caption{Architettura di JDBC riscontrata nel progetto}
+		\end{figure}
 \newpage
 
-		\subsubsection{JDBC}
+	\subsubsection{JDBC}
 		\begin{flushleft}
 				La connessione alle basi di dati \'{e} una funzionalit\'{a} che Java ha messo a disposizione gi\'{a} a partire dalla versione 1.2. Questo servizio viene offerto dalle API JDBC (Java Database Connectivity), le quali permettono la gestione dei dati indipendentemente dal DBMS utilizzato, purch\'{e} SQL-based, mantenendo intatto il paradigma Java "Write once, Run anywhere".\newline
 				
@@ -1524,36 +1891,129 @@
 				Queste API dovranno interfacciarsi con un gestore dei driver, il quale si servir\'{a} anche delle API JDBC per comunicare con lo specifico DBMS.
 				Il driver viene caricato tramite la chiamata \textit{Class}.\textit{forName}() che carica la classe se l'operazione non \'{e} stata svolta precedentemente. Tutti i driver JDBC hanno un blocco statico all'interno della definizione della classe, il quale \'{e} deputato alla registrazione del driver nel \textit{DriverManager}. Questo blocco di codice, che potrebbe somigliare molto allo snippet riportato di seguito, verr\'{a} eseguito proprio in seguito alla chiamata del metodo \textit{forName}() di \textit{Class}:
 		\end{flushleft}
-				
-				\begin{Verbatim}[label={Snippet da \cite{JDBCDriver}}]
-				\textcolor{red}{static} \{ 
-				    \textcolor{red}{try} \{
-					    java.sql.DriverManager.registerDriver(new Driver());
-				    \} \textcolor{red}{catch} (SQLException e) \{
-				        throw new RuntimeException("Can't register driver!");
-				    \}
-				\}
-				\end{Verbatim}
-				
-				\begin{flushleft}
-					La classe \textit{DriverManager} dovr\'{a} quindi scorrere tutti i driver registrati e scegliere a runtime quello appropriato per svolgere la richiesta.\newline
+		\begin{lstlisting}[language=java, caption=Snippet da \cite{JDBCDriver}]
+	static { 
+		try {
+			java.sql.DriverManager.registerDriver(new Driver());
+		catch (SQLException e) {
+			throw new RuntimeException("Can't register driver!");
+		}
+	}
+		\end{lstlisting}
+	\begin{flushleft}
+		La classe \textit{DriverManager} dovr\'{a} quindi scorrere tutti i driver registrati in seguito all'esecuzione di uno snippet simile al sopracitato e scegliere a runtime quello appropriato per svolgere la richiesta. Infatti, scorrendo nel codice di \textsf{getConnection()} di \textsf{DriverManager}, che a sua volta invoca il metodo omonimo da \textsf{Connection} e qui troviamo il ciclo \textit{for} che sarà responsabile del controllo di validità del driver sottoposto:\newline
+	\end{flushleft}
 					
-						La Object-Relational Mapping \'{e} una tecnica di programmazione che viene adottata quando si vuole favorire l'integrazione di DBMS relazionali con linguaggi di programmazione orientati agli oggetti. Questo processo di fusione tra programma ad oggetti e database relazione viene messo in atto tramite metodi resi disponibili dal framework ORM. Alcuni dei pi\'{u} diffusi sono:
-						
-						\begin{itemize}
-							\item Hibernate
-							\item Spring DAO
-							\item Enterprise JavaBeans Entity Beans
-						\end{itemize}		
-				\end{flushleft}
+\begin{lstlisting}[language=java, caption=Ciclo che controlla la validità del driver]
+private static Connection getConnection(...) {
+[...]
+	for(DriverInfo aDriver : registeredDrivers) {
+		// If the caller does not have permission to load the driver then
+		// skip it.
+		if(isDriverAllowed(aDriver.driver, callerCL)) {
+			try {
+				println("    trying " + aDriver.driver.getClass().getName());
+				Connection con = aDriver.driver.connect(url, info);
+				if (con != null) {
+					// 	Success!
+					println("getConnection returning " + aDriver.driver.getClass().getName());
+					return (con);
+				}
+			} catch (SQLException ex) {
+					if (reason == null) {
+						reason = ex;
+					}
+			}
+		} else {
+			println("skipping:" + aDriver.getClass().getName());
+		}
+	}
+	[...]
+}
+\end{lstlisting}
+		\begin{flushleft}
+			Una volta effettuata la connessione con il database particolare, le chiamate a funzione che interagiranno con lo stesso saranno indipendenti dal DBMS utilizzato proprio grazie allo strato di astrazione inserito da JDBC. Se avessimo necessità di cambiare DBMS, potremmo sfruttare tutto il codice già scritto per interagire con il database, a patto di cambiare i parametri di configurazione validi per la nuova scelta adottata.\newline
+			Nonostante l'estrema portabilità introdotta da JDBC, si è mosso un ulteriore passo in avanti con l'introduzione della tecnica di programmazione \textit{ORM}, ovvero \textit{Object Relational Mapping}.
+		\end{flushleft}
+	
+	\subsubsection{Tecnica ORM e Hibernate}	
+		La Object-Relational Mapping \'{e} una tecnica di programmazione che viene adottata quando si vuole favorire l'integrazione di DBMS relazionali con linguaggi di programmazione orientati agli oggetti. Questo processo di fusione tra programma ad oggetti e database relazione viene messo in atto tramite metodi resi disponibili dal \textit{framework ORM}. Alcuni dei pi\'{u} diffusi sono:
+			\begin{itemize}
+				\item JPA
+				\item Hibernate
+				\item Spring DAO
+			\end{itemize}
+		\begin{flushleft}
+			Il vantaggio principale offerto da questi framework è rappresentato da una maggiore coesione nel codice, dato che le interazioni con il database possono essere anche effettuate senza l'utilizzo esplicito di query SQL. Nella pagina seguente vengono confrontati a titolo di esempio l'inserimento di una riga tramite l'interfaccia JDBC con l'inserimento tramite il framework Hibernate. Appare chiara la facilitazione introdotta dalla tecnica ORM, la quale svincola il programmatore dal costruire query per ogni interazione particolare con il database, oltre al particolare database stesso.\newline\newline
+			Per la realizzazione di questo progetto si è utilizzato come detto in precedenza l'interfaccia JDBC, tuttavia per curiosità personale è stata sviluppata una web application che implementa un sottoinsieme molto limitato dei requisiti funzionali richiesti ma che si interfaccia con il database tramite il framework Hibernate.\newline A margine, la libreria JPA non è stata scartata per motivazioni legate alla difficoltà di utilizzo o di avviamento dell'ambiente di programmazione.  
+		\end{flushleft}
 		
-		
-			\subsubsection{Hibernate}
-				\begin{flushleft}
-					Hibernate \'{e} un framework
-				\end{flushleft}
-	\newpage
-
+\begin{minipage}[t]{.45\textwidth}
+	\begin{lstlisting}[language=java,caption=Insert JDBC]
+		Statement st = null;
+		try {
+			st = conn.createStatement();
+			////sql contiene la stringa della query/////
+				st.executeUpdate(sql);
+			////////////////////////
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	\end{lstlisting}%
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{.45\textwidth}
+	\begin{lstlisting}[language=java, caption=Insert Hibernate]
+	try {
+		sessionFactory = new MetadataSources(registry ).
+		buildMetadata().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		//////////////////
+			session.save(object);
+		/////////////////
+		session.getTransaction().commit();
+		session.close();
+	} catch (Exception e) {
+		StandardServiceRegistryBuilder.
+		destroy(registry);
+	}
+	\end{lstlisting}%
+\end{minipage}%
+	
+	\begin{flushleft}
+		Come possiamo leggere nelle descrizioni presenti nel \textsf{\href{http://hibernate.org/orm/}{sito dedicato}}, il framework Hibernate realizza l'interazione con la base di dati interfacciandosi con \textit{JDBC} e, sulla base di questo, realizza tutto quell'insieme di metodi che permettono un utilizzo ancora più semplificato del codice necessario per comunicare con i DBMS. Solitamente le tabelle presenti nel database, insieme alle rispettive colonne, rispecchiano le classi presenti nel class diagram, insieme ai rispettivi attributi. I framework ORM tengono conto proprio di questo fatto ed accorciano la distanza tra programma e base di dati servendosi di annotazioni all'interno della definizione di ogni classe che deve essere salvata. In aggiunta, \textit{Hibernate} risulta essere un'implementazione dell'interfaccia JPA, la quale introduce annotazioni ad hoc, tra le quali in \textit{Hibernate} ritroviamo:
+		\begin{itemize}
+			\item \textcolor{red}{\textsf{@Entity}}, che denota tipicamente una tabella nel database
+			\item \textcolor{red}{\textsf{@Id}}, che definisce la chiave primaria della relazione
+			\item \textcolor{red}{\textsf{@Table}}, che specifica il nome della tabella da mappare
+			\item \textcolor{red}{\textsf{@Column}}, che specifica la colonna da mappare
+			\item \textcolor{red}{\textsf{@OneToOne}} e simili, caratterizzano la cardinalità di una relazione
+		\end{itemize}
+		\begin{flushleft}
+			A differenza dell'interfaccia \textit{JDBC} che sfrutta oggetti di tipo \textsf{Connection}, in Hibernate utilizziamo un oggetto di tipo \textsf{SessionFactory} che si serve a sua volta di un oggetto di tipo \textsf{StandardServiceRegistry} addetto al recupero di informazioni dal file di configurazione \textsf{hibernate.cfg.xml} settato precedentemente all'esecuzione. L'oggetto \textsf{sessionFactory} istanzia un oggetto \textsf{session} la cui funzione principale \textsf{\href{http://docs.jboss.org/hibernate/orm/3.5/javadocs/org/hibernate/Session.html}{(doc)}} è fornire le operazioni di creazione, lettura e cancellazione delle istanze relative alle classi mappate, come riportato di seguito:
+		\end{flushleft}
+		\begin{lstlisting}[language=java, caption=Utilizzo di SessionFactory]
+			SessionFactory factory = new SessionFactory(); //semplificato per sintesi
+			Session sess = factory.openSession();
+			Transaction tx;
+			try {
+				tx = sess.beginTransaction();
+				//...
+				tx.commit();
+			} catch (Exception e) {
+				if (tx!=null) tx.rollback();
+				throw e;
+			} finally {
+				sess.close();
+			}
+		\end{lstlisting}
+		\begin{flushleft}
+			All'interno della web application è stato realizzato il CRUD completo per la classe \textit{User}, oltre alla ricerca per nome di una galassia, sfruttando proprio il framework \textit{Hibernate}.
+		\end{flushleft} 
+	\end{flushleft}
+	
 	\subsection{Gestione delle versioni: Git \& Github}
 		\begin{flushleft}
 			In materia di controllo delle versioni del software, Git risulta essere uno tra i più diffusi al mondo. Linus Thorvalds cominciò lo sviluppo di questo applicativo per sostenere la crescita di contributi al suo primo grande progetto, Linux, come viene spiegato in un passo di questa intervista rilasciata presso il canale TED (\textsf{\href{http://www.ted.com/talks/linus_torvalds_the_mind_behind_linux}{link}}).\newline
@@ -1568,7 +2028,7 @@
 	\end{center}
 		\begin{flushleft}
 			In questo caso il progetto risulta decisamente poco distribuito ma lo strumento si rivela ugualmente utile ogni volta che si ha intenzione di tornare ad una versione (funzionante) precedente a quella che si ha fra le mani.\newline
-			Git è un sistema di controllo delle versioni distribuito ed in quanto tale necessita di spazio in rete per caricare il codice sviluppato, affinchè possa essere utilizzato da più persone o anche come backup personale nel caso di un progetto in solitaria. Se non si dispone di uno spazio in rete, ecco che entra in gioco la piattaforma \textsf{\href{https://github.com/}{Github}}, servizio di hosting di rete che si propone anche come intermediario tra l'utente e Git tramite i software standalone. Sul sito di Github è possibile inoltre visionare i repository pubblici e, se presente, leggere la wiki a corredo del codice.\newline\newline
+			Git è un sistema di controllo delle versioni distribuito ed in quanto tale necessita di spazio in rete per caricare il codice sviluppato, affinchè possa essere utilizzato da più persone o anche come backup personale nel caso di un progetto in solitaria. Se non si dispone di uno spazio in rete, la piattaforma \textsf{\href{https://github.com/}{Github}}, servizio di hosting di rete che si propone anche come intermediario tra l'utente e Git tramite i software standalone, risulterà una soluzione economica ed efficace. Sul sito di Github è possibile inoltre visionare i repository pubblici e, se presente, leggere la wiki a corredo del codice.\newline\newline
 			L'indirizzo del repository relativo a questo progetto è \textsf{\href{https://github.com/dailytowns/ProgettoBasi}{repo}}
 		\end{flushleft}
 
@@ -1577,8 +2037,11 @@
 %%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 
-\section{Cenni alla progettazione fisica}
+\section{Cenni riguardo gli indici}
 
+	\begin{flushleft}
+		Nella traccia del progetto non vi era alcun riferimento alla progettazione degli indici per la base di dati. Tuttavia, a titolo di curiosità, viene riportata l'interrogazione che è possibile sottoporre all'interno di \textit{PgAdmin} per recuperare gli indici in uso all'interno del database. Questo risultato torna utile in sede di progettazione fisica, dal momento che evita la creazione di query per la creazione di indici che sono già gestiti dal DBMS.
+	\end{flushleft}
 	\begin{lstlisting}[language=SQL, caption=Cerca indici]
 		SELECT i.relname as indname,
 			i.relowner as indowner,
@@ -1598,9 +2061,210 @@
 								JOIN   pg_am as am
 								ON     i.relam = am.oid;
 	\end{lstlisting}
-
+	\vspace{20mm}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=150mm]{QueryIndici.PNG}
+		\caption{Risultato della query}
+	\end{figure}
 \newpage
 
+\section{Manuale d'uso}
+	\begin{flushleft}
+		Il manuale d'uso dell'applicazione sviluppata è stato suddiviso per requisiti funzionali in modo che fosse facilitata la fase di test.
+	\end{flushleft}
+	\subsection{RF1 e RF2: Login e Tipologia utenti}
+		\begin{flushleft}
+			L'utente avvia l'applicazione e visualizza la schermata in cui gli viene richiesto di inserire le proprie credenziali per effettuare l'accesso al sistema.
+			Se i dati immessi sono corretti, si visualizza l'interfaccia dedicata al tipo di utente che sta effettuando l'accesso.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=120mm]{RF1.PNG}
+			\caption{Login}
+		\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\includegraphics[width=70mm]{RF1admin.PNG}
+			\caption{Amministratore}
+		\end{minipage}%
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\includegraphics[width=70mm]{RF1user.PNG}
+			\caption{Utente registrato}
+		\end{minipage}%
+	\end{figure}
+\newpage
+	\subsection{RF3 e RF4: Utente amministratore}
+		\begin{flushleft}
+			1) Per importare un file dei dati scientifici, l'utente amministratore dovrà selezionare il menù in alto \textit{Importa} e di seguito il sottomenù \textit{Importa file CSV...}. Verrà mostrata a schermo la finestra che permette di selezionare il file nella cartella dove è stato salvato. Una volta selezionato il file, in base al tipo di file sottoposto verranno importati corrispondenti.\newline
+			All'interno della web application si procede analogamente: una volta selezionato il bottone addetto all'import del file, e una volta scelto il file da caricare, l'applicazione provvederà a caricare il file sul server ed una volta terminata l'operazione procede all'import dei dati.
+			\begin{figure}[!h]
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=70mm]{RF3Import.PNG}
+					\caption{Menù import standalone}
+				\end{minipage}%
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=70mm]{RF3file.PNG}
+					\caption{Finestra del file system}
+				\end{minipage}%
+			\end{figure}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=70mm]{RF3ImportWeb.PNG}
+				\caption{Import del file dalla web application}
+			\end{figure}
+		\end{flushleft}
+		\begin{flushleft}
+			2) Per registrare un nuovo utente, operazione consentita soltanto ad un utente amministratore, si dovrà selezionare il menù \textit{Utenti} ed il sottomenù \textit{Registra utente...}. Apparirà dunque una finestra in cui è possibile inserire i dati dell'utente oltre a scegliere se l'utente è un amministratore o meno.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF3RegistraUtente.PNG}
+				\caption{Menù da selezionare per registrare un utente}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF3RegistraUtenteFinestra.PNG}
+				\caption{Finestra di registrazione di un utente}
+			\end{minipage}%
+		\end{figure}
+\newpage
+	\subsection{RF5: Ricerca di un oggetto per nome}
+		\begin{flushleft}
+			Un utente del sistema può ricercare dati relativi ad una galassia tramite selezione dell'apposito menù \textit{Ricerca galassie} e sottomenù \textit{Ricerca galassie per nome...} Nel caso in cui non si conosca il nome corretto della galassia da ricercare si può sia reperire dalla schermata principale, sia ricercare tramite parte del nome. Infatti verrà ritornata una lista di galassie il cui nome comincia con la stringa passata come input.\newline
+			Nella web application bisogna cliccare analogamente sul menù \textit{Galassie} in alto, ma a differenza dell'applicazione standalone sarà necessario immettere il nome della galassia corretto, altrimenti non verrà ritornata alcuna informazione utile.
+			\begin{figure}[!h]
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=60mm]{RF5RicercaGalassiaNome.PNG}
+					\caption{Menù ricerca galassie\newline per nome}
+				\end{minipage}%
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=60mm]{RF5RicercaGalassiaNomeFinestra.PNG}
+					\caption{Finestra di ricerca delle galassie per nome}
+				\end{minipage}%
+			\end{figure}
+			\begin{figure}[h]
+				\centering
+				\includegraphics[width=60mm]{RF5RicercaGalassiaNomeWeb.PNG}
+				\caption{Ricerca di una galassia per nome da web app}
+			\end{figure}
+		\end{flushleft}
+	\subsection{RF6: Ricerca di un oggetto all'interno di un raggio}
+		\begin{flushleft}
+			Un utente generico può effettuare la ricerca di tutte le galassie all'interno della sfera di raggio definito dall'utente. Selezionato il menù \textit{Ricerca galassie} e successivamente il sottomenù \textit{Ricerca galassie per raggio...}, verrà visualizzata una finestra all'interno della quale dovranno essere riempiti tutti i campi per definire le coordinate del punto oggetto di calcolo. Infatti per ogni galassia viene recuperata la posizione, definita da declinazione ed ascensione retta, e calcolata la distanza dal punto immesso dall'utente. Se il risultato è minore del raggio immesso dall'utente la galassia verrà aggiunta alla lista ritornata.
+		\end{flushleft}
+			\begin{figure}[!h]
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=60mm]{RF6RicercaGalassieRaggio.PNG}
+					\caption{Menù da selezionare per\newline ricercare galassie all'interno di un raggio}
+				\end{minipage}%
+				\centering
+				\begin{minipage}[c]{.45\textwidth}
+					\includegraphics[width=60mm]{RF6RicercaGalassieRaggioFinestra.PNG}
+					\caption{Finestra di registrazione di un utente}
+				\end{minipage}%
+			\end{figure}
+		\newpage
+	\subsection{RF7: Ricerca di galassie per caratteristiche fisiche}
+		\begin{flushleft}
+			Il requisito richiede il recupero di tutte le galassie che abbiano \textit{redshift} maggiore o uguale oppure minore o uguale a quello inserito dall'utente. Per effettuare questo tipo di ricerca selezionare il menù \textit{Ricerca galassie} ed il sottomenù \textit{Ricerca galassie per redshift...}. Verrà visualizzata la finestra in cui sarà richiesto di immettere sia il valore di redshift desiderato sia il tipo di intervallo richiesto.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF7RicercaGalassieRedshift.PNG}
+				\caption{Menù da selezionare per\newline ricercare galassie per redshift}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF7RicercaGalassieRedshiftFinestra.PNG}
+				\caption{Finestra di ricerca per redshift}
+			\end{minipage}%
+		\end{figure}
+	\subsection{RF8: Valori delle linee spettrali}
+		\begin{flushleft}
+			L'utente potrà ricercare i valori dei flussi presenti nel database selezionando il menù \textit{Ricerca flussi} ed il sottomenù \textit{Ricerca flussi di una galassia...}. Verrà quindi visualizzata a schermo una finestra in cui sarà richiesto di immettere il nome della galassia da ricercare all'interno del database e le righe relative alla galassia. Nel caso in cui l'utente immetta solo parte del nome della galassia, verranno recuperate tutte le galassie il cui nome comincia con la stringa passata dall'utente.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF8RicercaFlussi.PNG}
+				\caption{Menù da selezionare per\newline ricercare flussi di una galassia}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF8RicercaFlussiFinestra.PNG}
+				\caption{Finestra di ricerca flussi di una galassia}
+			\end{minipage}%
+		\end{figure}
+	\subsection{RF9: Valori dei rapporti delle righe}
+		\begin{flushleft}
+			Per calcolare il rapporto tra due righe relative ad una galassia, selezionare il menù \textit{Ricerca flussi} ed il sottomenù \textit{Rapporti tra flussi...}, il quale visualizzerà la finestra in cui sarà precedentemente richiesto di immettere il nome della galassia di cui calcolare i rapporti e di cliccare successivamente sul bottone \textit{Cerca}. Verranno inserite nelle caselle di scelta solo le righe disponibili nella base di dati. Va perciò scelto il tipo di flusso e la riga corrispondente di cui si vuole calcolare il rapporto. Una volta confermata la selezione, viene ritornato il risultato e resettate le caselle di scelta.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF9RicercaRapportiRighe.PNG}
+				\caption{Menù da selezionare per\newline ricercare flussi di una galassia}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF9RicercaRapportiRigheFinestra1.PNG}
+				\caption{Finestra di calcolo dei rapporti delle righe}
+			\end{minipage}%
+		\end{figure}
+	\subsection{RF11: Rapporto tra flusso e continuo}
+		\begin{flushleft}
+			Per calcolare il rapporto tra il flusso delle righe e il suo corrispettivo continuo basta seguire i passaggi descritti nel punto precedente, avendo l'accortezza di scegliere \textit{flussorighehp} e la riga nella fila superiore, \textit{flussocontinuo} e la stessa riga nella fila inferiore.
+		\end{flushleft}
+	\subsection{RF10: Valori dei rapporti delle righe per gruppo spettrale}
+		\begin{flushleft}
+			Per calcolare valori statistici sui rapporti delle righe, selezionare il menù \textit{Ricerca flussi} ed il sottomenù \textit{Statistiche sui rapporti fra flussi...}. Verrà visualizzata una finestra in cui sarà possibile inserire il tipo di flusso per cui si vogliono calcolare le statistiche e, una volta scelto questo, sarà possibile scegliere la riga su cui si vuole lavorare. È inoltre possibile aggiungere il parametro di \textit{aperture}.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF10Statistiche.PNG}
+				\caption{Menù da selezionare per\newline calcolare statistiche sulle righe}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF10StatisticheFinestra.PNG}
+				\caption{Finestra di calcolo delle statistiche sulle righe}
+			\end{minipage}%
+		\end{figure}
+	\subsection{Dump del database}
+		\begin{flushleft}
+			Non essendo possibile eseguire comandi della shell \textit{PSQL} da programma Java, il dump del database è stato simulato utilizzando i metodi di import a cui vengono passate directory predefinite.\newline
+			Se si vuole verificare il dump da console, verrà effettuato in sede di discussione del progetto.
+		\end{flushleft}
+	\subsection{RF12: CRUD utente}
+		\begin{flushleft}
+			Il requisito è stato aggiunto artificiosamente.\newline\newline
+			All'interno della web application è possibile gestire il CRUD della classe User. Dopo aver effettuato l'accesso come amministratore, cliccare su \textit{Lista utenti} e, all'interno della lista, scegliere l'azione da intraprendere tramite gli appositi bottoni. Per registrare un utente, basta cliccare su \textit{Registra utente} e riempire il form visualizzato a schermo.
+		\end{flushleft}
+		\begin{figure}[!h]
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF12RegistraUtente1.PNG}
+				\caption{Registrazione utente da web application}
+			\end{minipage}%
+			\centering
+			\begin{minipage}[c]{.45\textwidth}
+				\includegraphics[width=60mm]{RF12RegistraUtente2.PNG}
+				\caption{Form di registrazione}
+			\end{minipage}%
+		\end{figure}
+	
+	\newpage
 \renewcommand\refname{Bibliografia}
 \begin{thebibliography} {99}
 	\bibitem{Atzeni} Atzeni, Ceri, Fraternali, Paraboschi, Torlone
@@ -1616,4 +2280,6 @@
 	\bibitem{Arlow} J. Arlow, Neustadt, Uml e Unified Process
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \end{document}

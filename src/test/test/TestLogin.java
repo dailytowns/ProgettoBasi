@@ -1,7 +1,6 @@
 package test;
 
-import Helper.PsqlDBHelper;
-import Helper.UserDAO;
+import main.Helper.UserDAO;
 import org.junit.*;
 
 /**

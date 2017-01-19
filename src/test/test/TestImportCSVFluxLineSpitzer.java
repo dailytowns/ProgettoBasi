@@ -1,7 +1,7 @@
 package test;
 
-import Helper.ImportCSVFluxLineSpitzer;
-import Helper.PsqlDBHelper;
+import main.Helper.ImportCSVFluxLineSpitzer;
+import main.Helper.PsqlDBHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
