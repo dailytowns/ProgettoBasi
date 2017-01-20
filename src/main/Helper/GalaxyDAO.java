@@ -356,16 +356,20 @@ public class GalaxyDAO {
                     String nomealt = rs.getString("nomealt");
                     Double redshift = rs.getDouble("redshift");
                     /*String classeSpettrale = rs.getString("classespettrale");*/
-                    String sign = rs.getString("decsign");
+/*                    String sign = rs.getString("decsign");
                     Integer decDegrees = rs.getInt("decdeg");
                     Integer decMinutes = rs.getInt("decmin");
                     Double decSeconds = rs.getDouble("decsec");
                     Integer arHours = rs.getInt("arh");
                     Integer arMinutes = rs.getInt("arm");
-                    Double arSeconds = rs.getDouble("ars");
+                    Double arSeconds = rs.getDouble("ars");*/
+                    Double gradiDec = rs.getDouble("gradidec");
+                    Double gradiAr = rs.getDouble("gradiar");
 
-                    CoordinateAngolari acGalaxy = new CoordinateAngolari(new Declination(sign, decDegrees, decMinutes, decSeconds),
-                            new RightAscension(arHours, arMinutes, arSeconds));
+
+/*                    CoordinateAngolari acGalaxy = new CoordinateAngolari(new Declination(sign, decDegrees, decMinutes, decSeconds),
+                            new RightAscension(arHours, arMinutes, arSeconds));*/
+                    CoordinateAngolari acGalaxy = new CoordinateAngolari(gradiDec, gradiAr);
                     relativeDistance = CoordinateAngolari.computeDistanceBetweenCoordinates(acGalaxy, acPoint);
                     if(relativeDistance <= radius){
                         Galaxy galaxy = new Galaxy(nomeGalassia, nomealt, redshift, relativeDistance);
