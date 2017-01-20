@@ -39,7 +39,7 @@ public class ImportCSVGalaxy extends ImportCSV {
         try {
             while ((headerLine = reader.readNext()) != null) {
                 nextLine = headerLine[0].split(";");
-                if(nextLine.length != 26)
+                if(nextLine.length != 26 || nextLine[0].contains("---------"))
                     continue;
                 System.out.println("headerLine " + nextLine[0]);
                 System.out.println(nextLine.length);

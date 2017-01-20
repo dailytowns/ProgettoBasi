@@ -15,7 +15,7 @@ public class ErrorMessageView {
         FXMLLoader fxmlLoader = null;
         Parent root = null;
         try {
-            fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("../resources/fxml/ErrorMessageView.fxml"));
+            fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/ErrorMessageView.fxml"));
             root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();

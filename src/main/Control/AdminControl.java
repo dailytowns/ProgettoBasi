@@ -96,9 +96,10 @@ public class AdminControl extends UserViewControl{
                             case "MRTable3_sample.csv":
                                 importCSV = new ImportCSVGalaxy();
                                 importCSV.importFile(listOfFile.get(0).getAbsolutePath());
-                                ObservableList<GalaxyData> list = retrieveGalaxies();
-                                listGalaxies.setItems(list);
+                                ObservableList<GalaxyData> listNew = retrieveGalaxies();
+                                listGalaxies.setItems(listNew);
                                 listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                                listGalaxies.setVisible(true);
                                 break;
                             case "MRTable4_flux.csv":
                                 importCSV = new ImportCSVFluxLineHP();
@@ -182,6 +183,10 @@ public class AdminControl extends UserViewControl{
                 (new ImportCSVContFlux()).importFile("C:\\Users\\feder\\Desktop\\MRTable6_cont.csv");
                 (new ImportCSVFluxLineHP()).importFile("C:\\Users\\feder\\Desktop\\MRTable4_flux.csv");
                 (new ImportCSVFluxLineSpitzer()).importFile("C:\\Users\\feder\\Desktop\\MRTable8_irs.csv");
+                ObservableList<GalaxyData> listNew = retrieveGalaxies();
+                listGalaxies.setItems(listNew);
+                listGalaxies.setCellFactory(galaxyCell -> new GalaxyCell());
+                listGalaxies.setVisible(true);
             }
         });
 
