@@ -1,6 +1,8 @@
 package main.Control;
 
+import main.Helper.AdminDAO;
 import main.Helper.UserDAO;
+import main.Model.AdminHib;
 import main.Model.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -56,18 +58,28 @@ public class InsertUserControl {
                             User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
                             UserDAO userDAO = new UserDAO();
                             userDAO.insertUser(user, "registereduser");
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Attenzione!");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Utente registrato correttamente");
+                            alert.showAndWait();
                             btnConferma.getScene().getWindow().hide();
                         } else {
-                            User user = new User(txtNome.getText(), txtCognome.getText(), txtEmail.getText(), txtUsername.getText(), txtPassword.getText());
-                            UserDAO userDAO = new UserDAO();
-                            userDAO.insertUser(user, "amministratore");
+                            AdminHib user = new AdminHib(txtUsername.getText(), txtPassword.getText(), txtNome.getText(), txtCognome.getText(), txtEmail.getText());
+                            AdminDAO adminDAO = new AdminDAO();
+                            adminDAO.insertRecordsHibernate(user);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Attenzione!");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Amministratore registrato correttamente");
+                            alert.showAndWait();
                             btnConferma.getScene().getWindow().hide();
                         }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Attenzione!");
                         alert.setHeaderText(null);
-                        alert.setContentText("La password non puÃ² coincidere con lo username");
+                        alert.setContentText("La password non può coincidere con lo username");
                         alert.showAndWait();
                     }
                 }

@@ -125,10 +125,11 @@ public class GalaxyDAO {
      * @param nameGalaxy Nome della galassia da ricercare
      * @return Un oggetto di tipo Galassia, altrimenti null
      */
-    /*public Galaxy searchGalaxyForName(String nameGalaxy) {
+    public Galaxy searchGalaxy(String nameGalaxy) throws SQLException {
 
-        Statement stmt = null;
-        Galaxy galaxy = null;
+        Statement stmt = null, stmt2 = null, stmt3 = null;
+        Galaxy galaxy = new Galaxy();
+        ResultSet rs1 = null, rs2 = null, rs3 = null;
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -139,76 +140,97 @@ public class GalaxyDAO {
             Double ars, decs;
             Integer arh, arm, decdeg, decm;
             String sign;
+            Luminosita luminosita;
+            Metallicita metallicita;
             CaratteristicheFisiche caratteristicheFisiche = new CaratteristicheFisiche();
             String nomeAlt = null;
 
             stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM galassia WHERE nome LIKE '"+nameGalaxy+"%';" );
+            stmt2 = conn.createStatement();
+            stmt3 = conn.createStatement();
 
-            if(rs.next()) { //Corretto il bug relativo al recupero di più galassie
-                //while (rs.next()) {
-                    nome = rs.getString("nome");
-                    nomeAlt = rs.getString("nomealt");
-                    redshift = rs.getDouble("redshift");
-                //}
+            rs1 = stmt.executeQuery( "SELECT * FROM galassia WHERE nome LIKE '"+nameGalaxy+"%';" );
+            rs2 = stmt2.executeQuery("SELECT * FROM coordinateangolari WHERE nomegalassia LIKE '" + nameGalaxy + "%';");
+            rs3 = stmt3.executeQuery("SELECT * FROM caratteristichefisiche WHERE nomegalassia LIKE '" + nameGalaxy + "%';");
+
+            //if(rs.next()) { //Corretto il bug relativo al recupero di più galassie
+            //while (rs1.next() && rs2.next() && rs3.next()) {
+            if(rs1.next() && rs2.next() && rs3.next()) {
+
+                nome = rs1.getString("nome");
+                nomeAlt = rs1.getString("nomealt");
+                redshift = rs1.getDouble("redshift");
                 if (nome == null)
                     return null;
+                galaxy.setName(nome);
+                galaxy.setRedshift(redshift);
+                galaxy.setAltName(nomeAlt);
+                //}
 
-                rs = stmt.executeQuery("SELECT * FROM coordinateangolari WHERE nomegalassia LIKE '" + nameGalaxy + "%';");
                 //while (rs.next()) {
-                if(rs.next()) {
-                    arh = rs.getInt("ARh");
-                    arm = rs.getInt("ARm");
-                    ars = rs.getDouble("ARs");
-                    decdeg = rs.getInt("decdeg");
-                    decm = rs.getInt("decmin");
-                    decs = rs.getDouble("decsec");
-                    sign = rs.getString("decsign");
-                    Declination dec = new Declination(sign, decdeg, decm, decs);
-                    RightAscension ra = new RightAscension(arh, arm, ars);
-                    coordinateAngolari = new CoordinateAngolari(dec, ra);
-                }
-                rs = stmt.executeQuery("SELECT * FROM caratteristichefisiche WHERE nomegalassia LIKE '" + nameGalaxy + "%';");
+                //if(rs.next()) {
+                arh = rs2.getInt("ARh");
+                arm = rs2.getInt("ARm");
+                ars = rs2.getDouble("ARs");
+                decdeg = rs2.getInt("decdeg");
+                decm = rs2.getInt("decmin");
+                decs = rs2.getDouble("decsec");
+                sign = rs2.getString("decsign");
+                Declination dec = new Declination(sign, decdeg, decm, decs);
+                RightAscension ra = new RightAscension(arh, arm, ars);
+                coordinateAngolari = new CoordinateAngolari(dec, ra);
+                galaxy.setCoordinateAngolari(coordinateAngolari);
+
+
                 //while (rs.next()) {
-                if(rs.next()) {
-                    String valLum = rs.getString("valorelum");
-                    String refLum = rs.getString("riferimentolum");
-                    String valMet = rs.getString("valoremet");
-                    String refMet = rs.getString("riferimentomet");
-                    String errMet = rs.getString("erroremet");
-                    if (valLum != null || valMet != null || errMet != null || refLum != null || refMet != null) {
-                        Luminosita luminosita = new Luminosita(valLum, refLum);
-                        Metallicita metallicita = new Metallicita(valMet, errMet, refMet);
-                        caratteristicheFisiche = new CaratteristicheFisiche(nome, metallicita, luminosita);
-                    } else {
-*//*                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                //if(rs.next()) {
+
+                String valLum = rs3.getString("valorelum");
+                String refLum = rs3.getString("riferimentolum");
+                String valMet = rs3.getString("valoremet");
+                String refMet = rs3.getString("riferimentomet");
+                String errMet = rs3.getString("erroremet");
+                if (valLum != null || valMet != null || errMet != null || refLum != null || refMet != null) {
+                    /*if (valLum == null && refLum == null) {
+                        valLum = refLum = " ";
+                    }
+                    if (valMet == null && errMet == null && refMet == null) {
+                        valMet = refMet = errMet = " ";
+                    }*/
+                    luminosita = new Luminosita(valLum, refLum);
+                    metallicita = new Metallicita(valMet, errMet, refMet);
+                    caratteristicheFisiche = new CaratteristicheFisiche(nome, metallicita, luminosita);
+                    galaxy.setCaratteristicheFisiche(caratteristicheFisiche);
+                } else {
+/*                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Info");
                     alert.setHeaderText(null);
                     alert.setContentText("Nessuna corrispondenza in caratteristichefisiche");
                     alert.showAndWait();
-                    //return null;*//*
-                        new ErrorGenericView("Errore nel recupero delle caratteristiche fisiche\n per la galassia" + nome);
-                    }
-
+                    //return null;*/
+                    //new ErrorGenericView("Non vi sono dati sulle\n caratteristiche fisiche\n per la galassia" + nome);
                 }
+
+                if(rs1.next())
+                    return null;
+
+                galaxy = new Galaxy(nameGalaxy, nomeAlt, redshift, caratteristicheFisiche, coordinateAngolari);
             }
 
-            if(rs.next()) {
-                new ErrorGenericView("I criteri immessi recuperano\n più di una galassia");
-            }
-
-            galaxy = new Galaxy(nome,nomeAlt,redshift,caratteristicheFisiche,coordinateAngolari);
-
-            rs.close();
-            stmt.close();
-            conn.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+        } finally {
+            rs1.close();
+            rs2.close();
+            rs3.close();
+            stmt.close();
+            stmt2.close();
+            stmt3.close();
+            conn.close();
         }
 
         return galaxy;
-    }*/
+    }
 
     /**
      * Ricerca nel database una galassia per nome
@@ -380,6 +402,7 @@ public class GalaxyDAO {
             Collections.sort(list);
             System.out.println(list);
 
+            //Aggiungere LIMIT number avrebbe risparmiato il primo controllo nel while
             while(i < number && i<list.size()) {
                 GalaxyDataRadius galaxyData = new GalaxyDataRadius(list.get(i), i+1, list.get(i).getRelativeDistance());
                 obs.add(galaxyData);

@@ -163,6 +163,8 @@ public class PsqlDBHelper {
 
             stmt = conn.createStatement();
             String sql = "DROP TABLE " + table;
+            if(table.equals("galassia"))
+            	sql = sql + " CASCADE";
             stmt.executeUpdate(sql);
             conn.commit();
             stmt.close();

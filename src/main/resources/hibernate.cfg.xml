@@ -15,6 +15,6 @@
         <property name="hbm2ddl.auto">update</property>
 
         <mapping class="main.Model.UserHib"></mapping>
-
+		<mapping class= "main.Model.AdminHib"></mapping>
     </session-factory>
 </hibernate-configuration>

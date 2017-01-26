@@ -196,7 +196,7 @@ public class AdminControl extends UserViewControl{
                 UserDAO userDAO = new UserDAO();
                 int i;
                 for(i=0; i<150; i++) {
-
+                    //libreria genera nomi?
                 }
             }
         });

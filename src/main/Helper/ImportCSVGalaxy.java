@@ -53,6 +53,9 @@ public class ImportCSVGalaxy extends ImportCSV {
                 Double decdeg = Declination.convertToDegrees(Integer.valueOf(nextLine[5]), Integer.valueOf(nextLine[6]), Double.valueOf(nextLine[7]), nextLine[4]);
                 Double decar = RightAscension.convertToDegrees(Integer.valueOf(nextLine[1]), Integer.valueOf(nextLine[2]), Double.valueOf(nextLine[3]));
 
+                //controllo sui valori di declinazione e ascensione retta, implemento le rv10 e rv11
+                if(Integer.valueOf(nextLine[5]) < 90 && Integer.valueOf(nextLine[6]) < 60 && Double.valueOf(nextLine[7]) < 3600 &&
+                		Integer.valueOf(nextLine[1]) < 23 && Integer.valueOf(nextLine[2]) < 60 && Double.valueOf(nextLine[3]) < 3600) {
                  try {
                      psqlDBHelper.insertRecord("INSERT INTO coordinateangolari(nomegalassia, ARh, ARm, ARs, decsign, decdeg," +
                              " decmin, decsec, gradidec, gradiar) VALUES ('"
@@ -62,8 +65,8 @@ public class ImportCSVGalaxy extends ImportCSV {
                  } catch (Exception e) {
                      e.printStackTrace();
                  }
-
-                i++;
+                 i++;
+                }
 
                 Metallicita metallicita = new Metallicita(nextLine[22], nextLine[23], nextLine[24]);
                 Luminosita luminosita = new Luminosita(nextLine[13], nextLine[15]);
@@ -110,14 +113,14 @@ public class ImportCSVGalaxy extends ImportCSV {
             psqlDBHelper.deleteTable("coordinateangolari");
         if(psqlDBHelper.checkTable("caratteristichefisiche"))
             psqlDBHelper.deleteTable("caratteristichefisiche");
-        if(psqlDBHelper.checkTable("distanza"))
-            psqlDBHelper.deleteTable("distanza");
+        /*if(psqlDBHelper.checkTable("distanza"))
+            psqlDBHelper.deleteTable("distanza");*/
         if(psqlDBHelper.checkTable("galassia"))
             psqlDBHelper.deleteTable("galassia");
         psqlDBHelper.createTableGalassia();
         psqlDBHelper.createTableCoordinateAngolari();
         psqlDBHelper.createTableCaratteristiche();
-        psqlDBHelper.createTableDistanza();
+        //psqlDBHelper.createTableDistanza();
         psqlDBHelper.closeConnection();
     }
 
