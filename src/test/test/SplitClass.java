@@ -9,7 +9,7 @@ public class SplitClass {
 
 
     /**
-     * COMMENTO NUOVISSIMO
+     * COMMENTO NUOVISSIMISSIMO
      * @param args
      */
     public static void main(String[] args) {
